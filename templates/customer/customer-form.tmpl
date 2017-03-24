@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!-- sweet alerts -->
+        
+        <!-- DataTables -->
+        <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+
+        <link href="/static/toggles/toggles.css" rel="stylesheet" />
+
+        <title>Forms</title>
+    </head>
+    <body>
+
+        {{ template "customer-side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p class="lead">
+                            Forms
+                        </p>
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <div class="tabPane clearfix">
+                                    <div class="profile-desk">
+                                        <div class="col-lg-offset-1 col-lg-10">
+                                            <table id="formsTable" width="100%" style="width: 100%;" class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr id="search">
+                                                        <th>form</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Form</th>
+                                                        <th>Complete</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{ $company := .company }}
+                                                    {{ range $doc := .docs }}
+                                                        <tr class="clickable" data-url="/document/{{ $doc.Id }}">
+                                                            <td>{{ $doc.Name }}</td>
+                                                            <td>{{ $doc.Complete }}</td>
+                                                        </tr>
+                                                    {{ end }}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        <!-- Main Content Ends -->
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        <script src="/static/datatables/jquery.dataTables.min.js"></script>
+        <script src="/static/datatables/dataTables.bootstrap.js"></script>
+        <script src="/static/js/confirm.js" charset="utf-8"></script>
+        <script src="/static/datatables/custom.js" charset="utf-8"></script>
+
+        <script src="/static/toggles/toggles.min.js"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+
+            var vIds = [];
+            {{ range $vehicle := .vehicles }}
+                vIds.push('{{$vehicle.Id}}');
+            {{ end }}
+
+            var table = $('#formsTable').DataTable({
+                "lengthMenu":[5,10,15,20],
+                //"dom": 'lrtip',
+                "columnDefs": [
+                    { "orderable": false, "targets": [1] },
+                    { "name": "form",   "targets": 0 }
+                ]
+            });
+
+        </script>
+
+  </body>
+</html>

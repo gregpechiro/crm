@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!-- sweet alerts -->
+
+
+        <link href="/static/dropzone/dropzone.css" rel="stylesheet" type="text/css" />
+
+        <link href="/static/datatables/data-tables-bootstrap.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+
+        <title>Vehicle Files</title>
+    </head>
+    <body>
+
+        {{ template "customer-side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <div class="tabPane clearfix">
+                                    <div id="view" class="profile-desk">
+                                        <h1>
+                                            {{ .vehicle.VehicleType }}
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <small>{{ if .vehicle.Active }}Active{{ else }}Inactive{{ end }}</small>
+                                            <a href="/customer/vehicle/{{ .vehicle.Id }}" class="pull-right btn btn-success btn-xs" style="text-transform: none;">Back</a>
+                                        </h1>
+
+                                        <div class="col-lg-6">
+                                            <div class="table-responsive">
+                                                <table id="filesTable" width="100%" style="width: 100%;"class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr id="search" class="search">
+                                                            <th>name</th>
+                                                            <th>size</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Size</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {{ $vehicle := .vehicle }}
+                                                        {{ range $file := .files }}
+                                                            <tr class="clickable" data-url="/vehicle/file/{{ $vehicle.Id }}/{{ $file.name }}" data-target="_blank">
+                                                                <td>{{ $file.name }}</td>
+                                                                <td>{{ size $file.size }}</td>
+                                                            </tr>
+                                                        {{ end }}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <form action="/vehicle/upload" method="post" class="dropzone" id="dropzone">
+                                                <div class="fallback">
+                                                    <input name="file" type="file" multiple />
+                                                </div>
+                                                <input type="hidden" name="id" value="{{ .vehicle.Id }}">
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+        <!-- Main Content Ends -->
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        <script src="/static/dropzone/dropzone.min.js"></script>
+        <script src="/static/datatables/jquery.dataTables.min.js"></script>
+        <script src="/static/datatables/dataTables.bootstrap.js"></script>
+        <script src="/static/js/confirm.js" charset="utf-8"></script>
+        <script src="/static/datatables/custom.js" charset="utf-8"></script>
+        <script src="/static/js/flash.js" charset="utf-8"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script>
+            var table = $('#filesTable').DataTable({
+                "lengthMenu":[5,10,15,20],
+                //"dom": 'lrtip',
+                "columnDefs": [
+                    { "name": "name",     "targets": 0 },
+                    { "name": "size",     "targets": 1 }
+                ]
+            });
+
+            Dropzone.options.dropzone = false;
+            var myDropzone = new Dropzone('#dropzone', {
+                createImageThumbnails: false,
+                filesixeBase: 1024,
+                init: function() {
+                    this.on('success', function(file, resp) {
+                        test=resp;
+                        console.log(resp);
+                        if (resp.error) {
+                            setErrorFlash(resp.msg);
+                        } else {
+                            setSuccessFlash(resp.msg);
+                        }
+                        location.reload();
+                        return
+                    });
+                },
+            });
+
+        </script>
+
+  </body>
+</html>

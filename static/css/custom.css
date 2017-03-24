@@ -1,0 +1,23 @@
+
+.tabPane {
+    padding:30px;
+}
+
+textarea {
+    resize:none;
+}
+
+.navbar-toggle {
+    margin: 0;
+    display: block;
+    padding: 15px 25px;
+    float: inherit;
+}
+
+.navigation ul li a .nav-label {
+    vertical-align: inherit;
+}
+
+span.calander {
+    cursor: pointer;
+}

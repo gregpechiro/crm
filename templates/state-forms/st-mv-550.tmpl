@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+    <head>
+        <title>MV-550</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        {{ template "st-head.tmpl" . }}
+
+        <style type="text/css">
+            @media print {
+                @page {size: landscape}
+            input,
+            textarea {
+                background-color: transparent;
+                border-color: transparent !important;
+                box-shadow: none !important;
+                outline-color: transparent; !important;
+            }
+            }
+            input {
+            font-size: 10px;
+            }
+            p {
+            margin: 0;
+            padding: 0;
+            }
+            .p1ft00 {
+            font-size: 7px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft01 {
+            font-size: 8px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft02 {
+            font-size: 16px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft03 {
+            font-size: 9px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft04 {
+            font-size: 10px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft05 {
+            font-size: 19px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft06 {
+            font-size: 8px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft07 {
+            font-size: 13px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft08 {
+            font-size: 13px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft09 {
+            font-size: 7px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft010 {
+            font-size: 16px;
+            font-family: Helvetica;
+            color: #000000;
+            }
+            .p1ft011 {
+            font-size: 15px;
+            font-family: Helvetica;
+            color: #000000;
+            }
+            .p2ft00 {
+            font-size: 16px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p2ft01 {
+            font-size: 15px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p2ft02 {
+            font-size: 15px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p2ft03 {
+            font-size: 13px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p2ft04 {
+            font-size: 15px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p2ft05 {
+            font-size: 15px;
+            font-family: Times;
+            color: #231f20;
+            }
+</style>
+    </head>
+    <body bgcolor="#A0A0A0" vlink="blue" link="blue">
+
+        {{ if eq .session.ROLE "ADMIN" "DEVELOPER" "EMPLOYEE" }}
+            <div style="position:relative;width:1188px;margin:0 auto;" class="no-print">
+                <label for="vehicleAddition1">Vehicle Addition 1</label>
+                <select id="vehicleAddition1Select" class="addSelect" data-vehicle="1">
+                    <option value="">None</option>
+                    {{ range $i, $vehicle := .vehicles }}
+                        <option value="{{ $i }}">{{ $vehicle.UnitNumber }}</option>
+                    {{ end }}
+                </select>
+                <label for="vehicleAddition2">Vehicle Addition 2</label>
+                <select id="vehicleAddition2Select" class="addSelect" data-vehicle="2">
+                    <option value="">None</option>
+                    {{ range $i, $vehicle := .vehicles }}
+                        <option value="{{ $i }}">{{ $vehicle.UnitNumber }}</option>
+                    {{ end }}
+                </select>
+            </div>
+            <br>
+            <div style="position:relative;width:1188px;margin:0 auto;" class="no-print">
+                <label for="weightSelect">Weights</label>
+                <select id="weightSelect">
+                    <option value="">None</option>
+                    {{ range $i, $vehicle := .vehicles }}
+                        <option value="{{ $i }}">{{ $vehicle.UnitNumber }}</option>
+                    {{ end }}
+                </select>
+            </div>
+            <br>
+        {{ end }}
+        <div id="page1-div" class="page" style="position:relative;width:1188px;height:918px;margin:0 auto;">
+            <img width="1188" height="918" src="/static/img/forms/mv-550001.png" alt="background image" />
+            <p style="position:absolute;top:739px;left:70px;white-space:nowrap" class="p1ft00">NAIC&#160;#</p>
+            <p style="position:absolute;top:739px;left:178px;white-space:nowrap" class="p1ft00">Insurance&#160;Company&#160;Name</p>
+            <p style="position:absolute;top:779px;left:70px;white-space:nowrap" class="p1ft00">Policy&#160;Number</p>
+            <p style="position:absolute;top:779px;left:248px;white-space:nowrap" class="p1ft00">Effective&#160;Date</p>
+            <p style="position:absolute;top:779px;left:380px;white-space:nowrap" class="p1ft00">Expiration&#160;Date</p>
+            <p style="position:absolute;top:447px;left:102px;white-space:nowrap" class="p1ft01">Title&#160;Number</p>
+            <p style="position:absolute;top:447px;left:277px;white-space:nowrap" class="p1ft01">Vehicle&#160;Identification&#160;Number</p>
+            <p style="position:absolute;top:447px;left:481px;white-space:nowrap" class="p1ft01">Equipment&#160;Number</p>
+            <p style="position:absolute;top:447px;left:600px;white-space:nowrap" class="p1ft01">Year</p>
+            <p style="position:absolute;top:447px;left:670px;white-space:nowrap" class="p1ft01">Make</p>
+            <p style="position:absolute;top:447px;left:755px;white-space:nowrap" class="p1ft01">Body&#160;Type*</p>
+            <p style="position:absolute;top:447px;left:869px;white-space:nowrap" class="p1ft01">Axles</p>
+            <p style="position:absolute;top:447px;left:932px;white-space:nowrap" class="p1ft01">Seats</p>
+            <p style="position:absolute;top:447px;left:977px;white-space:nowrap" class="p1ft01">Fuel**</p>
+            <p style="position:absolute;top:447px;left:1041px;white-space:nowrap" class="p1ft01">Unladen&#160;Weight</p>
+            <p style="position:absolute;top:492px;left:100px;white-space:nowrap" class="p1ft01">Gross&#160;Vehicle&#160;Weight</p>
+            <p style="position:absolute;top:492px;left:250px;white-space:nowrap" class="p1ft01">Gross&#160;Combination&#160;Weight</p>
+            <p style="position:absolute;top:492px;left:395px;white-space:nowrap" class="p1ft01">Purchase&#160;Price</p>
+            <p style="position:absolute;top:492px;left:505px;white-space:nowrap" class="p1ft01">Purchase&#160;Date</p>
+            <p style="position:absolute;top:492px;left:610px;white-space:nowrap" class="p1ft01">Factory&#160;Price</p>
+            <p style="position:absolute;top:492px;left:700px;white-space:nowrap" class="p1ft01">USDOT&#160;#</p>
+            <p style="position:absolute;top:492px;left:780px;white-space:nowrap" class="p1ft01">TIN/EIN</p>
+            <p style="position:absolute;top:492px;left:850px;white-space:nowrap" class="p1ft01">UT&#160;Spec&#160;Truck</p>
+            <p style="position:absolute;top:492px;left:950px;white-space:nowrap" class="p1ft01">CO&#160;Miles</p>
+            <p style="position:absolute;top:492px;left:1030px;white-space:nowrap" class="p1ft01">PA&#160;Registration&#160;Plate&#160;Number</p>
+            <p style="position:absolute;top:540px;left:280px;white-space:nowrap" class="p1ft01">Vehicle&#160;Owner&#160;(Lessor/Lessee)</p>
+            <p style="position:absolute;top:687px;left:280px;white-space:nowrap" class="p1ft01">Vehicle&#160;Owner&#160;(Lessor/Lessee)</p>
+            <p style="position:absolute;top:540px;left:740px;white-space:nowrap" class="p1ft01">Will&#160;the&#160;designated&#160;carrier&#160;responsible&#160;for&#160;safety&#160;change&#160;during&#160;the&#160;year?</p>
+            <p style="position:absolute;top:687px;left:740px;white-space:nowrap" class="p1ft01">Will&#160;the&#160;designated&#160;carrier&#160;responsible&#160;for&#160;safety&#160;change&#160;during&#160;the&#160;year?</p>
+            <p style="position:absolute;top:137px;left:67px;white-space:nowrap" class="p1ft02"><b>Applicant&#160;Information</b></p>
+            <p style="position:absolute;top:160px;left:67px;white-space:nowrap" class="p1ft00">TIN/EIN</p>
+            <p style="position:absolute;top:160px;left:190px;white-space:nowrap" class="p1ft00">Registrant Name</p>
+            <p style="position:absolute;top:160px;left:552px;white-space:nowrap" class="p1ft00">D.B.A.</p>
+            <p style="position:absolute;top:160px;left:823px;white-space:nowrap" class="p1ft00">Contact&#160;Name</p>
+            <p style="position:absolute;top:189px;left:67px;white-space:nowrap" class="p1ft00">USDOT #</p>
+            <p style="position:absolute;top:189px;left:190px;white-space:nowrap" class="p1ft00">Business Street Address</p>
+            <p style="position:absolute;top:189px;left:501px;white-space:nowrap" class="p1ft00">Mailing Street Address</p>
+            <p style="position:absolute;top:188px;left:824px;white-space:nowrap" class="p1ft00">E-mail&#160;Address</p>
+            <p style="position:absolute;top:217px;left:67px;white-space:nowrap" class="p1ft00">Acct&#160;#</p>
+            <p style="position:absolute;top:217px;left:192px;white-space:nowrap" class="p1ft00">City</p>
+            <p style="position:absolute;top:217px;left:287px;white-space:nowrap" class="p1ft00">County&#160;</p>
+            <p style="position:absolute;top:217px;left:385px;white-space:nowrap" class="p1ft00">State</p>
+            <p style="position:absolute;top:217px;left:435px;white-space:nowrap" class="p1ft00">Zip&#160;Code</p>
+            <p style="position:absolute;top:217px;left:502px;white-space:nowrap" class="p1ft00">City</p>
+            <p style="position:absolute;top:217px;left:609px;white-space:nowrap" class="p1ft00">County&#160;</p>
+            <p style="position:absolute;top:217px;left:716px;white-space:nowrap" class="p1ft00">State&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Zip&#160;Code</p>
+            <p style="position:absolute;top:217px;left:825px;white-space:nowrap" class="p1ft00">Registration&#160;Year</p>
+            <p style="position:absolute;top:217px;left:933px;white-space:nowrap" class="p1ft00">Telephone&#160;Number</p>
+            <p style="position:absolute;top:217px;left:1047px;white-space:nowrap" class="p1ft00">Fax&#160;Number</p>
+            <p style="position:absolute;top:248px;left:67px;white-space:nowrap" class="p1ft02"><b>Weights</b></p>
+            <p style="position:absolute;top:272px;left:67px;white-space:nowrap" class="p1ft00">PA</p>
+            <p style="position:absolute;top:272px;left:150px;white-space:nowrap" class="p1ft00">AL</p>
+            <p style="position:absolute;top:271px;left:234px;white-space:nowrap" class="p1ft00">AR</p>
+            <p style="position:absolute;top:271px;left:318px;white-space:nowrap" class="p1ft00">AZ</p>
+            <p style="position:absolute;top:271px;left:402px;white-space:nowrap" class="p1ft00">CA</p>
+            <p style="position:absolute;top:271px;left:485px;white-space:nowrap" class="p1ft00">CO</p>
+            <p style="position:absolute;top:271px;left:569px;white-space:nowrap" class="p1ft00">CT</p>
+            <p style="position:absolute;top:271px;left:653px;white-space:nowrap" class="p1ft00">DC</p>
+            <p style="position:absolute;top:271px;left:737px;white-space:nowrap" class="p1ft00">DE</p>
+            <p style="position:absolute;top:271px;left:820px;white-space:nowrap" class="p1ft00">FL</p>
+            <p style="position:absolute;top:271px;left:904px;white-space:nowrap" class="p1ft00">GA</p>
+            <p style="position:absolute;top:271px;left:988px;white-space:nowrap" class="p1ft00">IA</p>
+            <p style="position:absolute;top:271px;left:1072px;white-space:nowrap" class="p1ft00">ID</p>
+            <p style="position:absolute;top:301px;left:67px;white-space:nowrap" class="p1ft00">IL</p>
+            <p style="position:absolute;top:301px;left:150px;white-space:nowrap" class="p1ft00">IN</p>
+            <p style="position:absolute;top:301px;left:234px;white-space:nowrap" class="p1ft00">KS</p>
+            <p style="position:absolute;top:301px;left:318px;white-space:nowrap" class="p1ft00">KY</p>
+            <p style="position:absolute;top:301px;left:402px;white-space:nowrap" class="p1ft00">LA</p>
+            <p style="position:absolute;top:301px;left:485px;white-space:nowrap" class="p1ft00">MA</p>
+            <p style="position:absolute;top:301px;left:569px;white-space:nowrap" class="p1ft00">MD</p>
+            <p style="position:absolute;top:301px;left:653px;white-space:nowrap" class="p1ft00">ME</p>
+            <p style="position:absolute;top:301px;left:737px;white-space:nowrap" class="p1ft00">MI</p>
+            <p style="position:absolute;top:301px;left:820px;white-space:nowrap" class="p1ft00">MN</p>
+            <p style="position:absolute;top:301px;left:904px;white-space:nowrap" class="p1ft00">MO</p>
+            <p style="position:absolute;top:301px;left:988px;white-space:nowrap" class="p1ft00">MS</p>
+            <p style="position:absolute;top:301px;left:1072px;white-space:nowrap" class="p1ft00">MT</p>
+            <p style="position:absolute;top:331px;left:67px;white-space:nowrap" class="p1ft00">NC</p>
+            <p style="position:absolute;top:331px;left:151px;white-space:nowrap" class="p1ft00">ND</p>
+            <p style="position:absolute;top:331px;left:234px;white-space:nowrap" class="p1ft00">NE</p>
+            <p style="position:absolute;top:331px;left:318px;white-space:nowrap" class="p1ft00">NH</p>
+            <p style="position:absolute;top:331px;left:402px;white-space:nowrap" class="p1ft00">NJ</p>
+            <p style="position:absolute;top:331px;left:485px;white-space:nowrap" class="p1ft00">NM</p>
+            <p style="position:absolute;top:330px;left:569px;white-space:nowrap" class="p1ft00">NV</p>
+            <p style="position:absolute;top:330px;left:653px;white-space:nowrap" class="p1ft00">NY&#160;</p>
+            <p style="position:absolute;top:330px;left:737px;white-space:nowrap" class="p1ft00">OH</p>
+            <p style="position:absolute;top:330px;left:820px;white-space:nowrap" class="p1ft00">OK</p>
+            <p style="position:absolute;top:330px;left:904px;white-space:nowrap" class="p1ft00">OR</p>
+            <p style="position:absolute;top:330px;left:988px;white-space:nowrap" class="p1ft00">RI</p>
+            <p style="position:absolute;top:330px;left:1072px;white-space:nowrap" class="p1ft00">SC</p>
+            <p style="position:absolute;top:360px;left:67px;white-space:nowrap" class="p1ft00">SD</p>
+            <p style="position:absolute;top:360px;left:151px;white-space:nowrap" class="p1ft00">TN</p>
+            <p style="position:absolute;top:360px;left:234px;white-space:nowrap" class="p1ft00">TX</p>
+            <p style="position:absolute;top:360px;left:318px;white-space:nowrap" class="p1ft00">UT</p>
+            <p style="position:absolute;top:360px;left:402px;white-space:nowrap" class="p1ft00">VA</p>
+            <p style="position:absolute;top:360px;left:485px;white-space:nowrap" class="p1ft00">VT</p>
+            <p style="position:absolute;top:360px;left:569px;white-space:nowrap" class="p1ft00">WA</p>
+            <p style="position:absolute;top:360px;left:653px;white-space:nowrap" class="p1ft00">WI</p>
+            <p style="position:absolute;top:360px;left:737px;white-space:nowrap" class="p1ft00">WV</p>
+            <p style="position:absolute;top:360px;left:820px;white-space:nowrap" class="p1ft00">WY</p>
+            <p style="position:absolute;top:360px;left:904px;white-space:nowrap" class="p1ft00">AB</p>
+            <p style="position:absolute;top:360px;left:988px;white-space:nowrap" class="p1ft00">BC</p>
+            <p style="position:absolute;top:360px;left:1072px;white-space:nowrap" class="p1ft00">MB</p>
+            <p style="position:absolute;top:390px;left:67px;white-space:nowrap" class="p1ft00">NB</p>
+            <p style="position:absolute;top:390px;left:151px;white-space:nowrap" class="p1ft00">NF</p>
+            <p style="position:absolute;top:390px;left:234px;white-space:nowrap" class="p1ft00">NS</p>
+            <p style="position:absolute;top:390px;left:318px;white-space:nowrap" class="p1ft00">ON</p>
+            <p style="position:absolute;top:390px;left:402px;white-space:nowrap" class="p1ft00">PE</p>
+            <p style="position:absolute;top:390px;left:485px;white-space:nowrap" class="p1ft00">QC</p>
+            <p style="position:absolute;top:390px;left:569px;white-space:nowrap" class="p1ft00">SK</p>
+            <p style="position:absolute;top:822px;left:70px;white-space:nowrap;font-size:10px" class="p1ft00">I&#160;acknowledge&#160;that&#160;I&#160;may&#160;lose&#160;my&#160;operating&#160;privilege&#160;or&#160;vehicle&#160;registration&#160;for&#160;failure&#160;to&#160;maintain&#160;financial&#160;responsibility&#160;on&#160;the&#160;currently&#160;registered&#160;vehicle(s)&#160;for&#160;the&#160;period&#160;of&#160;registration.&#160;My&#160;signature&#160;attests&#160;to&#160;knowledge&#160;of&#160;all&#160;applicable&#160;state&#160;and</p>
+            <p style="position:absolute;top:833px;left:70px;white-space:nowrap;font-size:10px" class="p1ft00">federal&#160;motor&#160;carrier&#160;laws,&#160;regulations&#160;and&#160;that&#160;the&#160;vehicle(s)&#160;has/have&#160;a&#160;current&#160;valid&#160;safety&#160;inspection.</p>
+            <p style="position:absolute;top:857px;left:71px;white-space:nowrap;font-size:10px;" class="p1ft00">By&#160;_______________________________________________________&#160;By&#160;____________________________________________________&#160;Title&#160;____________________________________________________&#160;&#160;&#160;Date&#160;______________________________________</p>
+            <p style="position:absolute;top:870px;left:160px;white-space:nowrap" class="p1ft03">Owner&#160;or&#160;Authorized&#160;Representative</p>
+            <p style="position:absolute;top:870px;left:482px;white-space:nowrap" class="p1ft03">Printed&#160;Name</p>
+            <p style="position:absolute;top:25px;left:37px;white-space:nowrap" class="p1ft04">MV-550&#160;(4-15)</p>
+            <p style="position:absolute;top:51px;left:345px;white-space:nowrap" class="p1ft05"><b>APPORTIONED&#160;REGISTRATION</b></p>
+            <p style="position:absolute;top:76px;left:345px;white-space:nowrap" class="p1ft05"><b>APPLICATION&#160;-&#160;SCHEDULE&#160;A</b></p>
+            <p style="position:absolute;top:89px;left:864px;white-space:nowrap;text-align:center;" class="p1ft06"><b>For&#160;Department&#160;Use&#160;Only</b><br>Bureau&#160;of&#160;Motor&#160;Vehicles&#160;•&#160;Commercial&#160;Registration&#160;Section<br>P.&#160;O.&#160;Box&#160;68286&#160;•&#160;Harrisburg,&#160;PA&#160;17106-8286</p>
+            <p style="position:absolute;top:107px;left:36px;white-space:nowrap" class="p1ft07"><b>Check&#160;One:&#160;</b>Merge&#160;Fleets&#160;&#160;&#160;<input type="radio" name="mergeFleets" value="true">&#160;<b>Yes&#160;</b><input type="radio" name="mergeFleets" value="true">&#160;<b>No&#160;</b>Identify&#160;Fleet&#160;Numbers&#160;to&#160;Merge:&#160;</p>
+            <p style="position:absolute;top:112px;left:455px;white-space:nowrap" class="p1ft07"><input type="text" value="" style="width:30px;" name="merge-fleet-id-1"></p>
+            <p style="position:absolute;top:112px;left:495px;white-space:nowrap" class="p1ft07"><input type="text" name="merge-fleet-id-2" value="" style="width:30px;"></p>
+            <p style="position:absolute;top:112px;left:535px;white-space:nowrap" class="p1ft07"><input type="text" name="merge-fleet-id-3" value="" style="width:30px;"></p>
+            <p style="position:absolute;top:112px;left:575px;white-space:nowrap" class="p1ft07"><input type="text" value="" style="width:30px;" name="merge-fleet-id-4"></p>
+            <p style="position:absolute;top:112px;left:615px;white-space:nowrap" class="p1ft07"><input type="text" value="" style="width:30px;" name="merge-fleet-id-5"></p>
+            <p style="position:absolute;top:248px;left:44px;white-space:nowrap" class="p1ft02"><b>B</b></p>
+            <p style="position:absolute;top:420px;left:44px;white-space:nowrap" class="p1ft02"><b>C</b></p>
+            <p style="position:absolute;top:740px;left:44px;white-space:nowrap" class="p1ft02"><b>D</b></p>
+            <p style="position:absolute;top:821px;left:46px;white-space:nowrap" class="p1ft02"><b>E</b></p>
+            <p style="position:absolute;top:137px;left:44px;white-space:nowrap" class="p1ft02"><b>A</b></p>
+            <p style="position:absolute;top:519px;left:960px;white-space:nowrap" class="p1ft01">YES</p>
+            <p style="position:absolute;top:420px;left:68px;white-space:nowrap" class="p1ft02"><b>Vehicle&#160;Additions</b></p>
+            <p style="position:absolute;top:746px;left:535px;white-space:nowrap;text-align:center" class="p1ft09"><b>Number&#160;of&#160;duplicate&#160;cab <br>cards&#160;for&#160;each&#160;vehicle <br>in&#160;the&#160;fleet:</b></p>
+            <p style="position:absolute;top:745px;left:835px;white-space:nowrap" class="p1ft06"><b>*&#160;&#160;BODY&#160;TYPE</b></p>
+            <p style="position:absolute;top:762px;left:846px;white-space:nowrap" class="p1ft06"><b>TR&#160;</b>–&#160;Tractor&#160;</p>
+            <p style="position:absolute;top:774px;left:846px;white-space:nowrap" class="p1ft06"><b>TK&#160;</b>–&#160;Truck&#160;(Single)&#160;</p>
+            <p style="position:absolute;top:787px;left:846px;white-space:nowrap" class="p1ft06"><b>BS&#160;</b>–&#160;Bus</p>
+            <p style="position:absolute;top:746px;left:651px;white-space:nowrap" class="p1ft00">Exempt&#160;Commodity:</p>
+            <p style="position:absolute;top:745px;left:1021px;white-space:nowrap" class="p1ft06"><b>**&#160;FUEL</b></p>
+            <p style="position:absolute;top:762px;left:970px;white-space:nowrap" class="p1ft06"><b>D&#160;</b>–&#160;Diesel</p>
+            <p style="position:absolute;top:775px;left:970px;white-space:nowrap" class="p1ft06"><b>G&#160;</b>–&#160;Gas</p>
+            <p style="position:absolute;top:787px;left:970px;white-space:nowrap" class="p1ft06"><b>H&#160;</b>–&#160;Hybrid</p>
+            <p style="position:absolute;top:762px;left:1048px;white-space:nowrap" class="p1ft06"><b>N&#160;</b>–&#160;Natural&#160;Gas</p>
+            <p style="position:absolute;top:775px;left:1048px;white-space:nowrap" class="p1ft06"><b>P&#160;</b>–&#160;Propane</p>
+            <p style="position:absolute;top:787px;left:1048px;white-space:nowrap" class="p1ft06"><b>O&#160;</b>–&#160;Other</p>
+            <p style="position:absolute;top:519px;left:854px;white-space:nowrap" class="p1ft01">YES</p>
+            <p style="position:absolute;top:666px;left:854px;white-space:nowrap" class="p1ft01">YES</p>
+            <p style="position:absolute;top:519px;left:899px;white-space:nowrap" class="p1ft01">NO</p>
+            <p style="position:absolute;top:666px;left:899px;white-space:nowrap" class="p1ft01">NO</p>
+            <p style="position:absolute;top:566px;left:854px;white-space:nowrap" class="p1ft01">YES</p>
+            <p style="position:absolute;top:566px;left:899px;white-space:nowrap" class="p1ft01">NO</p>
+            <p style="position:absolute;top:593px;left:120px;white-space:nowrap" class="p1ft01">Title&#160;Number</p>
+            <p style="position:absolute;top:593px;left:295px;white-space:nowrap" class="p1ft01">Vehicle&#160;Identification&#160;Number</p>
+            <p style="position:absolute;top:593px;left:495px;white-space:nowrap" class="p1ft01">Equipment&#160;Number</p>
+            <p style="position:absolute;top:593px;left:600px;white-space:nowrap" class="p1ft01">Year</p>
+            <p style="position:absolute;top:593px;left:669px;white-space:nowrap" class="p1ft01">Make</p>
+            <p style="position:absolute;top:593px;left:760px;white-space:nowrap" class="p1ft01">Body&#160;Type*</p>
+            <p style="position:absolute;top:593px;left:865px;white-space:nowrap" class="p1ft01">Axles</p>
+            <p style="position:absolute;top:593px;left:935px;white-space:nowrap" class="p1ft01">Seats</p>
+            <p style="position:absolute;top:593px;left:977px;white-space:nowrap" class="p1ft01">Fuel**</p>
+            <p style="position:absolute;top:593px;left:1050px;white-space:nowrap" class="p1ft01">Unladen&#160;Weight</p>
+            <p style="position:absolute;top:639px;left:100px;white-space:nowrap" class="p1ft01">Gross&#160;Vehicle&#160;Weight</p>
+            <p style="position:absolute;top:639px;left:250px;white-space:nowrap" class="p1ft01">Gross&#160;Combination&#160;Weight</p>
+            <p style="position:absolute;top:639px;left:395px;white-space:nowrap" class="p1ft01">Purchase&#160;Price</p>
+            <p style="position:absolute;top:639px;left:505px;white-space:nowrap" class="p1ft01">Purchase&#160;Date</p>
+            <p style="position:absolute;top:639px;left:610px;white-space:nowrap" class="p1ft01">Factory&#160;Price</p>
+            <p style="position:absolute;top:639px;left:700px;white-space:nowrap" class="p1ft01">USDOT&#160;#</p>
+            <p style="position:absolute;top:639px;left:780px;white-space:nowrap" class="p1ft01">TIN/EIN</p>
+            <p style="position:absolute;top:639px;left:850px;white-space:nowrap" class="p1ft01">UT&#160;Spec&#160;Truck</p>
+            <p style="position:absolute;top:639px;left:950px;white-space:nowrap" class="p1ft01">CO&#160;Miles</p>
+            <p style="position:absolute;top:639px;left:1030px;white-space:nowrap" class="p1ft01">PA&#160;Registration&#160;Plate&#160;Number</p>
+            <p style="position:absolute;top:666px;left:960px;white-space:nowrap" class="p1ft01">YES</p>
+            <p style="position:absolute;top:710px;left:854px;white-space:nowrap" class="p1ft01">YES</p>
+            <p style="position:absolute;top:710px;left:898px;white-space:nowrap" class="p1ft01">NO</p>
+            <p style="position:absolute;top:166px;left:68px;white-space:nowrap" class="p1ft010"><input type="text" style="width:110px;" name="applicant-ein" value="{{ .company.EINNum }}"></p>
+            <p style="position:absolute;top:166px;left:191px;white-space:nowrap" class="p1ft010"><input type="text" style="width:345px;" name="applicant-name" value="{{ .company.Name }}"></p>
+            <p style="position:absolute;top:166px;left:552px;white-space:nowrap" class="p1ft010"><input type="text" style="width:259px;" name="applicant-dba" value="{{ .company.DBA }}"></p>
+            <p style="position:absolute;top:166px;left:824px;white-space:nowrap" class="p1ft010">ADAM GALANTE</p>
+            <p style="position:absolute;top:195px;left:68px;white-space:nowrap" class="p1ft011"><input type="text" name="usdot-number" style="width:110px;" value="{{ .company.DOTNum }}"></p>
+            <p style="position:absolute;top:195px;left:191px;white-space:nowrap" class="p1ft011"><input type="text" style="width:298px;" name="applicant-physical-address-street" value="{{ .company.PhysicalAddress.Street }}"></p>
+            <p style="position:absolute;top:198px;left:824px;white-space:nowrap" class="p1ft011">ADAM@CNSPROTECTS.COM</p>
+            <p style="position:absolute;top:223px;left:68px;white-space:nowrap" class="p1ft011"><input type="text" name="applicant-account-number" style="width:110px;" value="{{ .company.IRPNum }}"></p>
+            <p style="position:absolute;top:223px;left:190px;white-space:nowrap" class="p1ft011"><input type="text" style="width:88px;" name="applicant-physical-address-city" value="{{ .company.PhysicalAddress.City }}"></p>
+            <p style="position:absolute;top:223px;left:500px;white-space:nowrap" class="p1ft011"><input type="text" style="width:100px;" name="applicant-mailing-address-city" value="{{ .company.MailingAddress.City }}"></p>
+            <p style="position:absolute;top:223px;left:285px;white-space:nowrap" class="p1ft011"><input type="text" name="applicant-physical-address-county" style="width:88px;" value="{{ .company.PhysicalAddress.County }}"></p>
+            <p style="position:absolute;top:223px;left:610px;white-space:nowrap" class="p1ft011"><input type="text" style="width:88px;" name="applicant-mailing-address-county" value="{{ .company.MailingAddress.County }}"></p>
+            <p style="position:absolute;top:223px;left:380px;white-space:nowrap" class="p1ft011"><input type="text" name="applicant-physical-address-state" style="width:30px;" value="{{ .company.PhysicalAddress.State }}"></p>
+            <p style="position:absolute;top:223px;left:707px;white-space:nowrap" class="p1ft011"><input type="text" name="applicant-mailing-address-state" style="width:30px;" value="{{ .company.MailingAddress.State }}"></p>
+            <p style="position:absolute;top:223px;left:420px;white-space:nowrap" class="p1ft011"><input type="text" style="width:70px;" name="applicant-physical-address-zip" value="{{ .company.PhysicalAddress.Zip }}"></p>
+            <p style="position:absolute;top:223px;left:743px;white-space:nowrap" class="p1ft011"><input type="text" style="width:70px;" name="applicant-mailing-address-zip" value="{{ .company.MailingAddress.Zip }}"></p>
+            <p style="position:absolute;top:223px;left:823px;white-space:nowrap" class="p1ft011"><input type="text" name="applicant-registration-year" style="width:100px;"></p>
+            <p style="position:absolute;top:195px;left:503px;white-space:nowrap" class="p1ft011"><input type="text" name="applicant-mailing-address-street" style="width:308px;" value="{{ .company.MailingAddress.Street }}"></p>
+            <p style="position:absolute;top:226px;left:934px;white-space:nowrap" class="p1ft011">7176250280</p>
+            <p style="position:absolute;top:226px;left:1048px;white-space:nowrap" class="p1ft010">8883392490</p>
+            <div id="weights">
+                <p style="position:absolute;top:278px;left:65px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-pa" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:65px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-il" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:65px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-nc" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:65px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-sd" style="width:75px"></p>
+                <p style="position:absolute;top:395px;left:65px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-nb" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:150px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-al" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:150px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-in" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:150px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-nd" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:150px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-tn" style="width:75px"></p>
+                <p style="position:absolute;top:395px;left:150px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-nf" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:233px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ar" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:233px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ks" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:233px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ne" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:233px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-tx" style="width:75px"></p>
+                <p style="position:absolute;top:395px;left:233px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ns" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:316px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-az" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:316px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-nh" style="width:75px"></p>
+                <p style="position:absolute;top:395px;left:316px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-on" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:316px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ut" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:316px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ky" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:400px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ca" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:400px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-la" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:400px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-nj" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:400px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-va" style="width:75px"></p>
+                <p style="position:absolute;top:395px;left:400px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-pe" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:485px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-co" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:485px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ma" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:485px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-nm" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:485px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-vt" style="width:75px"></p>
+                <p style="position:absolute;top:395px;left:485px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-qc" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:568px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ct" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:568px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-md" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:568px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-nv" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:568px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-wa" style="width:75px"></p>
+                <p style="position:absolute;top:395px;left:568px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ne" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:652px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-dc" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:652px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-me" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:652px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ny" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:652px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-wi" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:736px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-de" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:736px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-mi" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:736px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-oh" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:736px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-wv" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:820px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-fl" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:820px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-mn" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:820px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ok" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:820px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-wy" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:904px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ga" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:904px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-mo" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:904px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-or" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:904px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ab" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:988px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ia" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:988px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ms" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:988px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-ri" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:988px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-bc" style="width:75px"></p>
+                <p style="position:absolute;top:278px;left:1072px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-id" style="width:75px"></p>
+                <p style="position:absolute;top:308px;left:1072px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-mt" style="width:75px"></p>
+                <p style="position:absolute;top:338px;left:1072px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-sc" style="width:75px"></p>
+                <p style="position:absolute;top:368px;left:1072px;white-space:nowrap" class="p1ft010"><input type="text" name="weight-mb" style="width:75px"></p>
+            </div>
+
+            <div id="addition-1">
+                <p style="position:absolute;top:468px;left:68px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-title-1"  style="width:145px;"></p>
+                <p style="position:absolute;top:468px;left:225px;white-space:nowrap" class="p1ft011"><input type="text" style="width:235px;" name="addition-vin-1" ></p>
+                <p style="position:absolute;top:468px;left:475px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-equipment-number-1" style="width:100px;" ></p>
+                <p style="position:absolute;top:468px;left:585px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-year-1" style="width:48px;" ></p>
+                <p style="position:absolute;top:468px;left:643px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-make-1" style="width:77px;" ></p>
+                <p style="position:absolute;top:468px;left:730px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-body-type-1" style="width:95px;" ></p>
+                <p style="position:absolute;top:468px;left:835px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-axles-1" style="width:80px;" ></p>
+                <p style="position:absolute;top:468px;left:925px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-seats-1" style="width:35px;"></p>
+                <p style="position:absolute;top:468px;left:975px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-fuel-1" style="width:30px;" ></p>
+                <p style="position:absolute;top:468px;left:1015px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-unladen-weight-1" style="width:128px;" ></p>
+                <p style="position:absolute;top:515px;left:68px;white-space:nowrap" class="p1ft011"><input type="text" style="width:145px;" name="addition-gross-vehicle-weight-1" ></p>
+                <p style="position:absolute;top:515px;left:225px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-gross-combination-weight-1" style="width:135px;" ></p>
+                <p style="position:absolute;top:515px;left:370px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-purchase-price-1"  style="width:95px;"></p>
+                <p style="position:absolute;top:515px;left:475px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-purchase-date-1" style="width:100px;" ></p>
+                <p style="position:absolute;top:515px;left:585px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-factory-price-1" style="width:85px;"></p>
+                <p style="position:absolute;top:516px;left:680px;white-space:nowrap" class="p1ft011"><input type="text" style="width:75px;" name="addition-usdot-1" ></p>
+                <p style="position:absolute;top:516px;left:765px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-ein-1"  style="width:60px;"></p>
+                <p style="position:absolute;top:515px;left:1015px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-plate-number-1" style="width:128px;" ></p>
+                <p style="position:absolute;top:565px;left:68px;white-space:nowrap" class="p1ft010"><input type="text" name="addition-owner-1" value="" style="width:508px;"></p>
+                <p style="position:absolute;top:513px;left:940px;white-space:nowrap" class="p1ft04"><input type="checkbox" name="addition-coMiles-1"></p>
+                <p style="position:absolute;top:514px;left:835px;white-space:nowrap" class="p1ft04"><input type="radio" name="addition-utSpec-1" value="true"></p>
+                <p style="position:absolute;top:513px;left:880px;white-space:nowrap" class="p1ft04"><input type="radio" name="addition-utSpec-1" value="false"></p>
+                <p style="position:absolute;top:561px;left:835px;white-space:nowrap" class="p1ft04"><input type="radio" name="addition-safetyChange-1" value="true"></p>
+                <p style="position:absolute;top:561px;left:880px;white-space:nowrap" class="p1ft04"><input type="radio" name="addition-safetyChange-1" value="false"></p>
+            </div>
+
+            <div id="addition-2">
+                <p style="position:absolute;top:613px;left:68px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-title-2" style="width:145px;"></p>
+                <p style="position:absolute;top:613px;left:223px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-vin-2" style="width:240px;"></p>
+                <p style="position:absolute;top:613px;left:475px;white-space:nowrap" class="p1ft011"><input type="text" style="width:100px;" name="addition-equipment-number-2"></p>
+                <p style="position:absolute;top:613px;left:585px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-year-2" style="width:48px;"></p>
+                <p style="position:absolute;top:613px;left:642px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-make-2" style="width:80px;"></p>
+                <p style="position:absolute;top:613px;left:732px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-body-type-2" style="width:95px;"></p>
+                <p style="position:absolute;top:613px;left:835px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-axles-2" style="width:80px;"></p>
+                <p style="position:absolute;top:613px;left:925px;white-space:nowrap" class="p1ft011"><input type="text" style="width:35px;" name="addition-seats-2"></p>
+                <p style="position:absolute;top:613px;left:975px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-fuel-2" style="width:30px;"></p>
+                <p style="position:absolute;top:613px;left:1015px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-unladen-weight-2" style="width:128px;"></p>
+                <p style="position:absolute;top:663px;left:68px;white-space:nowrap" class="p1ft011"><input type="text" style="width:145px;" name="addition-gross-vehicle-weight-2"></p>
+                <p style="position:absolute;top:663px;left:225px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-gross-combination-weight-2" style="width:135px;"></p>
+                <p style="position:absolute;top:663px;left:475px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-purchase-date-2" style="width:100px;"></p>
+                <p style="position:absolute;top:663px;left:585px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-factory-price-2" style="width:85px;"></p>
+                <p style="position:absolute;top:663px;left:680px;white-space:nowrap" class="p1ft011"><input type="text" style="width:75px;" name="addition-usdot-2"></p>
+                <p style="position:absolute;top:663px;left:765px;white-space:nowrap" class="p1ft011"><input type="text" style="width:60px;" name="addition-ein-2"></p>
+                <p style="position:absolute;top:663px;left:370px;white-space:nowrap" class="p1ft011"><input type="text" style="width:95px;" name="addition-purchase-price-2"></p>
+                <p style="position:absolute;top:663px;left:1015px;white-space:nowrap" class="p1ft011"><input type="text" name="addition-plate-number-2" style="width:128px;"></p>
+                <p style="position:absolute;top:712px;left:68px;white-space:nowrap" class="p1ft010"><input type="text" name="addition-owner-2" value="" style="width:508px;"></p>
+                <p style="position:absolute;top:661px;left:940px;white-space:nowrap" class="p1ft04"><input type="checkbox" name="addition-coMiles-2"></p>
+                <p style="position:absolute;top:661px;left:835px;white-space:nowrap" class="p1ft04"><input type="radio" name="addition-utSpec-2" value="true"></p>
+                <p style="position:absolute;top:661px;left:880px;white-space:nowrap" class="p1ft04"><input type="radio" name="addition-utSpec-2" value="false"></p>
+                <p style="position:absolute;top:705px;left:835px;white-space:nowrap" class="p1ft04"><input type="radio" name="addition-safetyChange-2" value="true"></p>
+                <p style="position:absolute;top:705px;left:880px;white-space:nowrap" class="p1ft04"><input type="radio" name="addition-safetyChange-2" value="false"></p>
+            </div>
+
+            <p style="position:absolute;top:615px;left:901px;white-space:nowrap" class="p1ft010">&#160;</p>
+            <p style="position:absolute;top:662px;left:474px;white-space:nowrap" class="p1ft011">&#160; &#160;&#160;</p>
+            <p style="position:absolute;top:755px;left:176px;white-space:nowrap" class="p1ft011"><input type="text" name="insurance-company-name" style="width:320px;" value="{{ .company.InsuranceCompany }}"></p>
+            <p style="position:absolute;top:795px;left:70px;white-space:nowrap" class="p1ft011"><input type="text"  style="width:165px;" name="policy-number" value="{{ .company.InsurancePolicyNum }}"></p>
+            <p style="position:absolute;top:755px;left:70px;white-space:nowrap" class="p1ft011"><input type="text"   name="naic-number" style="width:95px;" value="{{ .company.InsuranceNaic }}"></p>
+            <p style="position:absolute;top:797px;left:246px;white-space:nowrap" class="p1ft011"><input type="text" name="effective-date"  style="width:120px;" value="{{ .company.InsuranceEffectiveDate }}"></p>
+            <p style="position:absolute;top:797px;left:379px;white-space:nowrap" class="p1ft011"><input type="text" name="insurance-expiration-date" style="width:120px;" value="{{ .company.InsuranceExpirationDate }}"></p>
+            <p style="position:absolute;top:785px;left:510px;white-space:nowrap" class="p1ft011"><input type="text" name="duplicate-cab-cards" style="width:120px;"></p>
+            <p style="position:absolute;top:848px;left:380px;white-space:nowrap" class="p1ft011"><input type="text" name="signature-name" style="width:250px;"></p>
+            <p style="position:absolute;top:848px;left:665px;white-space:nowrap" class="p1ft011"><input type="text" style="width:250px;" name="signature-title"></p>
+            <p style="position:absolute;top:848px;left:955px;white-space:nowrap" class="p1ft011"><input type="text" name="signature-date" style="width:175px;"></p>
+            <p style="position:absolute;top:760px;left:647px;white-space:nowrap" class="p1ft011"><textarea name="exempt-commodity" rows="3" cols="19" style="resize:none;"></textarea></p>
+
+        </div>
+        <br>
+        <div id="page2-div" class="page" style="position:relative;width:1188px;height:918px;margin:0 auto;background-color:#ffffff;">
+            <p style="position:absolute;top:21px;left:528px;white-space:nowrap" class="p2ft00"><b>INSTRUCTIONS</b></p>
+            <p style="position:absolute;top:51px;left:34px;white-space:nowrap" class="p2ft01"><b>Merge&#160;Fleets:&#160;</b>If&#160;you&#160;have&#160;multiple&#160;fleets&#160;and&#160;wish&#160;to&#160;merge&#160;them&#160;into&#160;one&#160;fleet,&#160;check&#160;the&#160;appropriate&#160;box.&#160;Fleets&#160;may&#160;only&#160;be&#160;merged&#160;at&#160;renewal.&#160;Indicate&#160;the&#160;fleet&#160;numbers&#160;you&#160;wish&#160;to <br>merge.</p>
+            <p style="position:absolute;top:100px;left:34px;white-space:nowrap" class="p2ft02"><b>Section&#160;A</b> <br>Enter&#160;the&#160;TIN/EIN,&#160;registrant&#160;name,&#160;contact&#160;name,&#160;USDOT&#160;number,&#160;business&#160;address&#160;and&#160;mailing&#160;address&#160;(If&#160;the&#160;mailing&#160;address&#160;is&#160;different&#160;than&#160;the&#160;business&#160;address.&#160;Post&#160;office&#160;box <br>addresses&#160;may&#160;only&#160;be&#160;used&#160;in&#160;conjunction&#160;with&#160;a&#160;bonafide&#160;numbered&#160;street&#160;address&#160;and&#160;may&#160;not&#160;be&#160;used&#160;alone),&#160;e-mail&#160;address,&#160;account&#160;number,&#160;registration&#160;year,&#160;telephone&#160;number <br>and&#160;fax&#160;number.</p>
+            <p style="position:absolute;top:160px;left:34px;white-space:nowrap" class="p2ft05"><br />Under&#160;the&#160;Full&#160;Reciprocity&#160;Plan&#160;(FRP)&#160;effective&#160;January&#160;1,&#160;2015,&#160;there&#160;is&#160;no&#160;longer&#160;a&#160;need&#160;to&#160;segment&#160;vehicles&#160;by&#160;the&#160;jurisdiction&#160;in&#160;which&#160;they&#160;travel.&#160;If&#160;you&#160;have&#160;multiple&#160;fleets&#160;and&#160;wish<br>to&#160;combine&#160;vehicles&#160;into&#160;one&#160;fleet,&#160;please&#160;check&#160;the&#160;appropriate&#160;boxes&#160;for&#160;merging&#160;accounts&#160;at&#160;the&#160;top&#160;of&#160;the&#160;page.</p>
+            <p style="position:absolute;top:202px;left:34px;white-space:nowrap" class="p2ft05"><br /><b>Section&#160;B&#160;</b> <br>List&#160;the&#160;maximum&#160;vehicle&#160;weight&#160;at&#160;which&#160;you&#160;plan&#160;to&#160;operate&#160;for&#160;each&#160;jurisdiction.</p>
+            <p style="position:absolute;top:246px;left:34px;white-space:nowrap" class="p2ft05"><br /><b>Section&#160;C</b></p>
+            <p style="position:absolute;top:279px;left:34px;white-space:nowrap" class="p2ft02">List&#160;the&#160;vehicle&#160;information&#160;where&#160;appropriate.&#160;Up&#160;to&#160;two&#160;vehicles&#160;may&#160;be&#160;listed&#160;in&#160;this&#160;section.&#160;If&#160;the&#160;vehicle&#160;is&#160;leased,&#160;the&#160;lessee&#160;USDOT&#160;and&#160;TIN/EIN&#160;numbers&#160;are&#160;required&#160;along&#160;with&#160;a</p>
+            <p style="position:absolute;top:297px;left:34px;white-space:nowrap" class="p2ft02">copy&#160;of&#160;the&#160;lease.&#160;<b>NOTE:&#160;</b>If&#160;the&#160;vehicle&#160;has&#160;a&#160;current&#160;Pennsylvania&#160;registration,&#160;enter&#160;in&#160;the&#160;registration&#160;plate&#160;number.&#160;The&#160;registration&#160;plate&#160;must&#160;be&#160;submitted&#160;with&#160;the&#160;application&#160;to <br>receive&#160;credit&#160;for&#160;the&#160;apportioned&#160;plate.</p>
+            <p style="position:absolute;top:325px;left:34px;white-space:nowrap" class="p2ft05"><br /><b>NOTE:&#160;</b>For&#160;body&#160;type,&#160;use&#160;one&#160;of&#160;the&#160;following:&#160;tractor&#160;(TR),&#160;single&#160;truck&#160;(TK)&#160;or&#160;bus&#160;(BS).&#160;If&#160;a&#160;truck,&#160;list&#160;total&#160;number&#160;of&#160;axles&#160;on&#160;the&#160;truck&#160;including&#160;trailer&#160;axles&#160;if&#160;requesting&#160;combination</p>
+            <p style="position:absolute;top:359px;left:34px;white-space:nowrap" class="p2ft02">weight.&#160;For&#160;tractor,&#160;list&#160;the&#160;number&#160;of&#160;axles&#160;on&#160;the&#160;tractor&#160;and&#160;the&#160;total&#160;number&#160;of&#160;axles&#160;for&#160;the&#160;tractor&#160;and&#160;trailer.&#160;Example:&#160;3/5&#160;means&#160;3&#160;axles&#160;for&#160;the&#160;tractor&#160;and&#160;5&#160;combined&#160;including&#160;the</p>
+            <p style="position:absolute;top:377px;left:34px;white-space:nowrap" class="p2ft02">trailer.&#160;If&#160;the&#160;vehicle&#160;is&#160;a&#160;bus,&#160;list&#160;seating&#160;capacity.&#160;Do&#160;not&#160;leave&#160;any&#160;information&#160;blank.&#160;</p>
+            <p style="position:absolute;top:402px;left:54px;white-space:nowrap" class="p2ft01"><b>Utah&#160;Truck&#160;Indicator&#160;(UT&#160;Spec&#160;Truck):&#160;</b>If&#160;the&#160;truck&#160;type&#160;entering&#160;the&#160;state&#160;of&#160;Utah&#160;is&#160;a&#160;cement&#160;pump,&#160;well&#160;boring&#160;unit,&#160;or&#160;crane,&#160;the&#160;Utah&#160;Special&#160;Truck&#160;block&#160;should&#160;be&#160;checked&#160;as <br>“Yes.”&#160;If&#160;this&#160;does&#160;not&#160;apply,&#160;check&#160;“No.”</p>
+            <p style="position:absolute;top:425px;left:54px;white-space:nowrap" class="p2ft05"><br /><b>Colorado&#160;Miles&#160;(CO&#160;Miles):&#160;</b>If&#160;the&#160;vehicle&#160;fleet&#160;operates&#160;more&#160;than&#160;10,000&#160;miles&#160;nationally&#160;per&#160;year,&#160;the&#160;box&#160;must&#160;be&#160;checked&#160;“Yes.”</p>
+            <p style="position:absolute;top:471px;left:34px;white-space:nowrap" class="p2ft01"><b>NOTE:&#160;</b>If&#160;the&#160;vehicle&#160;is&#160;leased&#160;to&#160;the&#160;applicant,&#160;you&#160;must&#160;identify&#160;the&#160;USDOT&#160;number&#160;and&#160;EIN/TIN&#160;of&#160;the&#160;motor&#160;carrier&#160;responsible&#160;for&#160;safety.&#160;Also,&#160;indicate&#160;if&#160;the&#160;motor&#160;carrier&#160;responsible <br>for&#160;safety&#160;will&#160;change&#160;during&#160;the&#160;registration&#160;year.</p>
+            <p style="position:absolute;top:499px;left:34px;white-space:nowrap" class="p2ft05"><br /><b>Section&#160;D</b></p>
+            <p style="position:absolute;top:533px;left:34px;white-space:nowrap" class="p2ft02">List&#160;the&#160;insurance&#160;company's&#160;name,&#160;NAIC&#160;#,&#160;policy&#160;number,&#160;effective&#160;date&#160;and&#160;expiration&#160;date&#160;of&#160;the&#160;policy.&#160;Indicate&#160;how&#160;many&#160;duplicate&#160;cab&#160;cards&#160;are&#160;needed&#160;if&#160;applicable.&#160;List&#160;exempt</p>
+            <p style="position:absolute;top:551px;left:34px;white-space:nowrap" class="p2ft05">commodities.&#160;<b>NOTE:&#160;</b>The&#160;insurance&#160;information&#160;listed&#160;can&#160;only&#160;be&#160;for&#160;full&#160;liability&#160;coverage.<br />An&#160;exempt&#160;for-hire&#160;motor&#160;carrier&#160;transports&#160;exempt&#160;(unregulated)&#160;property&#160;owned&#160;by&#160;others&#160;for&#160;compensation.&#160;The&#160;exempt&#160;commodities&#160;usually&#160;include&#160;unprocessed&#160;or&#160;unmanufactured</p>
+            <p style="position:absolute;top:594px;left:34px;white-space:nowrap" class="p2ft02">goods,&#160;fruits&#160;and&#160;vegetables,&#160;and&#160;other&#160;items&#160;of&#160;little&#160;or&#160;no&#160;value.&#160;You&#160;can&#160;find&#160;the&#160;list&#160;of&#160;exempt&#160;commodities&#160;on&#160;the&#160;FMCSA&#160;website&#160;at <br>http://www.fmcsa.dot.gov/registration/administrative-ruling-119.</p>
+            <p style="position:absolute;top:622px;left:34px;white-space:nowrap" class="p2ft05"><br /><b>Section&#160;E&#160;</b> <br>Owner(s)&#160;or&#160;authorized&#160;representative(s)&#160;must&#160;sign,&#160;date&#160;and&#160;list&#160;their&#160;title&#160;with&#160;the&#160;company.</p>
+            <p style="position:absolute;top:666px;left:34px;white-space:nowrap" class="p2ft05"><br /><b>NOTE:&#160;</b>Apportioned&#160;registration&#160;plates&#160;may&#160;be&#160;available&#160;as&#160;a&#160;personalized&#160;registration&#160;plate&#160;for&#160;vehicles&#160;with&#160;a&#160;registered&#160;gross&#160;weight&#160;up&#160;to&#160;<b>14,000&#160;lbs.&#160;</b>To&#160;check&#160;personalized&#160;registration</p>
+            <p style="position:absolute;top:699px;left:34px;white-space:nowrap" class="p2ft02">plate&#160;availability,&#160;visit&#160;PennDOT’s&#160;Driver&#160;and&#160;Vehicle&#160;Services&#160;website,&#160;www.dmv.pa.gov,&#160;and&#160;select&#160;the&#160;Personalized&#160;Registration&#160;Plate&#160;Availability&#160;link&#160;from&#160;the&#160;list&#160;of&#160;services&#160;under&#160;the</p>
+            <p style="position:absolute;top:717px;left:34px;white-space:nowrap" class="p2ft02">Online&#160;Driver&#160;and&#160;Vehicle&#160;Services&#160;heading.&#160;Should&#160;you&#160;choose&#160;to&#160;personalize&#160;your&#160;apportioned&#160;registration&#160;plate,&#160;please&#160;complete&#160;this&#160;application&#160;and&#160;attach&#160;a&#160;completed&#160;Form&#160;MV-904C,</p>
+            <p style="position:absolute;top:735px;left:34px;white-space:nowrap" class="p2ft02">&#34;Application&#160;for&#160;Personalized&#160;Commercial&#160;Registration&#160;Plate.&#34;&#160;The&#160;fee&#160;to&#160;personalize&#160;your&#160;registration&#160;plate&#160;is&#160;an&#160;additional&#160;$100,&#160;and&#160;the&#160;registration&#160;on&#160;your&#160;vehicle&#160;must&#160;be&#160;current&#160;in</p>
+            <p style="position:absolute;top:753px;left:34px;white-space:nowrap" class="p2ft02">order&#160;for&#160;PennDOT&#160;to&#160;process&#160;your&#160;request.&#160;<b>The&#160;additional&#160;$100&#160;fee&#160;covers&#160;the&#160;cost&#160;of&#160;your&#160;personalized&#160;registration&#160;plate&#160;order&#160;only&#160;and&#160;will&#160;not&#160;renew&#160;your&#160;vehicle's</b></p>
+            <p style="position:absolute;top:771px;left:34px;white-space:nowrap" class="p2ft01"><b>registration.&#160;</b>Payment&#160;is&#160;to&#160;be&#160;made&#160;by&#160;a&#160;separate&#160;check&#160;or&#160;money&#160;order&#160;payable&#160;to&#160;the&#160;Commonwealth&#160;of&#160;Pennsylvania.&#160;<b>PLEASE&#160;DO&#160;NOT&#160;SEND&#160;CASH.&#160;</b>Personalized&#160;registration</p>
+            <p style="position:absolute;top:789px;left:34px;white-space:nowrap" class="p2ft02">plates&#160;will&#160;not&#160;be&#160;reserved&#160;until&#160;PennDOT&#160;receives&#160;payment&#160;and&#160;a&#160;completed&#160;application,&#160;and&#160;approves&#160;your&#160;requested&#160;registration&#160;plate&#160;configuration&#160;[number(s)&#160;and/or&#160;letter(s)].&#160;Please</p>
+            <p style="position:absolute;top:807px;left:34px;white-space:nowrap" class="p2ft02">note&#160;that&#160;registration&#160;plate&#160;requests&#160;are&#160;processed&#160;on&#160;a&#160;first-come,&#160;first-served&#160;basis.&#160;Although&#160;a&#160;requested&#160;registration&#160;plate&#160;configuration&#160;may&#160;show&#160;as&#160;being&#160;available&#160;on&#160;the&#160;website,&#160;it</p>
+            <p style="position:absolute;top:825px;left:34px;white-space:nowrap" class="p2ft02">is&#160;possible&#160;that&#160;a&#160;request&#160;for&#160;the&#160;same&#160;registration&#160;plate&#160;configuration&#160;may&#160;have&#160;already&#160;been&#160;submitted&#160;by&#160;another&#160;customer&#160;and&#160;may&#160;not&#160;be&#160;available&#160;when&#160;making&#160;application.</p>
+            <p style="position:absolute;top:873px;left:300px;white-space:nowrap;text-align:center;" class="p2ft04"><b>Visit us at www.dmv.pa.gov or call us at:</b> <br> In state: 1-800-932-4600&#160;&#160;TDD: &#160;1-800-228-0676&#160;&#160;Out-of-State: 1-717-412-5300&#160;&#160;TDD Out-of-State: &#160;1-717-412-5380</p>
+        </div>
+        <div style="position:relative;width:1188px;margin:0 auto;">
+            {{ template "st-scripts.tmpl" . }}
+        </div>
+
+        {{ template "vehicle-weight.tmpl" . }}
+
+        <script type="text/javascript">
+            var vehicles = {{ if .vehicles }}{{ toJson .vehicles }}{{ else }}[]{{ end }};
+
+            $('select.addSelect').change(function() {
+                var num = $(this).attr('data-vehicle');
+                clearInputs('addition-' + num);
+                if (this.value === '') {
+                    return
+                }
+                var vIdx =+ this.value;
+                var vehicle = vehicles[vIdx];
+                addVehicle(vehicle, num);
+            });
+
+            function clearInputs(id) {
+                var inputs = $('div#' + id + ' input');
+                for (var i = 0; i < inputs.length; i++) {
+                    inputs[i].value = '';
+                }
+                $('div#' + id + ' input[type="radio"], div#' + id + ' input[type="checkbox"]').prop('checked', false)
+            }
+
+            function addVehicle(vehicle, num) {
+                $('input[name="addition-title-' + num + '"]').val(vehicle.title);
+                $('input[name="addition-vin-' + num + '"]').val(vehicle.vin);
+                $('input[name="addition-equipment-number-' + num + '"]').val(vehicle.unitNumber);
+                $('input[name="addition-year-' + num + '"]').val(vehicle.year);
+                $('input[name="addition-make-' + num + '"]').val(vehicle.make);
+                $('input[name="addition-body-type-' + num + '"]').val(vehicle.bodyType);
+                $('input[name="addition-axles-' + num + '"]').val(vehicle.axleAmount);
+                $('input[name="addition-fuel-' + num + '"]').val(vehicle.fuelType);
+                $('input[name="addition-unladen-weight-' + num + '"]').val(vehicle.unladenWeight);
+                $('input[name="addition-gross-vehicle-weight-' + num + '"]').val(vehicle.gvw);
+                $('input[name="addition-gross-combination-weight-' + num + '"]').val(vehicle.gcr);
+                $('input[name="addition-purchase-price-' + num + '"]').val(vehicle.purchasePrice);
+                $('input[name="addition-purchase-date-' + num + '"]').val(vehicle.purchaseDate);
+                $('input[name="addition-usdot-' + num + '"]').val('{{ .company.DOTNum }}');
+                $('input[name="addition-ein-' + num + '"]').val('{{ .company.EINNum }}');
+                $('input[name="addition-plate-number-' + num + '"]').val(vehicle.plateNum);
+                $('input[name="addition-owner-' + num + '"]').val(vehicle.owner);
+            }
+
+        </script>
+
+    </body>
+</html>

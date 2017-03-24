@@ -1,0 +1,82 @@
+
+aside.left-panel {
+    background-color: #015978
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.focus,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:hover,
+.btn-primary:hover,
+.btn-primary.active.focus,
+.btn-primary.active:focus,
+.btn-primary.active:hover,
+.btn-primary:active.focus,
+.btn-primary:active:focus,
+.btn-primary:active:hover,
+.open>.dropdown-toggle.btn-primary.focus,
+.open>.dropdown-toggle.btn-primary:focus,
+.open>.dropdown-toggle.btn-primary:hover {
+    background-color: #f58220;
+    border: 1px solid #f58220;
+}
+
+.btn-primary.disabled.focus,
+.btn-primary.disabled:focus,
+.btn-primary.disabled:hover,
+.btn-primary[disabled].focus,
+.btn-primary[disabled]:focus,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary.focus,
+fieldset[disabled] .btn-primary:focus,
+fieldset[disabled] .btn-primary:hover {
+    background-color: #f8ae6e;
+    border: 1px solid #f8ae6e;
+}
+
+.cr-styled input:checked + i {
+    border-color: #f58220;
+    color: #f58220;
+}
+
+.tabPane {
+    padding:30px;
+}
+
+textarea {
+    resize:none;
+}
+
+.navbar-toggle {
+    margin: 0;
+    display: block;
+    padding: 15px 25px;
+    float: inherit;
+}
+
+.navigation ul li a .nav-label {
+    vertical-align: inherit;
+}
+
+span.calander {
+    cursor: pointer;
+}
+
+a.return {
+    color: #f58220;
+    font-weight: 700;
+}
+
+a.return:focus, a.return:hover {
+    text-decoration: underline;
+}
+
+/*
+Blue : 015978
+orange : f58220
+*/

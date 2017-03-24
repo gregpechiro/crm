@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <style media="screen">
+            .panel {
+                border: 1px solid #ddd;
+            }
+            .violationTable {
+                margin-bottom: 0;
+            }
+            tr.singleHead th {
+                text-align: center;
+            }
+            .nav.nav-tabs+.tab-content, .tabs-vertical-env .tab-content {
+                margin: 0;
+                padding-bottom: 0;
+                padding-left: 0;
+                padding-right: 0;
+                padding-top: 10;
+            }
+            .violationTabs {
+                border-color: #ddd;
+                border-style: solid;
+                border-width: 0 1px 1px 1px;
+            }
+            .nav.nav-tabs>li>a.stat-tab {
+                padding: 15px 30px;
+                font-size: 16px;
+            }
+        </style>
+
+        <title>Customer Violations</title>
+    </head>
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Company: {{ .company.Name }}
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li><a href="/cns/company/{{ .company.Id }}">Customer Center</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/service">Service</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/vehicle">Vehicles</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/driver">Drivers</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/form">Forms</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/file">Files</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/notification">Notifications</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/feature">Features</a></li>
+                                    <li class="active"><a>Stats</a></li>
+                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                        <li><a href="/admin/company/{{ .company.Id }}/task/today">Tasks</a></li>
+                                    {{ end }}
+                                </ul>
+
+                                <div class="tabPane clearfix">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a class="tab stat-tab" href="">Violations</a></li>
+                                        <li><a class="tab stat-tab" href="/cns/company/{{ .company.Id }}/safer">Safer Table</a></li>
+                                    </ul>
+                                    <div class="profile-desk">
+                                        <h1 class="clearfix">
+                                            <div class="pull-right">
+                                                <small>Information as of: {{ .violations.LastUpdate }}</small>
+                                            </div>
+                                        </h1>
+                                        <div class="text-center ">
+
+                                            <ul class="nav nav-tabs nav-justified">
+                                                <li class="active">
+                                                    <a href="#unsafe-driving" data-toggle="tab" aria-expanded="true">
+                                                        Unsafe Driving
+                                                    </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="#hos-compliance" data-toggle="tab" aria-expanded="true">
+                                                        Hours of Service Compliance
+                                                    </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="#vehicle-maintenance" data-toggle="tab" aria-expanded="true">
+                                                        Vehicle Maintenance
+                                                    </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="#drugs-alcohol" data-toggle="tab" aria-expanded="false">
+                                                        Controlled Substances & Alcohol
+                                                    </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="#driver-fitness" data-toggle="tab" aria-expanded="false">
+                                                        Driver Fitness
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content">
+
+                                                <div class="tab-pane active" id="unsafe-driving">
+                                                    <table class="table violationTable">
+                                                        <tbody id="unsafeDriving"></tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="tab-pane" id="hos-compliance">
+                                                    <table class="table violationTable">
+                                                        <tbody id="hosCompliance"></tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="tab-pane" id="vehicle-maintenance">
+                                                    <table class="table violationTable">
+                                                        <tbody id="vehicleMaintenance"></tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="tab-pane" id="drugs-alcohol">
+                                                    <table class="table violationTable">
+                                                        <tbody id="controlledSubstances"></tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="tab-pane" id="driver-fitness">
+                                                    <table class="table violationTable">
+                                                        <tbody id="driverFitness"></tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+
+        <!-- Main Content Ends -->
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+            var violations = {{ toJson .violations }};
+
+            $(document).ready(function() {
+                /*if (!violations.cache) {
+                    parseViolations(violations);
+                }*/
+                setViolations(violations);
+            });
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var desc = $($(e.target).attr('href')).find('td.violdesc');
+                if (desc.width() > 350) {
+                    desc.addClass('col-xs-5');
+                }
+            });
+
+            /*function parseViolations(violations) {
+                var save = true;
+                var data = '';
+
+                for (var key in violations) {
+                    if (violations.hasOwnProperty(key) && key.indexOf('Body') !== -1 ) {
+                        try {
+                            data = decodeURIComponent(escape(atob(violations[key])));
+                        } catch(e) {
+                            console.log(e);
+                            save = false
+                            violations[key] = 'ERROR';
+                        }
+                        t = $(data).find('#ViolationSummary').find('table');
+                        var body = '';
+                        var head = '';
+
+                        if (t !== undefined && t !== '' ) {
+
+                            var hRows = t.find('tr.singleHead');
+                            for (var i = 0; i < hRows.length; i++) {
+                                head += hRows[i].outerHTML;
+                            }
+
+                            var bRows = t.find('tr.violSummary ');
+                            for (var i = 0; i < bRows.length; i++) {
+                                body += bRows[i].outerHTML;
+                            }
+
+                            if (head !== undefined && head !== '') {
+                                head = head.replace(/  /g, '');
+                                head = head.replace(/\n/g, '');
+                                head = head.replace(/\t/g, '');
+                            } else {
+                                head = '';
+                            }
+
+                            if (body !== undefined && body !== ''){
+                                body = body.replace(/  /g, '');
+                                body = body.replace(/\n/g, '');
+                                body = body.replace(/\t/g, '');
+                            } else {
+                                body = '';
+                            }
+
+                        }
+                        violations[key] = body;
+                        var headKey = key.replace("Body", "Head");
+                        violations[headKey] = head;
+
+                    }
+                }
+                if (JSON.stringify(violations).length > 8000) {
+                    console.log('too large to cache');
+                    console.log(JSON.stringify(violations).length);
+                    return
+                }
+
+                if (save) {
+                    console.log(JSON.stringify(violations).length);
+
+
+                    $.ajax({
+                        url: '/customer/{{ .company.Id }}/violation/rest',
+                        type: 'POST',
+                        data: violations,
+                        success: function() {
+                            console.log('success');
+                        },
+                        error: function(e) {
+                            console.log(e);
+                        }
+                    });
+                }
+            }*/
+
+            /*function setViolations(violations) {
+                for (var key in violations) {
+                    if (violations.hasOwnProperty(key) && key !== 'lastUpdate') {
+                        if (violations[key] === 'ERROR') {
+                            if (key.indexOf('Body') !== -1) {
+                                $('#' + key).html('<tr><td>Error retrieving violations</td></tr>');
+                            }
+                        } else if (violations[key] !== '' && violations[key] !== undefined) {
+                            $('#' + key).html(violations[key]);
+                            if (key.indexOf('Head') !== -1) {
+                                $('#' + key).addClass('violationHead');
+                            }
+                        } else {
+                            if (key.indexOf('Body') !== -1) {
+                                $('#' +key).html('<tr><td>No violations to display.</td></tr>');
+                            }
+                        }
+                    }
+                }
+            }*/
+
+            function setViolations(violations) {
+                for (var key in violations) {
+                    if (violations.hasOwnProperty(key) && key !== 'lastUpdate') {
+                        $('#' + key).html(violations[key]);
+                    }
+                }
+            }
+
+        </script>
+
+
+  </body>
+</html>

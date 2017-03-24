@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+    <head>
+        <title>MV-558</title>
+        {{ template "st-head.tmpl" . }}
+        <style type="text/css">
+            @media print {
+            input,
+            textarea {
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            }
+            }
+            input {
+            font-size: 10px;
+            }
+            p {
+            margin: 0;
+            padding: 0;
+            }
+            .p1ft00 {
+            font-size: 19px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft01 {
+            font-size: 10px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft02 {
+            font-size: 13px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft03 {
+            font-size: 11px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft04 {
+            font-size: 9px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft05 {
+            font-size: 9px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft06 {
+            font-size: 10px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft07 {
+            font-size: 7px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft08 {
+            font-size: 19px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft09 {
+            font-size: 8px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft010 {
+            font-size: 8px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft011 {
+            font-size: 29px;
+            font-family: Times;
+            color: #231f20;
+            -moz-transform: matrix( 0, -1, 1, 0, 0, 0);
+            -webkit-transform: matrix( 0, -1, 1, 0, 0, 0);
+            -o-transform: matrix( 0, -1, 1, 0, 0, 0);
+            -ms-transform: matrix( 0, -1, 1, 0, 0, 0);
+            -moz-transform-origin: left 75%;
+            -webkit-transform-origin: left 75%;
+            -o-transform-origin: left 75%;
+            -ms-transform-origin: left 75%;
+            }
+            .p1ft012 {
+            font-size: 6px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft013 {
+            font-size: 16px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft014 {
+            font-size: 8px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft015 {
+            font-size: 18px;
+            font-family: Helvetica;
+            color: #000000;
+            }
+            .p1ft016 {
+            font-size: 17px;
+            font-family: Helvetica;
+            color: #000000;
+            }
+            .p1ft017 {
+            font-size: 15px;
+            font-family: Helvetica;
+            color: #000000;
+            }
+            .p1ft018 {
+            font-size: 16px;
+            font-family: Helvetica;
+            color: #000000;
+            }
+            .p1ft019 {
+            font-size: 19px;
+            font-family: Helvetica;
+            color: #000000;
+            }
+            .p1ft020 {
+            font-size: 9px;
+            line-height: 19px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p1ft021 {
+            font-size: 8px;
+            line-height: 16px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p2ft01 {
+            font-size: 14px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p2ft02 {
+            font-size: 14px;
+            font-family: Times;
+            color: #231f20;
+            }
+            .p3ft00 {
+            font-size: 14px;
+            font-family: Times;
+            color: #231f20;
+            }
+</style>
+    </head>
+    <body bgcolor="#A0A0A0" vlink="blue" link="blue">
+        {{ $len := len .vehicles }}
+        <div id="page1-div" class="page" style="position:relative;width:918px;height:1300px;margin:0 auto; background-color:#ffffff;">
+            <img width="918" height="1188" src="/static/img/forms/mv-558001.png" alt="background image" />
+            <p style="position:absolute;top:657px;left:152px;white-space:nowrap" class="p1ft00"><input type="radio" name="replacement-reason" value="reason-lost"></p>
+            <p style="position:absolute;top:657px;left:217px;white-space:nowrap" class="p1ft00"><input type="radio" name="replacement-reason" value="reason-stolen"></p>
+            <p style="position:absolute;top:657px;left:292px;white-space:nowrap" class="p1ft00"><input type="radio" name="replacement-reason" value="reason-defaced"></p>
+            <p style="position:absolute;top:657px;left:369px;white-space:nowrap" class="p1ft00"><input type="radio" name="replacement-reason" value="reason-never-received"></p>
+            <p style="position:absolute;top:661px;left:80px;white-space:nowrap" class="p1ft01"><b>REASON:</b></p>
+            <p style="position:absolute;top:197px;left:44px;white-space:nowrap" class="p1ft02"><b>CHECK&#160;(</b>4<b>)&#160;PROPER&#160;BLOCK</b></p>
+            <p style="position:absolute;top:227px;left:76px;white-space:nowrap" class="p1ft020">Application&#160;for&#160;Duplicate&#160;Registration&#160;Card(s).&#160;Complete&#160;Sections&#160;A,&#160;B&#160;<b>and&#160;either&#160;</b>C&#160;or&#160;D.&#160;<br />Replacement&#160;of&#160;registration&#160;plate,&#160;renewal&#160;sticker&#160;or&#160;weight&#160;class&#160;sticker&#160;-&#160;Complete&#160;Sections&#160;A,&#160;B&#160;<b>and&#160;either&#160;</b>C&#160;or&#160;D.&#160;<b>NOTE:&#160;Section&#160;D&#160;must&#160;be&#160;completed</b></p>
+            <p style="position:absolute;top:260px;left:76px;white-space:nowrap" class="p1ft05"><b>for&#160;all&#160;replacement&#160;registration&#160;plate&#160;requests&#160;and&#160;all&#160;products&#160;that&#160;were&#160;not&#160;received&#160;in&#160;the&#160;mail&#160;within&#160;90&#160;days&#160;of&#160;original&#160;issuance&#160;date.&#160;Section&#160;D</b></p>
+            <p style="position:absolute;top:274px;left:76px;white-space:nowrap" class="p1ft05"><b>is&#160;not&#160;required&#160;to&#160;be&#160;completed&#160;when&#160;applying&#160;for&#160;a&#160;replacement&#160;renewal&#160;sticker&#160;or&#160;weight&#160;class&#160;sticker&#160;that&#160;was&#160;lost&#160;or&#160;stolen.</b></p>
+            <p style="position:absolute;top:226px;left:52px;white-space:nowrap" class="p1ft00"><input type="checkbox" value="" name="duplicate-registration"></p>
+            <p style="position:absolute;top:246px;left:52px;white-space:nowrap" class="p1ft00"><input type="checkbox" name="replacement-registration" value=""></p>
+            <p style="position:absolute;top:303px;left:81px;white-space:nowrap" class="p1ft02"><b>APPLICANT&#160;AND&#160;VEHICLE&#160;INFORMATION&#160;AS&#160;LISTED&#160;ON&#160;CURRENT&#160;REGISTRATION&#160;CARD</b></p>
+            <p style="position:absolute;top:612px;left:80px;white-space:nowrap" class="p1ft02"><b>APPLICATION&#160;FOR&#160;DUPLICATE&#160;REGISTRATION&#160;CARD(S)&#160;OR&#160;REPLACEMENT&#160;OF&#160;PRODUCT&#160;</b></p>
+            <p style="position:absolute;top:613px;left:679px;white-space:nowrap" class="p1ft01"><b>(Check&#160;(&#160;</b>X&#160;<b>)&#160;appropriate&#160;blocks)</b></p>
+            <p style="position:absolute;top:323px;left:77px;white-space:nowrap" class="p1ft07">ARP&#160;Account&#160;Number</p>
+            <p style="position:absolute;top:472px;left:77px;white-space:nowrap" class="p1ft07">Last&#160;Name&#160;(or&#160;Full&#160;Business&#160;Name)</p>
+            <p style="position:absolute;top:511px;left:77px;white-space:nowrap" class="p1ft07">Co-Owner&#160;Last&#160;Name</p>
+            <p style="position:absolute;top:992px;left:80px;white-space:nowrap" class="p1ft07">SUBSCRIBED&#160;AND&#160;SWORN</p>
+            <p style="position:absolute;top:1003px;left:80px;white-space:nowrap" class="p1ft07">TO&#160;BEFORE&#160;ME:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MONTH&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DAY&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;YEAR</p>
+            <p style="position:absolute;top:581px;left:290px;white-space:nowrap" class="p1ft07">City</p>
+            <p style="position:absolute;top:581px;left:655px;white-space:nowrap" class="p1ft07">State</p>
+            <p style="position:absolute;top:581px;left:772px;white-space:nowrap" class="p1ft07">Zip&#160;Code</p>
+            <p style="position:absolute;top:472px;left:321px;white-space:nowrap" class="p1ft07">First&#160;Name</p>
+            <p style="position:absolute;top:472px;left:483px;white-space:nowrap" class="p1ft07">Middle&#160;Name</p>
+            <p style="position:absolute;top:511px;left:483px;white-space:nowrap" class="p1ft07">Middle&#160;Name</p>
+            <p style="position:absolute;top:511px;left:321px;white-space:nowrap" class="p1ft07">First&#160;Name</p>
+            <p style="position:absolute;top:473px;left:669px;white-space:nowrap" class="p1ft07">PA DL/Photo&#160;ID#&#160;</p>
+            <p style="position:absolute;top:483px;left:669px;white-space:nowrap" class="p1ft07">or&#160;Bus.&#160;ID#</p>
+            <p style="position:absolute;top:324px;left:204px;white-space:nowrap" class="p1ft07">Equipment&#160;Number</p>
+            <p style="position:absolute;top:324px;left:334px;white-space:nowrap" class="p1ft07">Title&#160;Number</p>
+            <p style="position:absolute;top:323px;left:782px;white-space:nowrap" class="p1ft07">Expiration&#160;Date</p>
+            <p style="position:absolute;top:349px;left:782px;white-space:nowrap" class="p1ft07">MO:</p>
+            <p style="position:absolute;top:349px;left:836px;white-space:nowrap" class="p1ft07">YR:</p>
+            <p style="position:absolute;top:550px;left:78px;white-space:nowrap" class="p1ft02"><b>Owner’s&#160;Change&#160;of&#160;Address</b></p>
+            <p style="position:absolute;top:633px;left:80px;white-space:nowrap" class="p1ft00"><input type="checkbox" name="replacement-cab-card" value=""></p>
+            <p style="position:absolute;top:633px;left:226px;white-space:nowrap" class="p1ft00"><input type="checkbox" name="replacement-registration-plate" value=""></p>
+            <p style="position:absolute;top:633px;left:360px;white-space:nowrap" class="p1ft00"><input type="checkbox" name="replacement-renewl-sticker" value=""></p>
+            <p style="position:absolute;top:633px;left:495px;white-space:nowrap" class="p1ft00"><input type="checkbox" name="replacement-weight-class-sticker" value=""></p>
+            <p style="position:absolute;top:637px;left:99px;white-space:nowrap" class="p1ft01"><b>Cab Card</b></p>
+            <p style="position:absolute;top:637px;left:245px;white-space:nowrap" class="p1ft01"><b>Registration Plate</b></p>
+            <p style="position:absolute;top:637px;left:380px;white-space:nowrap" class="p1ft01"><b>Renewal Sticker</b></p>
+            <p style="position:absolute;top:636px;left:515px;white-space:nowrap" class="p1ft01"><b>Weight Class Sticker - Class #&#160;&#160;&#160;</b><input type="text" name="weight-class-number" value=""></p>
+            <p style="position:absolute;top:678px;left:154px;white-space:nowrap" class="p1ft08"><b>*</b></p>
+            <p style="position:absolute;top:704px;left:81px;white-space:nowrap" class="p1ft09"><b>NOTE:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Registration&#160;Card:&#160;</b>The&#160;fee&#160;for&#160;a&#160;replacement&#160;registration&#160;card&#160;is&#160;$6.&#160;&#160;If&#160;additional&#160;registration&#160;cards&#160;are&#160;desired,&#160;the&#160;fee&#160;is&#160;$6&#160;for&#160;each&#160;card.&#160;Number&#160;of</p>
+            <p style="position:absolute;top:718px;left:123px;white-space:nowrap" class="p1ft021">duplicate&#160;registration&#160;cards&#160;requested&#160;at&#160;$6.&#160;&#160;<input type="text" value="" style="width:50px" name="duplicate-registration-card">.<br /><b>Registration&#160;Plate:&#160;</b>The&#160;fee&#160;for&#160;a&#160;replacement&#160;registration&#160;plate&#160;is&#160;$11.&#160;&#160;In&#160;conjunction&#160;with&#160;replacement&#160;of&#160;your&#160;plate,&#160;you&#160;will&#160;receive&#160;one&#160;registration&#160;card.</p>
+            <p style="position:absolute;top:749px;left:123px;white-space:nowrap" class="p1ft021">If&#160;additional&#160;registration&#160;cards&#160;are&#160;desired,&#160;the&#160;fee&#160;is&#160;$2&#160;for&#160;each&#160;card.&#160;Number&#160;of&#160;duplicate&#160;registration&#160;cards&#160;requested&#160;at&#160;$2:&#160;&#160;<input type="text" name="duplicate-registration-card-with-plate" value="" style="width:50px">.<br /><b>Registration&#160;Sticker:&#160;</b>The&#160;fee&#160;for&#160;a&#160;replacement&#160;renewal&#160;sticker&#160;is&#160;$6.&#160;Along&#160;with&#160;the&#160;replacement&#160;of&#160;your&#160;renewal&#160;sticker,&#160;you&#160;will&#160;receive&#160;one&#160;registration</p>
+            <p style="position:absolute;top:780px;left:123px;white-space:nowrap" class="p1ft021">card.&#160;If&#160;additional&#160;registration&#160;cards&#160;are&#160;desired,&#160;the&#160;fee&#160;is&#160;$6&#160;for&#160;each&#160;card.&#160;Number&#160;of&#160;duplicate&#160;registration&#160;cards&#160;requested&#160;at&#160;$6:&#160;&#160;<input type="text" value="" style="width:50px" name="duplicate-registration-card-with-registration-sticker">.&#160;&#160;<br /><b>Weight&#160;Class&#160;Sticker:&#160;</b>There&#160;is&#160;no&#160;fee&#160;for&#160;a&#160;replacement&#160;weight&#160;class&#160;sticker.&#160;Along&#160;with&#160;the&#160;replacement&#160;of&#160;your&#160;renewal&#160;sticker,&#160;you&#160;will&#160;receive&#160;one</p>
+            <p style="position:absolute;top:811px;left:123px;white-space:nowrap" class="p1ft010">registration&#160;card.&#160;If&#160;additional&#160;registration&#160;cards&#160;are&#160;desired,&#160;the&#160;fee&#160;is&#160;$6&#160;for&#160;each&#160;card.&#160;Number&#160;of&#160;duplicate&#160;registration&#160;cards&#160;requested&#160;at&#160;$6:&#160;<input type="text" name="duplicate-registration-card-with-weight-class--sticker" value="" style="width:50px">.</p>
+            <p style="position:absolute;top:831px;left:80px;white-space:nowrap" class="p1ft02"><b>APPLICANT(S)&#160;SIGNATURE</b></p>
+            <p style="position:absolute;top:1059px;left:78px;white-space:nowrap" class="p1ft02"><b>S</b></p>
+            <p style="position:absolute;top:1075px;left:78px;white-space:nowrap" class="p1ft02"><b>T</b></p>
+            <p style="position:absolute;top:1091px;left:77px;white-space:nowrap" class="p1ft02"><b>A</b></p>
+            <p style="position:absolute;top:1107px;left:77px;white-space:nowrap" class="p1ft02"><b>M</b></p>
+            <p style="position:absolute;top:1124px;left:78px;white-space:nowrap" class="p1ft02"><b>P</b></p>
+            <p style="position:absolute;top:1014px;left:94px;white-space:nowrap" class="p1ft011">t</p>
+            <p style="position:absolute;top:990px;left:467px;white-space:nowrap" class="p1ft06">I/We&#160;hereby&#160;state&#160;that&#160;application&#160;was&#160;made&#160;for&#160;the&#160;above&#160;registration&#160;plate</p>
+            <p style="position:absolute;top:1005px;left:467px;white-space:nowrap" class="p1ft06">or&#160;that&#160;the&#160;items&#160;as&#160;indicated&#160;were&#160;never&#160;received&#160;in&#160;the&#160;mail.</p>
+            <p style="position:absolute;top:1091px;left:170px;white-space:nowrap" class="p1ft02"><b>SIGN&#160;IN&#160;PRESENCE&#160;OF&#160;NOTARY</b></p>
+            <p style="position:absolute;top:1033px;left:181px;white-space:nowrap" class="p1ft012">SIGNATURE&#160;OF&#160;PERSON&#160;ADMINISTERING&#160;OATH</p>
+            <p style="position:absolute;top:853px;left:79px;white-space:nowrap" class="p1ft06">I/We&#160;hereby&#160;certify&#160;under&#160;penalty&#160;of&#160;law&#160;that&#160;ALL&#160;information&#160;contained&#160;herein&#160;is&#160;TRUE&#160;and&#160;CORRECT&#160;and&#160;that&#160;I/we&#160;understand&#160;that&#160;any&#160;misstatement</p>
+            <p style="position:absolute;top:867px;left:78px;white-space:nowrap" class="p1ft06">of&#160;fact&#160;is&#160;a&#160;misdemeanor&#160;of&#160;the&#160;third&#160;degree&#160;punishable&#160;by&#160;a&#160;fine&#160;up&#160;to&#160;$2,500&#160;and/or&#160;imprisonment&#160;up&#160;to&#160;1&#160;year&#160;(18&#160;Pa.C.S.&#160;Section&#160;4904[b]).</p>
+            <p style="position:absolute;top:915px;left:576px;white-space:nowrap" class="p1ft012">Telephone&#160;Number&#160;</p>
+            <p style="position:absolute;top:915px;left:209px;white-space:nowrap" class="p1ft012">Signature&#160;of&#160;Applicant&#160;or&#160;Authorized&#160;Signer</p>
+            <p style="position:absolute;top:513px;left:670px;white-space:nowrap" class="p1ft07">PA DL/Photo&#160;ID#</p>
+            <p style="position:absolute;top:894px;left:530px;white-space:nowrap" class="p1ft03">(&#160;&#160;&#160;&#160;&#160;&#160;&#160;)</p>
+            <p style="position:absolute;top:303px;left:57px;white-space:nowrap" class="p1ft02"><b>A</b></p>
+            <p style="position:absolute;top:612px;left:58px;white-space:nowrap" class="p1ft02"><b>B</b></p>
+            <p style="position:absolute;top:663px;left:179px;white-space:nowrap" class="p1ft01"><b>* Lost</b></p>
+            <p style="position:absolute;top:663px;left:241px;white-space:nowrap" class="p1ft01"><b>*Stolen</b></p>
+            <p style="position:absolute;top:663px;left:315px;white-space:nowrap" class="p1ft01"><b>Defaced</b></p>
+            <p style="position:absolute;top:663px;left:395px;white-space:nowrap" class="p1ft01"><b>Never Received</b></p>
+            <p style="position:absolute;top:659px;left:655px;white-space:nowrap" class="p1ft01"><b>Other&#160;&#160;&#160;</b><input type="text" value="" name="other-reason"></p>
+            <p style="position:absolute;top:831px;left:57px;white-space:nowrap" class="p1ft02"><b>C</b></p>
+            <p style="position:absolute;top:933px;left:79px;white-space:nowrap" class="p1ft02"><b>APPLICATION&#160;FOR&#160;A&#160;REPLACEMENT&#160;APPORTIONED&#160;REGISTRATION&#160;PLATE&#160;-</b></p>
+            <p style="position:absolute;top:935px;left:590px;white-space:nowrap" class="p1ft06">Complete&#160;only&#160;if&#160;replacement&#160;registration&#160;plate&#160;is</p>
+            <p style="position:absolute;top:950px;left:79px;white-space:nowrap" class="p1ft06">requested&#160;or&#160;if&#160;applicant&#160;is&#160;entitled&#160;to&#160;free&#160;re-issuance&#160;because&#160;original&#160;registration&#160;card,&#160;renewal&#160;sticker&#160;or&#160;weight&#160;class&#160;sticker&#160;was&#160;never&#160;received</p>
+            <p style="position:absolute;top:964px;left:79px;white-space:nowrap" class="p1ft06">in&#160;the&#160;mail&#160;and&#160;application&#160;is&#160;being&#160;made&#160;within&#160;90&#160;days&#160;of&#160;original&#160;issuance&#160;or&#160;replacement.</p>
+            <p style="position:absolute;top:932px;left:58px;white-space:nowrap" class="p1ft02"><b>D</b></p>
+            <p style="position:absolute;top:915px;left:783px;white-space:nowrap" class="p1ft012">Date</p>
+            <p style="position:absolute;top:1048px;left:465px;white-space:nowrap" class="p1ft013"><i><b>X</b></i></p>
+            <p style="position:absolute;top:1107px;left:466px;white-space:nowrap" class="p1ft013"><i><b>X</b></i></p>
+            <p style="position:absolute;top:1073px;left:591px;white-space:nowrap" class="p1ft012">Signature&#160;of&#160;Applicant&#160;or&#160;Authorized&#160;Signer&#160;</p>
+            <p style="position:absolute;top:1132px;left:576px;white-space:nowrap" class="p1ft012">Signature&#160;of&#160;Co-Applicant/Title&#160;of&#160;Authorized&#160;Signer</p>
+            <p style="position:absolute;top:660px;left:470px;white-space:nowrap" class="p1ft07">No&#160;fee&#160;is&#160;due&#160;if&#160;product&#160;was&#160;never&#160;received&#160;in&#160;the</p>
+            <p style="position:absolute;top:670px;left:470px;white-space:nowrap" class="p1ft07">mail&#160;within&#160;90&#160;days&#160;from&#160;the&#160;original&#160;issuance&#160;date.</p>
+            <p style="position:absolute;top:657px;left:630px;white-space:nowrap" class="p1ft00"><input type="radio" name="replacement-reason" value="reason-other"></p>
+            <p style="position:absolute;top:684px;left:167px;white-space:nowrap" class="p1ft014"><i><b>If&#160;the&#160;registration&#160;plate&#160;is&#160;lost&#160;or&#160;stolen,&#160;it&#160;must&#160;be&#160;reported&#160;to&#160;the&#160;State&#160;Police&#160;or&#160;your&#160;local&#160;law&#160;enforcement&#160;office.</b></i></p>
+            <p style="position:absolute;top:570px;left:105px;white-space:nowrap" class="p1ft07">If&#160;changing&#160;address,&#160;acceptable&#160;proof&#160;of</p>
+            <p style="position:absolute;top:581px;left:105px;white-space:nowrap" class="p1ft07">change&#160;must&#160;be&#160;provided.&#160;Proof&#160;must&#160;be</p>
+            <p style="position:absolute;top:592px;left:105px;white-space:nowrap" class="p1ft07">attached&#160;-&#160;SEE&#160;REVERSE.</p>
+            <p style="position:absolute;top:566px;left:81px;white-space:nowrap" class="p1ft00"><input type="checkbox" name="owner-change-address" value=""></p>
+            <p style="position:absolute;top:548px;left:289px;white-space:nowrap" class="p1ft07">Street&#160;Address</p>
+            <p style="position:absolute;top:323px;left:461px;white-space:nowrap" class="p1ft07">Vehicle&#160;Identification&#160;Number</p>
+            <p style="position:absolute;top:323px;left:643px;white-space:nowrap" class="p1ft07">Registration&#160;Plate&#160;Number</p>
+            <p style="position:absolute;top:361px;left:203px;white-space:nowrap" class="p1ft07">Equipment&#160;Number</p>
+            <p style="position:absolute;top:361px;left:335px;white-space:nowrap" class="p1ft07">Title&#160;Number</p>
+            <p style="position:absolute;top:360px;left:461px;white-space:nowrap" class="p1ft07">Vehicle&#160;Identification&#160;Number</p>
+            <p style="position:absolute;top:360px;left:642px;white-space:nowrap" class="p1ft07">Registration&#160;Plate&#160;Number</p>
+            <p style="position:absolute;top:398px;left:203px;white-space:nowrap" class="p1ft07">Equipment&#160;Number</p>
+            <p style="position:absolute;top:398px;left:334px;white-space:nowrap" class="p1ft07">Title&#160;Number</p>
+            <p style="position:absolute;top:398px;left:461px;white-space:nowrap" class="p1ft07">Vehicle&#160;Identification&#160;Number</p>
+            <p style="position:absolute;top:399px;left:642px;white-space:nowrap" class="p1ft07">Registration&#160;Plate&#160;Number</p>
+            <p style="position:absolute;top:434px;left:204px;white-space:nowrap" class="p1ft07">Equipment&#160;Number</p>
+            <p style="position:absolute;top:435px;left:335px;white-space:nowrap" class="p1ft07">Title&#160;Number</p>
+            <p style="position:absolute;top:434px;left:460px;white-space:nowrap" class="p1ft07">Vehicle&#160;Identification&#160;Number</p>
+            <p style="position:absolute;top:434px;left:642px;white-space:nowrap" class="p1ft07">Registration&#160;Plate&#160;Number</p>
+            <p style="position:absolute;top:38px;left:43px;white-space:nowrap" class="p1ft06">MV-558&#160;(4-15)</p>
+            <p style="position:absolute;top:112px;left:45px;white-space:nowrap" class="p1ft08"><b>APPLICATION&#160;FOR&#160;DUPLICATE&#160;OR</b></p>
+            <p style="position:absolute;top:134px;left:45px;white-space:nowrap" class="p1ft08"><b>REPLACEMENT&#160;OF&#160;APPORTIONED</b></p>
+            <p style="position:absolute;top:157px;left:45px;white-space:nowrap" class="p1ft08"><b>REGISTRATION&#160;CREDENTIALS</b></p>
+            <p style="position:absolute;top:158px;left:570px;white-space:nowrap;text-align:center" class="p1ft09"><b>For&#160;Department&#160;Use&#160;Only</b> <br>Bureau&#160;of&#160;Motor&#160;Vehicles&#160;•&#160;P.O.&#160;Box&#160;68286&#160;•&#160;Harrisburg,&#160;PA&#160;17106-8286</p>
+            <p style="position:absolute;top:360px;left:75px;white-space:nowrap" class="p1ft00"><input type="checkbox" name="name" value=""></p>
+            <p style="position:absolute;top:365px;left:94px;white-space:nowrap" class="p1ft07">If&#160;requesting&#160;replacements</p>
+            <p style="position:absolute;top:375px;left:94px;white-space:nowrap" class="p1ft07">for&#160;the&#160;entire&#160;fleet&#160;check</p>
+            <p style="position:absolute;top:386px;left:94px;white-space:nowrap" class="p1ft07">here:</p>
+            <p style="position:absolute;top:360px;left:782px;white-space:nowrap" class="p1ft07">Expiration&#160;Date</p>
+            <p style="position:absolute;top:386px;left:782px;white-space:nowrap" class="p1ft07">MO:</p>
+            <p style="position:absolute;top:386px;left:836px;white-space:nowrap" class="p1ft07">YR:</p>
+            <p style="position:absolute;top:398px;left:781px;white-space:nowrap" class="p1ft07">Expiration&#160;Date</p>
+            <p style="position:absolute;top:421px;left:781px;white-space:nowrap" class="p1ft07">MO:</p>
+            <p style="position:absolute;top:421px;left:835px;white-space:nowrap" class="p1ft07">YR:</p>
+            <p style="position:absolute;top:434px;left:781px;white-space:nowrap" class="p1ft07">Expiration&#160;Date</p>
+            <p style="position:absolute;top:459px;left:781px;white-space:nowrap" class="p1ft07">MO:</p>
+            <p style="position:absolute;top:459px;left:835px;white-space:nowrap" class="p1ft07">YR:</p>
+            <p style="position:absolute;top:338px;left:75px;white-space:nowrap" class="p1ft015"><input type="text" value="{{ .company.IRPNum }}" style="width:118px;" name="arp-account-number"></p>
+
+            <p style="position:absolute;top:338px;left:205px;white-space:nowrap" class="p1ft015"><input type="text" name="equipment-number-1" style="width:119px;" value="{{ if gt $len 0 }}{{ with $v := index .vehicles 0 }}{{ $v.UnitNumber }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:340px;left:336px;white-space:nowrap" class="p1ft017"><input type="text" name="title-number-1" style="width:115px;" value="{{ if gt $len 0 }}{{ with $v := index .vehicles 0 }}{{ $v.Title }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:340px;left:462px;white-space:nowrap" class="p1ft017"><input type="text" name="vin-1" style="width:170px;" value="{{ if gt $len 0 }}{{ with $v := index .vehicles 0 }}{{ $v.VIN }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:340px;left:644px;white-space:nowrap" class="p1ft017"><input type="text" name="registration-plate-number-1" style="width:128px;" value="{{ if gt $len 0 }}{{ with $v := index .vehicles 0 }}{{ $v.PlateNum }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:340px;left:796px;white-space:nowrap" class="p1ft017"><input type="text" name="expiration-month-1" style="width:35px;" value="{{ if gt $len 0 }}{{ with $v := index .vehicles 0 }}{{ $v.PlateExpireMonth }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:340px;left:850px;white-space:nowrap" class="p1ft017"><input type="text" name="expiration-year-1" style="width:23px;" value="{{ if gt $len 0 }}{{ with $v := index .vehicles 0 }}{{ $v.PlateExpireYear }}{{ end }}{{ end }}"></p>
+
+            <p style="position:absolute;top:375px;left:205px;white-space:nowrap" class="p1ft015"><input type="text" name="equipment-number-2" style="width:119px;" value="{{ if gt $len 1 }}{{ with $v := index .vehicles 1 }}{{ $v.UnitNumber }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:377px;left:336px;white-space:nowrap" class="p1ft017"><input type="text" name="title-number-2" style="width:115px;" value="{{ if gt $len 1 }}{{ with $v := index .vehicles 1 }}{{ $v.Title }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:377px;left:462px;white-space:nowrap" class="p1ft017"><input type="text" name="vin-2" style="width:170px;" value="{{ if gt $len 1 }}{{ with $v := index .vehicles 1 }}{{ $v.VIN }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:377px;left:644px;white-space:nowrap" class="p1ft017"><input type="text" name="registration-plate-number-2" style="width:128px;" value="{{ if gt $len 1 }}{{ with $v := index .vehicles 1 }}{{ $v.PlateNum }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:377px;left:796px;white-space:nowrap" class="p1ft017"><input type="text" name="expiration-month-2" style="width:35px;" value="{{ if gt $len 1 }}{{ with $v := index .vehicles 1 }}{{ $v.PlateExpireMonth }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:377px;left:850px;white-space:nowrap" class="p1ft017"><input type="text" name="expiration-year-2" style="width:23px;" value="{{ if gt $len 1 }}{{ with $v := index .vehicles 1 }}{{ $v.PlateExpireYear }}{{ end }}{{ end }}"></p>
+
+            <p style="position:absolute;top:411px;left:205px;white-space:nowrap" class="p1ft015"><input type="text" name="equipment-number-3" style="width:119px;" value="{{ if gt $len 2 }}{{ with $v := index .vehicles 2 }}{{ $v.UnitNumber }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:413px;left:336px;white-space:nowrap" class="p1ft017"><input type="text" name="title-number-3" style="width:115px;" value="{{ if gt $len 2 }}{{ with $v := index .vehicles 2 }}{{ $v.Title }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:413px;left:462px;white-space:nowrap" class="p1ft017"><input type="text" name="vin-3" style="width:170px;" value="{{ if gt $len 2 }}{{ with $v := index .vehicles 2 }}{{ $v.VIN }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:413px;left:644px;white-space:nowrap" class="p1ft017"><input type="text" name="registration-plate-number-3" style="width:128px;" value="{{ if gt $len 2 }}{{ with $v := index .vehicles 2 }}{{ $v.PlateNum }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:413px;left:796px;white-space:nowrap" class="p1ft017"><input type="text" name="expiration-month-3" style="width:35px;" value="{{ if gt $len 2 }}{{ with $v := index .vehicles 2 }}{{ $v.PlateExpireMonth }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:413px;left:850px;white-space:nowrap" class="p1ft017"><input type="text" name="expiration-year-3" style="width:23px;" value="{{ if gt $len 2 }}{{ with $v := index .vehicles 2 }}{{ $v.PlateExpireYear }}{{ end }}{{ end }}"></p>
+
+            <p style="position:absolute;top:450px;left:205px;white-space:nowrap" class="p1ft015"><input type="text" name="equipment-number-4" style="width:119px;" value="{{ if gt $len 3 }}{{ with $v := index .vehicles 3 }}{{ $v.UnitNumber }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:452px;left:336px;white-space:nowrap" class="p1ft017"><input type="text" name="title-number-4" style="width:115px;" value="{{ if gt $len 3 }}{{ with $v := index .vehicles 3 }}{{ $v.Title }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:452px;left:462px;white-space:nowrap" class="p1ft017"><input type="text" name="vin-4" style="width:170px;" value="{{ if gt $len 3 }}{{ with $v := index .vehicles 3 }}{{ $v.VIN }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:452px;left:644px;white-space:nowrap" class="p1ft017"><input type="text" name="registration-plate-number-4" style="width:128px;" value="{{ if gt $len 3 }}{{ with $v := index .vehicles 3 }}{{ $v.PlateNum }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:452px;left:796px;white-space:nowrap" class="p1ft017"><input type="text" name="expiration-month-4" style="width:35px;" value="{{ if gt $len 3 }}{{ with $v := index .vehicles 3 }}{{ $v.PlateExpireMonth }}{{ end }}{{ end }}"></p>
+            <p style="position:absolute;top:452px;left:850px;white-space:nowrap" class="p1ft017"><input type="text" name="expiration-year-4" style="width:23px;" value="{{ if gt $len 3 }}{{ with $v := index .vehicles 3 }}{{ $v.PlateExpireYear }}{{ end }}{{ end }}"></p>
+
+            <p style="position:absolute;top:487px;left:77px;white-space:nowrap" class="p1ft019"><input type="text" name="owner-last-name" value="{{ .company.Name }}" style="width:235px"></p>
+            <p style="position:absolute;top:522px;left:77px;white-space:nowrap" class="p1ft019"><input type="text" name="co-owner-last-name" style="width:235px"></p>
+            <p style="position:absolute;top:487px;left:320px;white-space:nowrap" class="p1ft019"><input type="text" name="owner-first-name" style="width:150px"></p>
+            <p style="position:absolute;top:522px;left:320px;white-space:nowrap" class="p1ft019"><input type="text" name="co-owner-first-name" style="width:150px"></p>
+            <p style="position:absolute;top:487px;left:482px;white-space:nowrap" class="p1ft019"><input type="text" name="owner-middle-name" style="width:150px"></p>
+            <p style="position:absolute;top:522px;left:482px;white-space:nowrap" class="p1ft019"><input type="text" name="co-owner-middle-name" style="width:150px"></p>
+            <p style="position:absolute;top:487px;left:650px;white-space:nowrap" class="p1ft019"><input type="text" name="owner-id-number" style="width:220px"></p>
+            <p style="position:absolute;top:522px;left:650px;white-space:nowrap" class="p1ft019"><input type="text" name="co-owner-id-number" style="width:220px"></p>
+            <p style="position:absolute;top:560px;left:290px;white-space:nowrap" class="p1ft017"><input type="text" name="owner-street" value="{{ .company.PhysicalAddress.Street }}" style="width:575px"></p>
+            <p style="position:absolute;top:591px;left:290px;white-space:nowrap" class="p1ft017"><input type="text" name="owner-city" value="{{ .company.PhysicalAddress.City }}" style="width:350px"></p>
+            <p style="position:absolute;top:891px;left:534px;white-space:nowrap" class="p1ft017"><input type="text" name="applicant-telephone-area-code" style="width:16px"></p>
+            <p style="position:absolute;top:891px;left:564px;white-space:nowrap" class="p1ft017"><input type="text" style="width:119px" name="applicant-telephone"></p>
+            <p style="position:absolute;top:891px;left:720px;white-space:nowrap" class="p1ft017"><input type="text" name="applicant-signature-date" style="width:143px"></p>
+            <p style="position:absolute;top:591px;left:650px;white-space:nowrap" class="p1ft017"><input type="text" name="owner-state" style="width:110px" value="{{ .company.PhysicalAddress.State }}"></p>
+            <p style="position:absolute;top:591px;left:772px;white-space:nowrap" class="p1ft017"><input type="text" name="owner-zip" style="width:95px" value="{{ .company.PhysicalAddress.Zip }}"></p>
+        </div>
+        <br>
+        <div id="page2-div" class="page" style="position:relative;width:918px;height:1300px;margin:0 auto;background-color:#ffffff;">
+            <!-- <img width="918" height="1188" src="mv-558002.png" alt="background image" /> -->
+            <p style="position:absolute;top:24px;left:345px;white-space:nowrap" class="p2ft00"><b>GENERAL&#160;INSTRUCTIONS</b></p>
+            <p style="position:absolute;top:58px;left:35px;white-space:nowrap" class="p2ft01">1.&#160;Complete&#160;&#160;applicant&#160;&#160;and&#160;&#160;vehicle&#160;&#160;information&#160;&#160;exactly&#160;&#160;as&#160;&#160;it&#160;&#160;appears&#160;&#160;on&#160;&#160;current&#160;&#160;registration&#160;&#160;card.&#160;&#160;Print&#160;&#160;address</p>
+            <p style="position:absolute;top:78px;left:62px;white-space:nowrap" class="p2ft01">change&#160;in&#160;space&#160;provided,&#160;if&#160;applicable.&#160;Individuals&#160;should&#160;list&#160;their&#160;PA&#160;Driver’s&#160;License&#160;(PA&#160;DL)&#160;or&#160;Photo&#160;ID&#160;#&#160;in</p>
+            <p style="position:absolute;top:98px;left:62px;white-space:nowrap" class="p2ft01">the&#160;space&#160;provided.&#160;Businesses&#160;should&#160;list&#160;their&#160;Business&#160;ID&#160;#&#160;(Bus.&#160;ID)&#160;where&#160;indicated&#160;(i.e.&#160;EIN).&#160;<b>NOTE:&#160;</b>A</p>
+            <p style="position:absolute;top:118px;left:62px;white-space:nowrap" class="p2ft01">legible&#160;photocopy&#160;of&#160;the&#160;applicant’s&#160;valid&#160;photo&#160;identification&#160;(front&#160;and&#160;back)&#160;must&#160;be&#160;attached.</p>
+            <p style="position:absolute;top:141px;left:62px;white-space:nowrap" class="p2ft01">When&#160;a&#160;change&#160;of&#160;address&#160;occurs&#160;on&#160;an&#160;existing&#160;Pennsylvania&#160;apportioned&#160;account,&#160;three&#160;identifying&#160;documents</p>
+            <p style="position:absolute;top:161px;left:62px;white-space:nowrap" class="p2ft01">are&#160;required&#160;to&#160;accompany&#160;this&#160;application&#160;as&#160;follows:</p>
+            <p style="position:absolute;top:184px;left:90px;white-space:nowrap" class="p2ft02"><b>An&#160;individual&#160;must&#160;provide&#160;the&#160;front&#160;and&#160;back&#160;copy&#160;of&#160;their&#160;Pennsylvania&#160;Driver’s&#160;License&#160;and&#160;2&#160;of</b></p>
+            <p style="position:absolute;top:203px;left:90px;white-space:nowrap" class="p2ft02"><b>the&#160;following:</b></p>
+            <p style="position:absolute;top:226px;left:118px;white-space:nowrap" class="p2ft01">a.&#160;Photocopy&#160;of&#160;Utility&#160;bill&#160;(electric,&#160;gas,&#160;water&#160;or&#160;cable)</p>
+            <p style="position:absolute;top:249px;left:118px;white-space:nowrap" class="p2ft01">b.&#160;Photocopy&#160;of&#160;Stamped&#160;Paid&#160;HVUT&#160;2290&#160;Tax&#160;Receipt&#160;or&#160;IRS&#160;E-File&#160;Receipt</p>
+            <p style="position:absolute;top:272px;left:118px;white-space:nowrap" class="p2ft01">c.&#160;Photocopy&#160;of&#160;real&#160;estate&#160;or&#160;personal&#160;property&#160;tax&#160;statement</p>
+            <p style="position:absolute;top:296px;left:118px;white-space:nowrap" class="p2ft01">d.&#160;Photocopy&#160;of&#160;a&#160;valid&#160;Pennsylvania&#160;Certificate&#160;of&#160;Title&#160;or&#160;registration&#160;credentials</p>
+            <p style="position:absolute;top:319px;left:118px;white-space:nowrap" class="p2ft01">e.&#160;Photocopy&#160;of&#160;valid&#160;county&#160;issued&#160;weapons&#160;permit</p>
+            <p style="position:absolute;top:348px;left:90px;white-space:nowrap" class="p2ft02"><b>A&#160;business&#160;must&#160;supply&#160;proof&#160;of&#160;corporate&#160;documents&#160;filed&#160;with&#160;the&#160;Pennsylvania&#160;Department&#160;of</b></p>
+            <p style="position:absolute;top:368px;left:90px;white-space:nowrap" class="p2ft02"><b>State&#160;and&#160;2&#160;of&#160;the&#160;following:</b></p>
+            <p style="position:absolute;top:391px;left:119px;white-space:nowrap" class="p2ft01">a.&#160;Photocopy&#160;of&#160;Utility&#160;bill&#160;(electric,&#160;gas,&#160;water&#160;or&#160;cable)</p>
+            <p style="position:absolute;top:414px;left:119px;white-space:nowrap" class="p2ft01">b.&#160;Photocopy&#160;of&#160;Stamped&#160;Paid&#160;HVUT&#160;2290&#160;Tax&#160;Receipt&#160;or&#160;IRS&#160;E-File&#160;Receipt</p>
+            <p style="position:absolute;top:437px;left:119px;white-space:nowrap" class="p2ft01">c.&#160;Photocopy&#160;of&#160;real&#160;estate&#160;or&#160;personal&#160;property&#160;tax&#160;statement</p>
+            <p style="position:absolute;top:460px;left:119px;white-space:nowrap" class="p2ft01">d.&#160;Photocopy&#160;of&#160;a&#160;valid&#160;Pennsylvania&#160;Certificate&#160;of&#160;Title&#160;or&#160;registration&#160;credentials</p>
+            <p style="position:absolute;top:488px;left:62px;white-space:nowrap" class="p2ft02"><b>NOTE:&#160;</b>A&#160;change&#160;of&#160;address&#160;will&#160;produce&#160;registration&#160;cards&#160;for&#160;the&#160;entire&#160;fleet.</p>
+            <p style="position:absolute;top:511px;left:35px;white-space:nowrap" class="p2ft01">2.&#160;Indicate&#160;number&#160;of&#160;duplicates&#160;desired&#160;in&#160;Section&#160;B.</p>
+            <p style="position:absolute;top:534px;left:35px;white-space:nowrap" class="p2ft01">3.&#160;When&#160;applying&#160;for&#160;a&#160;replacement&#160;apportioned&#160;registration&#160;plate,&#160;the&#160;owner&#160;and&#160;the&#160;co-owner’s&#160;signature&#160;must&#160;be</p>
+            <p style="position:absolute;top:554px;left:62px;white-space:nowrap" class="p2ft01">notarized&#160;in&#160;Section&#160;D.&#160;If&#160;the&#160;vehicle&#160;is&#160;owned&#160;by&#160;a&#160;company&#160;or&#160;a&#160;corporation,&#160;a&#160;letter&#160;is&#160;required&#160;on&#160;company</p>
+            <p style="position:absolute;top:574px;left:62px;white-space:nowrap" class="p2ft01">letterhead&#160;identifying&#160;the&#160;person&#160;who&#160;is&#160;authorized&#160;to&#160;sign&#160;in&#160;Section&#160;D&#160;to&#160;receive&#160;the&#160;replacement&#160;registration</p>
+            <p style="position:absolute;top:593px;left:62px;white-space:nowrap" class="p2ft01">plate&#160;on&#160;behalf&#160;of&#160;the&#160;business.&#160;If&#160;the&#160;replacement&#160;registration&#160;plate&#160;is&#160;mailed&#160;to&#160;the&#160;company/corporation,&#160;the</p>
+            <p style="position:absolute;top:613px;left:62px;white-space:nowrap" class="p2ft01">only&#160;requirement&#160;is&#160;a&#160;letter&#160;on&#160;business&#160;letterhead&#160;authorizing&#160;the&#160;representative&#160;for&#160;the&#160;company/corporation&#160;to</p>
+            <p style="position:absolute;top:633px;left:62px;white-space:nowrap" class="p2ft01">sign&#160;in&#160;Section&#160;D.&#160;This&#160;letter&#160;must&#160;be&#160;attached&#160;to&#160;the&#160;application&#160;before&#160;submitting&#160;to&#160;PennDOT.&#160;In&#160;addition,&#160;the</p>
+            <p style="position:absolute;top:653px;left:62px;white-space:nowrap" class="p2ft01">authorized&#160;agent&#160;is&#160;required&#160;to&#160;maintain&#160;a&#160;copy&#160;of&#160;the&#160;letter&#160;on&#160;company&#160;letterhead&#160;authorizing&#160;a&#160;person&#160;to&#160;sign</p>
+            <p style="position:absolute;top:673px;left:62px;white-space:nowrap" class="p2ft01">in&#160;Section&#160;D&#160;and/or&#160;pick&#160;up&#160;the&#160;plate&#160;for&#160;the&#160;company/corporation&#160;for&#160;three&#160;years.&#160;</p>
+            <p style="position:absolute;top:696px;left:35px;white-space:nowrap" class="p2ft01">4.&#160;Complete&#160;Section&#160;D&#160;if&#160;this&#160;application&#160;is&#160;made&#160;within&#160;90&#160;days&#160;from&#160;date&#160;of&#160;original&#160;issue&#160;and&#160;the&#160;registration&#160;card,</p>
+            <p style="position:absolute;top:715px;left:62px;white-space:nowrap" class="p2ft01">renewal&#160;sticker,&#160;weight&#160;class&#160;sticker&#160;or&#160;registration&#160;plate&#160;was&#160;never&#160;received&#160;due&#160;to&#160;loss&#160;in&#160;the&#160;mail.&#160;No&#160;fee&#160;is</p>
+            <p style="position:absolute;top:735px;left:62px;white-space:nowrap" class="p2ft01">required.</p>
+            <p style="position:absolute;top:758px;left:35px;white-space:nowrap" class="p2ft01">5.&#160;Make&#160;check&#160;or&#160;money&#160;order&#160;payable&#160;to&#160;the&#160;Commonwealth&#160;of&#160;Pennsylvania&#160;and&#160;mail&#160;to&#160;the&#160;address&#160;listed&#160;on&#160;the</p>
+            <p style="position:absolute;top:778px;left:62px;white-space:nowrap" class="p2ft01">front&#160;of&#160;the&#160;application.&#160;<b>DO&#160;NOT&#160;SEND&#160;CASH.</b></p>
+            <p style="position:absolute;top:801px;left:35px;white-space:nowrap" class="p2ft01">6.&#160;Apportioned&#160;registration&#160;plates&#160;may&#160;be&#160;available&#160;as&#160;a&#160;personalized&#160;registration&#160;plate&#160;for&#160;vehicles&#160;with&#160;a&#160;registered</p>
+            <p style="position:absolute;top:821px;left:62px;white-space:nowrap" class="p2ft01">gross&#160;weight&#160;up&#160;to&#160;<b>14,000&#160;lbs</b>.&#160;To&#160;check&#160;personalized&#160;registration&#160;plate&#160;availability,&#160;visit&#160;PennDOT’s&#160;Driver&#160;and</p>
+            <p style="position:absolute;top:841px;left:62px;white-space:nowrap" class="p2ft01">Vehicle&#160;Services&#160;website,&#160;www.dmv.pa.gov,&#160;and&#160;select&#160;the&#160;Personalized&#160;Registration&#160;Plate&#160;Availability&#160;link&#160;from</p>
+            <p style="position:absolute;top:861px;left:62px;white-space:nowrap" class="p2ft01">the&#160;list&#160;of&#160;services&#160;under&#160;the&#160;Online&#160;Driver&#160;and&#160;Vehicle&#160;Services&#160;heading.&#160;Should&#160;you&#160;choose&#160;to&#160;personalize&#160;your</p>
+            <p style="position:absolute;top:880px;left:62px;white-space:nowrap" class="p2ft01">apportioned&#160;&#160;registration&#160;&#160;plate,&#160;&#160;please&#160;&#160;complete&#160;&#160;this&#160;&#160;application&#160;&#160;and&#160;&#160;attach&#160;&#160;a&#160;&#160;completed&#160;&#160;Form&#160;&#160;MV-904C,</p>
+            <p style="position:absolute;top:900px;left:62px;white-space:nowrap" class="p2ft01">&#34;Application&#160;for&#160;Personalized&#160;Commercial&#160;Registration&#160;Plate.&#34;&#160;The&#160;fee&#160;to&#160;personalize&#160;your&#160;registration&#160;plate&#160;is&#160;an</p>
+            <p style="position:absolute;top:920px;left:62px;white-space:nowrap" class="p2ft01">additional&#160;&#160;$100,&#160;&#160;and&#160;&#160;the&#160;&#160;registration&#160;&#160;on&#160;&#160;your&#160;&#160;vehicle&#160;&#160;must&#160;&#160;be&#160;&#160;current&#160;&#160;in&#160;&#160;order&#160;&#160;for&#160;&#160;PennDOT&#160;&#160;to&#160;&#160;process&#160;&#160;your</p>
+            <p style="position:absolute;top:940px;left:62px;white-space:nowrap" class="p2ft01">request.&#160;<b>The&#160;additional&#160;$100&#160;fee&#160;covers&#160;the&#160;cost&#160;of&#160;your&#160;personalized&#160;registration&#160;plate&#160;order&#160;only&#160;and&#160;will</b></p>
+            <p style="position:absolute;top:960px;left:63px;white-space:nowrap" class="p2ft02"><b>not&#160;renew&#160;your&#160;vehicle's&#160;registration.&#160;</b>Payment&#160;is&#160;to&#160;be&#160;made&#160;by&#160;a&#160;separate&#160;check&#160;or&#160;money&#160;order&#160;payable&#160;to</p>
+            <p style="position:absolute;top:979px;left:63px;white-space:nowrap" class="p2ft01">the&#160;&#160;Commonwealth&#160;&#160;of&#160;&#160;Pennsylvania.&#160;&#160;<b>Please&#160;&#160;do&#160;&#160;not&#160;&#160;send&#160;&#160;cash.&#160;</b>Personalized&#160;&#160;registration&#160;&#160;plates&#160;&#160;will&#160;&#160;not&#160;&#160;be</p>
+            <p style="position:absolute;top:999px;left:63px;white-space:nowrap" class="p2ft01">reserved&#160;&#160;until&#160;&#160;PennDOT&#160;&#160;receives&#160;&#160;payment&#160;&#160;and&#160;&#160;a&#160;&#160;completed&#160;&#160;application,&#160;&#160;and&#160;&#160;approves&#160;&#160;your&#160;&#160;requested</p>
+            <p style="position:absolute;top:1019px;left:63px;white-space:nowrap" class="p2ft01">registration&#160;&#160;plate&#160;&#160;configuration&#160;&#160;[number(s)&#160;&#160;and/or&#160;&#160;letter(s)].&#160;&#160;Please&#160;&#160;note&#160;&#160;that&#160;&#160;registration&#160;&#160;plate&#160;&#160;requests&#160;&#160;are</p>
+            <p style="position:absolute;top:1039px;left:63px;white-space:nowrap" class="p2ft01">processed&#160;on&#160;a&#160;first-come,&#160;first-served&#160;basis.&#160;Although&#160;a&#160;requested&#160;registration&#160;plate&#160;configuration&#160;may&#160;show&#160;as</p>
+            <p style="position:absolute;top:1059px;left:63px;white-space:nowrap" class="p2ft01">being&#160;available&#160;on&#160;the&#160;website,&#160;it&#160;is&#160;possible&#160;that&#160;a&#160;request&#160;for&#160;the&#160;same&#160;registration&#160;plate&#160;configuration&#160;may&#160;have</p>
+            <p style="position:absolute;top:1078px;left:63px;white-space:nowrap" class="p2ft01">already&#160;been&#160;submitted&#160;by&#160;another&#160;customer&#160;and&#160;may&#160;not&#160;be&#160;available&#160;when&#160;making&#160;application.</p>
+            <p style="position:absolute;top:1137px;left:299px;white-space:nowrap" class="p2ft02"><b>Visit&#160;us&#160;at&#160;www.dmv.pa.gov&#160;or&#160;call&#160;us&#160;at:</b></p>
+        </div>
+        <br>
+        <div id="page3-div" class="page" style="position:relative;width:918px;height:1188px; margin:0 auto;background-color:#ffffff;">
+            <p style="position:absolute;top:24px;left:38px;white-space:nowrap" class="p3ft00">In&#160;state:&#160;1-800-932-4600&#160;F&#160;TDD:&#160;1-800-228-0676&#160;F&#160;Out-of-State:&#160;1-717-412-5300&#160;F&#160;TDD&#160;Out-of-State:&#160;1-717-412-5380</p>
+        </div>
+
+        <div style="position:relative;width:918px;margin:0 auto;">
+            {{ template "st-scripts.tmpl" . }}
+        </div>
+
+    </body>
+</html>

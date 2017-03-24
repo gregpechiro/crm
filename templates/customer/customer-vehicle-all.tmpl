@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!-- sweet alerts -->
+
+        <!-- DataTables -->
+        <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+        <link href="/static/timepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
+        <link href="/static/toggles/toggles.css" rel="stylesheet" />
+
+        <title>Vehicles</title>
+    </head>
+    <body>
+
+        {{ template "customer-side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Vehicles
+                        </p>
+
+                        <div class="panel panel-default p-0">
+
+                                <div class="tabPane clearfix">
+                                    <div class="profile-desk">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <table id="vehiclesTable" class="table table-bordered table-hover" width="100%" style="width: 100%;background-color:white;">
+                                                    <thead>
+                                                        <tr id="search">
+                                                            <th>type</th>
+                                                            <th>make</th>
+                                                            <th>vin</th>
+                                                            <th>title</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Type</th>
+                                                            <th>Make</th>
+                                                            <th>VIN</th>
+                                                            <th>Title</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {{ $company := .company }}
+                                                        {{ range $vehicle := .vehicles }}
+                                                            <tr class="clickable" data-url="/customer/vehicle/{{ $vehicle.Id }}">
+                                                                <td>{{ $vehicle.VehicleType }}</td>
+                                                                <td>{{ $vehicle.Make }}</td>
+                                                                <td>{{ $vehicle.VIN }}</td>
+                                                                <td>{{ $vehicle.Title }}</td>
+                                                            </tr>
+                                                        {{ end }}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div id="view" class="col-lg-4">
+                                                <table class="table table-condensed" style="margin-bottom:0;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><b>Insurance Company</b></td>
+                                                            <td>{{ .company.InsuranceCompany }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Policy Number</b></td>
+                                                            <td>{{ .company.InsurancePolicyNum }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>NAIC #</b></td>
+                                                            <td>{{ .company.InsuranceNaic }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Effective Date</b></td>
+                                                            <td>{{ .company.InsuranceEffectiveDate }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Expiration Date</b></td>
+                                                            <td>{{ .company.InsuranceExpirationDate }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+        <!-- Main Content Ends -->
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        <script src="/static/datatables/jquery.dataTables.min.js"></script>
+        <script src="/static/datatables/dataTables.bootstrap.js"></script>
+        <script src="/static/js/confirm.js" charset="utf-8"></script>
+        <script src="/static/datatables/custom.js" charset="utf-8"></script>
+
+        <script src="/static/timepicker/bootstrap-datepicker.js"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+
+            //jQuery('.datepicker').datepicker();
+
+            $('.datepicker').datepicker().on('changeDate', function(e) {
+                $(this).datepicker('hide');
+            });
+
+            var table = $('#vehiclesTable').DataTable({
+                "lengthMenu":[5,10,15,20],
+                //"dom": 'lrtip',
+                "columnDefs": [
+                    { "orderable": false, "targets": [2,3] },
+                    { "name": "type",     "targets": 0 },
+                    { "name": "make",     "targets": 1 },
+                    { "name": "vin",      "targets": 2 },
+                    { "name": "title",    "targets": 3 }
+                ]
+            });
+
+        </script>
+
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!-- Dropzone css -->
+        <link href="/static/dropzone/dropzone.css" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <!-- Page Content Start -->
+            <!-- ================== -->
+
+            <div class="wraper container-fluid">
+                <div class="page-title">
+                    <h3 class="title">Multiple File Upload</h3>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 portlets">
+                        <!-- Your awesome content goes here -->
+                        <div class="m-b-30">
+                            <form action="/upd" method="post" class="dropzone" id="dropzone">
+                                <div class="fallback">
+                                    <input name="file" type="file" multiple />
+                                </div>
+                                <input type="hidden" name="id" value="12345">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Content Ends -->
+            <!-- ================== -->
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        {{ template "scripts.tmpl" . }}
+
+        <!-- Page Specific JS Libraries -->
+        <script src="/static/dropzone/dropzone.min.js"></script>
+
+    </body>
+</html>

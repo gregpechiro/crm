@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!-- sweet alerts -->
+
+        <!-- DataTables -->
+        <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+        <link href="/static/timepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
+        <link href="/static/toggles/toggles.css" rel="stylesheet" />
+
+        <title>All Customer's Vehicles</title>
+    </head>
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Company: {{ if .company.Id}}{{ .company.Name }}{{ else }}NEW{{ end }}
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li><a href="/cns/company/{{ .company.Id }}">Customer Center</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/service">Service</a></li>
+                                    <li class="active"><a>Vehicles</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/driver">Drivers</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/form">Forms</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/file">Files</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/notification">Notifications</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/feature">Features</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/violation">Stats</a></li>
+                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                        <li><a href="/admin/company/{{ .company.Id }}/task/today">Tasks</a></li>
+                                    {{ end }}
+                                </ul>
+
+                                <div class="tabPane clearfix">
+                                    <div class="profile-desk">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <div class="">
+                                                    <span>
+                                                        <div class="btn-group btn-group-sm" role="group">
+                                                            <a href="/cns/company/{{ .company.Id }}/vehicle" type="button" class="btn {{ if eq .state "all" }}btn-primary{{ else }}btn-default{{ end }}">All</a>
+                                                            <a href="/cns/company/{{ .company.Id }}/vehicle?state=active" type="button" class="btn {{ if eq .state "active" }}btn-primary{{ else }}btn-default{{ end }}">Active</a>
+                                                            <a href="/cns/company/{{ .company.Id }}/vehicle?state=inactive" type="button" class="btn {{ if eq .state "inactive" }}btn-primary{{ else }}btn-default{{ end }}">Inactive</a>
+                                                        </div>
+                                                    </span>
+                                                    <span class="pull-right">
+                                                        <a href="/cns/company/{{ .company.Id }}/vehicle/new">Add <i class="fa fa-plus"></i></a>
+                                                    </span>
+                                                    <br><br>
+                                                </div>
+                                                <table id="vehiclesTable" class="table table-bordered table-hover" width="100%" style="width: 100%;background-color:white;">
+                                                    <thead>
+                                                        <tr id="search">
+                                                            <th>unit</th>
+                                                            <th>year</th>
+                                                            <th>make</th>
+                                                            <th>vin</th>
+                                                            <th>gvwr</th>
+                                                            <th>gcwr</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Unit #</th>
+                                                            <th>Year</th>
+                                                            <th>Make</th>
+                                                            <th>VIN #</th>
+                                                            <th>GVWR</th>
+                                                            <th>GCWR</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {{ $company := .company }}
+                                                        {{ range $vehicle := .vehicles }}
+                                                            <tr class="clickable" data-url="/cns/company/{{ $company.Id }}/vehicle/{{ $vehicle.Id }}">
+                                                                <td>{{ $vehicle.UnitNumber }}</td>
+                                                                <td>{{ $vehicle.Year }}</td>
+                                                                <td>{{ $vehicle.Make }}</td>
+                                                                <td>{{ $vehicle.VIN }}</td>
+                                                                <td>{{ $vehicle.GVW }}</td>
+                                                                <td>{{ $vehicle.GCR }}</td>
+                                                            </tr>
+                                                        {{ end }}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div id="view" class="col-lg-4">
+                                                <h1 class="clearfix">
+                                                    <button class="btn btn-primary btn-xs pull-right" id="editButton">Edit</button>
+                                                </h1>
+                                                <table class="table table-condensed" style="margin-bottom:0;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><b>Insurance Company</b></td>
+                                                            <td>{{ .company.InsuranceCompany }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Policy Number</b></td>
+                                                            <td>{{ .company.InsurancePolicyNum }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>NAIC #</b></td>
+                                                            <td>{{ .company.InsuranceNaic }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Effective Date</b></td>
+                                                            <td>{{ .company.InsuranceEffectiveDate }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Expiration Date</b></td>
+                                                            <td>{{ .company.InsuranceExpirationDate }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div id="edit" class="col-lg-4 hide">
+                                                <form id="edit" action="/cns/company" method="post">
+                                                    <h1 class="clearfix">
+                                                        <button type="button" class="btn btn-danger btn-xs pull-right" id="cancelButton" >Cancel</button>
+                                                    </h1>
+                                                    <table class="table table-condensed" style="margin-bottom:0;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><b>Insurance Company</b></td>
+                                                                <td><input type="text" class="form-control" name="insuranceCompany" value="{{ .company.InsuranceCompany }}" placeholder="Insurance Company"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Policy Number</b></td>
+                                                                <td><input type="text" class="form-control" name="insurancePolicyNum" value="{{ .company.InsurancePolicyNum }}" placeholder="Policy Number"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>NAIC #</b></td>
+                                                                <td><input type="text" class="form-control" name="insuranceNaic" value="{{ .company.InsuranceNaic }}" placeholder="NAIC #"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Effective Date</b></td>
+                                                                <td>
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control datepicker" name="insuranceEffectiveDate" value="{{ .company.InsuranceEffectiveDate }}" placeholder="Effective Date">
+                                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Expiration Date</b></td>
+                                                                <td>
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control datepicker" name="insuranceExpirationDate" value="{{ .company.InsuranceExpirationDate }}" placeholder="Expiration Date">
+                                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <button class="btn btn-success btn-block">Save</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <input type="hidden" name="id" value="{{ .company.Id }}">
+                                                    <input type="hidden" name="from" value="vehicle">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+        <!-- Main Content Ends -->
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        <script src="/static/datatables/jquery.dataTables.min.js"></script>
+        <script src="/static/datatables/dataTables.bootstrap.js"></script>
+        <script src="/static/js/confirm.js" charset="utf-8"></script>
+        <script src="/static/datatables/custom.js" charset="utf-8"></script>
+
+        <script src="/static/timepicker/bootstrap-datepicker.js"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+
+            // jQuery('.datepicker').datepicker();
+
+            $('.datepicker').datepicker().on('changeDate', function(e) {
+                $(this).datepicker('hide');
+            });
+
+            var table = $('#vehiclesTable').DataTable({
+                "lengthMenu":[5,10,15,20],
+                //"dom": 'lrtip',
+                "columnDefs": [
+                    { "orderable": false, "targets": [2,3] },
+                    { "name": "unit",     "targets": 0 },
+                    { "name": "year",     "targets": 1 },
+                    { "name": "make",     "targets": 2 },
+                    { "name": "vin",      "targets": 3 },
+                    { "name": "gvwr",     "targets": 4 },
+                    { "name": "gcwr",     "targets": 5 }
+                ]
+            });
+
+            $('button#editButton').click(function() {
+                $('div#view').addClass('hide');
+                $('div#edit').removeClass('hide');
+            });
+
+            $('#cancelButton').click(function() {
+                $('div#edit').addClass('hide');
+                $('div#view').removeClass('hide');
+                $('form#edit')[0].reset();
+            });
+
+        </script>
+
+  </body>
+</html>

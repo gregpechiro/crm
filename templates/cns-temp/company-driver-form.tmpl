@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!-- sweet alerts -->
+
+        <!-- DataTables -->
+        <link href="/static/datatables/data-tables-bootstrap.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+
+        <title>Driver Forms</title>
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Driver: {{ if .driver.Id }}{{ .driver.FirstName }} {{ .driver.LastName}}{{ else }}NEW{{ end }}
+                            {{ if .driver.Id }}{{ if .driver.CompanyId }}<a href="/cns/company/{{ .driver.CompanyId }}/driver" class="pull-right return">Return to Customer</a>{{ end }}{{ end }}
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li><a class="view"  href="/cns/company/{{ .driver.CompanyId }}/driver/{{ .driver.Id }}">Information</a></li>
+                                    <li class="active"><a class="tab" data-table="docsTable" href="">Forms</a></li>
+                                    <li><a class="tab" href="/cns/company/{{ .driver.CompanyId }}/driver/{{ .driver.Id }}/file">Files</a></li>
+                                </ul>
+
+                                <div class="tabPane clearfix">
+                                    <div class="profile-desk">
+
+                                        <div class="col-lg-4">
+                            				<h2>Add Documents</h2>
+                            				<div id="docs" class="list-group">
+                            					{{ range $dqf := .dqfs }}
+                                                    <p>
+                                                        DQF{{ index $dqf 0 }} - {{ index $dqf 1 }}
+                            							<button id="addDoc" data-added="0" data-docId="{{ index $dqf 0 }}" class="btn-default btn btn-xs pull-right check">
+                            								<i class="fa fa-check"></i>
+                            							</button>
+                            						</p>
+                            					{{ end }}
+                                                <p>
+                            						<form id="documentForm" class="text-center" method="post" action="/driver/document">
+                            							<input type="hidden"  id="docIds" name="docIds">
+                                                        <input type="hidden" name="id" value="{{ .driver.Id }}">
+                                                        <input type="hidden" name="redirect" value="/cns/company/{{ .driver.CompanyId }}/driver/{{ .driver.Id }}/form">
+                                                        <div class="form-group">
+                                                            <button id="done" class="btn btn-md btn-primary btn-block" type="submit" disabled="disabled">
+                                                                Please Select Documents
+                                                            </button>
+                                                        </div>
+                            						</form>
+                                                </p>
+                            				</div>
+                                		</div>
+                                        <div class="col-lg-8">
+                                            <div class="table-responsive">
+                                                <table id="formsTable" width="100%" style="width: 100%" class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr id="search">
+                                                            <th>dqf</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>DQF</th>
+                                                            <th>Complete</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {{ $driver := .driver }}
+                                                        {{ range $doc := .docs }}
+                                                            <tr class="clickable" data-url="/document/{{ $doc.Id }}" >
+                                                                <td>{{ $doc.DocumentId }}</td>
+                                                                <td>{{ $doc.Complete }}</td>
+                                                                <td class="text-center"><a data-message="Are you sure you would like to delete this document?" data-color="red" data-url="/document/del/{{ $driver.Id }}/{{ $doc.Id }}" class="confirm-action btn btn-danger btn-xs" data-type="warning">Delete</a></td>
+                                                            </tr>
+                                                        {{ end }}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+            <form id="delete-form" class="hide" action="" method="post">
+                <input name="redirect" value="/cns/company/{{ .driver.CompanyId }}//driver/{{ .driver.Id}}/form">
+            </form>
+
+        </section>
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        <script src="/static/dropzone/dropzone.min.js"></script>
+        <script src="/static/datatables/jquery.dataTables.min.js"></script>
+        <script src="/static/datatables/dataTables.bootstrap.js"></script>
+        <script src="/static/js/confirm.js" charset="utf-8"></script>
+        <script src="/static/datatables/custom.js" charset="utf-8"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script>
+
+            var table = $('#formsTable').DataTable({
+                "lengthMenu":[5,10,15,20],
+                //"dom": 'lrtip',
+                "columnDefs": [
+                    { "orderable": false, "targets": [1,2] },
+                    { "name": "dqf",      "targets": 0 }
+                ]
+            });
+
+            var docId = [];
+			$('button[id="addDoc"]').click(function() {
+                var b = $(this);
+                if (b.attr('data-added') == '0') {
+					docId.push(b.attr('data-docId'));
+                    b.removeClass('btn-default');
+                    b.addClass('btn-success');
+					b.attr('data-added', '1');
+					$('button[id="done"]').removeAttr('disabled');
+					$('button[id="done"]').text('Add Documents To Driver');
+				} else {
+                    var idx = docId.indexOf(b.attr('data-docId'));
+                    if (idx > -1) {
+                        docId.splice(idx, 1);
+                    }
+                    b.removeClass('btn-success');
+					b.addClass('btn-default');
+					b.attr('data-added', '0');
+					if(docId.length < 1) {
+						$('button[id="done"]').attr('disabled', 'disabled');
+						$('button[id="done"]').text('Please Select Documents');
+					}
+				}
+			});
+
+            $('button[id="done"]').click(function(e){
+				e.preventDefault();
+                $('input#docIds').val(docId.join(','));
+                $('form#documentForm').submit();
+			});
+
+            confirm.yes = function(btn) {
+                $('form#delete-form').attr('action', btn.attr('data-url'));
+                $('form#delete-form').submit();
+                // $('<form method="post" action="' + btn.attr('data-url') + '"><input name="redirect" value="/cns/company/{{ .driver.CompanyId }}//driver/{{ .driver.Id}}/form"></form>').submit();
+            }
+
+        </script>
+
+    </body>
+</html>

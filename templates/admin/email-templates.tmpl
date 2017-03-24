@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {{ template "head.tmpl" . }}
+
+        <!-- tinymce wysiwyg -->
+		<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+		<script>
+			tinymce.init({
+				selector:'textarea',
+				plugins: [
+					"autolink lists link",
+					"searchreplace visualblocks code",
+					"insertdatetime media table contextmenu paste textcolor"
+				],
+				toolbar: "styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | link forecolor backcolor",
+				image_list: "/admin/image"
+			});
+		</script>
+		<!-- tinymce wysiwyg -->
+
+        <title>Email Templates</title>
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-12">
+    					<form role="form" method="post" action="/admin/template">
+                            <div class="col-lg-6">
+        						<div class="form-group">
+        							<label>Emails</label>
+        							<select class="form-control" id="whichEmail">
+        							    <option value="new">New</option>
+                                        {{ $emailTemplate := .emailTemplate }}
+                                        {{ range $emailTemp := .emailTemplates }}
+                                            <option value="{{ $emailTemp.Id }}"{{ if eq $emailTemp.Id $emailTemplate.Id}} selected{{ end }}>{{ $emailTemp.Name }}</option>
+                                        {{ end }}
+        							</select>
+        						</div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" id="title" name="name" class="form-control" placeholder="Name" required="true" value="{{ .emailTemplate.Name }}"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+        						<div class="form-group">
+        							<label>Email</label>
+        							<textarea id="body" name="body" class="form-control" placeholder="Email" rows="30" style="resize:none;">{{ if .emailTemplate.Body }}{{ .emailTemplate.Body }}{{ else }}<div style="margin: 25px;"><div style="width: 600px; margin: 0px auto; background-color: #f5f6f5; border: 1px solid #dddddd; -moz-border-radius: 3px; -webkit-border-radius: 3px;"><div style="padding-left: 27px; padding-right: 27px; padding-bottom: 27px;"><div style="border: 0px solid #999999; margin-top: 25px; padding: 15px;"><h3>&nbsp;</h3><hr/><p style="text-align: center;">**If you received this email in error, please delete it; we apologize for the inconvenience.</p></div></div></div></div>{{ end }}
+                                    </textarea>
+        						</div>
+                            </div>
+                            <div class="col-lg-3">
+                                <button class="btn btn-success btn-block">Save</button>
+                            </div>
+                            <input type="hidden" name="id" value="{{ .emailTemplate.Id }}">
+    					</form>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        {{ template "scripts.tmpl" . }}
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+            $('select#whichEmail').change(function() {
+                var id = $('select#whichEmail').val();
+                if (id == 'new') {
+                    window.location.href = '/admin/template';
+                    return
+                }
+                window.location.href = '/admin/template/' + id;
+                return
+            });
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,38 @@
+<aside class="left-panel {{ if .session.collapse }}collapsed{{ end }}">
+    <div class="logo">
+        <div class="logo-expanded">
+            <img src="/static/img/cns-logo.png" style="background-color:#edf0f0; padding:5px;" class="img-responsive nav-label">
+        </div>
+
+        <!-- <a class="logo-expanded">
+            <span class="nav-label">CNS Internal</span>
+        </a> -->
+    </div>
+    <nav class="navigation" style="margin-top: 0;">
+        <ul class="list-unstyled">
+            <li>
+                <a id="collapse" class="navbar-toggle"><i class="fa fa-bars text-center"></i><span class="nav-label">Collapse</span></a>
+            </li>
+            <li>
+                <a href="/cns/company"><i class="fa fa-building-o text-center"></i><span class="nav-label">Customer</span></a>
+            </li>
+            {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                <li>
+                    <a href="/admin/employee"><i class="fa fa-users text-center"></i><span class="nav-label">Employee</span></a>
+                </li>
+                <li>
+                    <a href="/admin/task/all"><i class="fa fa-tasks text-center"></i><span class="nav-label">Tasks</span></a>
+                </li>
+            {{ end }}
+            <li>
+                <a href="/cns"><i class="fa fa-user text-center"></i><span class="nav-label">My Account</span></a>
+            </li>
+            <li>
+                <a id="saveHome"><i class="fa fa-floppy-o text-center"></i><span class="nav-label">Save Landing Page</span></a>
+            </li>
+            <li>
+                <a href="/logout"><i class="fa fa-sign-out text-center"></i><span class="nav-label">Logout</span></a>
+            </li>
+        </ul>
+    </nav>
+</aside>

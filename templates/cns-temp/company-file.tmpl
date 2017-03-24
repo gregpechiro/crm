@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!-- JSTree CDN CSS Import -->
+    	<!-- ===================== -->
+    	<link href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" rel="stylesheet" />
+        <link href="/static/dropzone/dropzone.css" rel="stylesheet" type="text/css" />
+
+        <title>Customer Files</title>
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Company: {{ .company.Name }}
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li><a href="/cns/company/{{ .company.Id }}">Customer Center</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/service">Service</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/vehicle">Vehicles</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/driver">Drivers</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/form">Forms</a></li>
+                                    <li class="active"><a>Files</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/notification">Notifications</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/feature">Features</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/violation">Stats</a></li>
+                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                        <li><a href="/admin/company/{{ .company.Id }}/task/today">Tasks</a></li>
+                                    {{ end }}
+                                </ul>
+
+                                <div class="tabPane clearfix">
+                                    <div class="profile-desk">
+                                        <div class="col-lg-offset-1 col-lg-10 col-xl-offset-2 col-xl-8">
+                                            <div id="filetree"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+        <!-- Main Content Ends -->
+
+        <div class="modal fade" id="newFileModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">New File</h4>
+                    </div>
+                    <div class="modal-body clearfix">
+                        <form action="/company/{{ .company.Id }}/upload" method="post" class="dropzone" id="dropzone">
+                            <div class="fallback">
+                                <input name="file" type="file" multiple />
+                            </div>
+                            <input type="hidden" name="id" value="{{ .company.Id }}">
+                            <input type="hidden" id="filePath" name="path">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="newFolderModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">New Folder</h4>
+                    </div>
+                    <div class="modal-body clearfix">
+                        <form class="form-horizontal" action="/company/{{ .company.Id }}/mkdir" method="post">
+                            <div class="form-group">
+                                <label class="control-label col-xs-2">Name</label>
+                                <div class="col-xs-10">
+                                    <input type="text" class="form-control" name="folder">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button class="btn btn-primary btn-block">Add</button>
+                                </div>
+                            </div>
+                            <input id="folderPath" type="hidden" name="path">
+                            <input type="hidden" name="redirect" value="/cns/company/{{ .company.Id }}/file">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/dropzone/dropzone.min.js"></script>
+
+        <script src="/static/js/flash.js" charset="utf-8"></script>
+
+    	<!-- JSTree CDN JS Import -->
+    	<!-- ======================== -->
+    	<script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+    	<script>
+            var t;
+            $(document).ready(function() {
+                $('#filetree').on('select_node.jstree', function(e, data) {
+
+                    var evt = window.event || e;
+                    var button = evt.which || evt.button;
+                    if ( button != 1 ) {
+                        return;
+                    }
+
+                    var n = data.node;
+                    if (n.type === 'dir') {
+                        if (t.is_closed(n)) {
+                            t.open_node(n);
+                        } else {
+                            t.close_node(n);
+                        }
+                        return;
+                    }
+                    window.open('/company/{{ .company.Id }}/file?path=' + n.id);
+                }).on('move_node.jstree', function(e, data) {
+                    var frm = data.node.id;
+                    var to  = data.parent + '/' + data.node.text;
+                    if (frm !== to) {
+                        var form = $('<form method="post" class="hide" action="/company/{{ .company.Id }}/file/move"><input name="redirect" value="/cns/company/{{ .company.Id }}/file"><input name="to" value="' + to + '"><input name="from" value="' + frm + '"><input name="type" value="mov"></form>')
+                        $('body').append(form);
+                        form.submit();
+                    }
+                }).jstree({
+                    "core" : {
+                        "multiple": false,
+                        "animation" : 0,
+                        "check_callback" : true,
+                        "themes" : {
+                            "stripes" : true
+                        },
+                        "data" : {
+                            "url" : function(node) {
+                                if (node.id == '#') {
+                                    return "/company/{{ .company.Id }}/all-files";
+                                }
+                                return "/company/{{ .company.Id }}/all-files?path=" + node.id;
+                            },
+                            "data" : function (node) {
+                                return node.id == "#" ? {} : { "id" : node.id }
+                            }
+                        }
+                    },
+                    "types": {
+                        "#": {
+                            "max_children" : 1,
+                            "valid_children" : ["dir", "file"]
+                        },
+                        "dir" : {
+                            "icon" : "glyphicon glyphicon-folder-open",
+                            "valid_children" : ["dir", "file"]
+                        },
+                        "file" : {
+                            "icon" : "glyphicon glyphicon-file",
+                            "valid_children" : []
+                        }
+                    },
+                    "contextmenu" : {
+                        items : {
+                            "new" : {
+                                "separator_before"  : false,
+                                "separator_after"   : true,
+                                "label"             : "New",
+                                "action"            : false,
+                                "submenu" :{
+                                    "create_file" : {
+                                        "label" : "File",
+                                        action : function (obj) {
+                                            var n = t.get_node(obj.reference[0].id);
+                                            while (n.type !== 'dir' && n.id !== '#') {
+                                                n = t.get_node(n.parent);
+                                            }
+                                            $('input#filePath').val(n.id);
+                                            $('div#newFileModal').modal('show');
+                                        }
+                                    },
+                                    "create_folder" : {
+                                        "seperator_before" : false,
+                                        "seperator_after" : false,
+                                        "label" : "Folder",
+                                        action : function (obj) {
+                                            var n = t.get_node(obj.reference[0].id);
+                                            while (n.type !== 'dir' && n.id !== '#') {
+                                                n = t.get_node(n.parent);
+                                            }
+                                            $('input#folderPath').val(n.id);
+                                            $('div#newFolderModal').modal('show');
+                                        }
+                                    }
+                                }
+                            },
+                            "rename": {
+                                "separator_before"  : false,
+                                "separator_after"   : false,
+                                "label"             : "Rename",
+                                "action"            : function(obj) {
+                                    var n = t.get_node(obj.reference[0].id);
+                                    var old_name = n.text;
+                                    t.edit(n, 0, function(node, status, cancel) {
+                                        if (old_name == node.text) {
+                                            return
+                                        }
+                                        var frm = node.id;
+                                        var to  = node.parent + '/' + node.text;
+                                        if (frm !== to) {
+                                            var form = $('<form method="post" class="hide" action="/company/{{ .company.Id }}/file/move"><input name="redirect" value="/cns/company/{{ .company.Id }}/file"><input name="to" value="' + to + '"><input name="from" value="' + frm + '"><input name="type" value="renam"></form>')
+                                            $('body').append(form);
+                                            form.submit();
+                                        }
+                                    });
+                                }
+                            },
+                            "delete" : {
+                                "separator_before"  : false,
+                                "separator_after"   : false,
+                                "label"             : "Delete",
+                                "action"            : function(obj) {
+                                    var n = t.get_node(obj.reference[0].id);
+                                    var msg = 'Are you sure you would like to delete this file?';
+                                    if (n.type === 'dir') {
+                                        msg = 'Are you sure you would like to delete this folder and ALL of it\'s contents?';
+                                    }
+                                    swal({
+                                        title: '',
+                                        text: msg,
+                                        type: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: 'red',
+                                        confirmButtonText: "Yes",
+                                        closeOnConfirm: false
+                                    }, function(){
+                                        var form = $('<form method="post" class="hide" action="/company/{{ .company.Id }}/file/del"><input name="redirect" value="/cns/company/{{ .company.Id }}/file"><input name="path" value="' + n.id + '"></form>')
+                                        $('body').append(form);
+                                        form.submit();
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    "plugins" : [
+                        "contextmenu", "dnd", "search",
+                        "state", "types", "wholerow"
+                    ]
+                });
+                t = $('#filetree').jstree();
+            });
+
+            Dropzone.options.dropzone = false;
+            var myDropzone = new Dropzone('#dropzone', {
+                createImageThumbnails: false,
+                filesizeBase: 1024,
+                // uploadMultiple: true,
+                init: function() {
+                    this.on('success', function(file, resp) {
+                        if (resp.error) {
+                            setErrorFlash(resp.msg);
+                            location.reload();
+                        }
+                        return
+                    });
+                    this.on('queuecomplete', function(file, resp) {
+                        setSuccessFlash('Successfully uploaded file(s)');
+                        location.reload();
+                        return
+                    });
+                },
+            });
+    	</script>
+    </body>
+</html>

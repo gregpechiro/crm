@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+
+        <title>Tasks</title>
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="lead">
+                            Home
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li><a href="/cns">Dashboard</a></li>
+                                    <li class="active"><a>Tasks</a></li>
+                                </ul>
+
+                                <div class="tabPane clearfix">
+                                    <ul class="nav nav-tabs">
+                                        <li {{ if eq .page "today" }}class="active"{{ end }}><a class="tab stat-tab" href="/cns/task/today">Today's Tasks</a></li>
+                                        <li {{ if eq .page "overdue" }}class="active"{{ end }}><a class="tab stat-tab" href="/cns/task/overdue">Overdue Tasks</a></li>
+                                        <li {{ if eq .page "incomplete" }}class="active"{{ end }}><a class="tab stat-tab" href="/cns/task/incomplete">Incomplete Tasks</a></li>
+                                        <li {{ if eq .page "complete" }}class="active"{{ end }}><a class="tab stat-tab" href="/cns/task/complete">Complete Tasks</a></li>
+                                    </ul>
+                                    <br>
+                                    <div class="profile-desk">
+                                        <table id="tasksTable" class="table table-bordered table-hover" width="100%" style="width: 100%;background-color:white;">
+                                            <thead>
+                                                <tr id="search">
+                                                    <th>company</th>
+                                                    <th>assignedTime</th>
+                                                    <th>startedTime</th>
+                                                    <th>completedTime</th>
+                                                    <th>complete</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Company</th>
+                                                    <th>Assigned Date</th>
+                                                    <th>Started Time</th>
+                                                    <th>Completed Time</th>
+                                                    <th>Complete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{ range $task := .tasks }}
+                                                    <tr class="click" style="cursor:pointer;" data-task='{{ toBase64Json $task }}'>
+                                                        <td><a style="color:#f58220;" href="/cns/company/{{ $task.CompanyId }}">{{ $task.CompanyName }}</a></td>
+                                                        <td>{{ prettyDate $task.AssignedTime }}</td>
+                                                        <td>{{ prettyDateTime $task.StartedTime }}</td>
+                                                        <td>{{ prettyDateTime $task.CompletedTime }}</td>
+                                                        <td>{{ if $task.Complete }}Yes{{ else }}No{{ end }}</td>
+                                                    </tr>
+                                                {{ end }}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        <div class="modal fade" id="taskModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="taskModalTitle">Task</h4>
+                    </div>
+                    <div class="modal-body clearfix" id="taskModalBody">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label>Assign Date</label>
+                                <div id="assignedTime"></div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Company</label>
+                                <div id="company"></div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <div id="description"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="notes" class="row hide">
+                            <div class="col-lg-12">
+                                <label>Notes</label>
+                                <ul id="notes"></ul>
+                                <form method="post" id="taskNoteForm">
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="notes" rows="3"></textarea>
+                                    </div>
+                                    <button class="btn btn-primary">Add Note</button>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label>Started</label>
+                                <div id="startedTime"></div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Completed</label>
+                                <div id="completedTime"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {{ template "scripts.tmpl" . }}
+
+        {{ template "session.tmpl" . }}
+
+        <script src="/static/datatables/jquery.dataTables.min.js"></script>
+        <script src="/static/datatables/dataTables.bootstrap.js"></script>
+        <script src="/static/datatables/custom.js" charset="utf-8"></script>
+
+        <script type="text/javascript">
+            var table = $('#tasksTable').DataTable({
+                "lengthMenu":[5,10,15,20],
+                "columnDefs": [
+                    { "name": "assignedTime",   "targets": 0 },
+                    { "name": "startedTime",    "targets": 1 },
+                    { "name": "completedTime",  "targets": 2 },
+                    { "name": "complete",       "targets": 3 }
+                ]
+            });
+
+            $(document).on('click', 'tr.click', function() {
+                resetTaskModal();
+
+                var task = {};
+                try {
+                    task = JSON.parse(atob($(this).attr('data-task')));
+                } catch(err) {
+                    swal({
+                        title: 'Error',
+                        text: 'Error displaying task. PLease refresh the page and try again',
+                        type: 'warning',
+                        showConfirmButton: false
+                    });
+                    return
+                }
+
+                var date = new Date(task.assignedTime * 1000);
+                $('div#assignedTime').html(date.toLocaleDateString());
+                $('div#company').html('<a style="color:#f58220;" href="/cns/company/' + task.companyId + '">' + task.companyName + '</a>');
+                $('div#description').html(task.description);
+
+                var startHtml;
+                var completeHtml;
+                if (task.startedTime > 0) {
+                    console.log("in if");
+                    $('ul#notes').html(task.notes);
+                    $('form#taskNoteForm').attr('action', '/cns/task/' + task.id + '/note');
+                    $('div#notes').removeClass('hide');
+
+                    var startTime = new Date(task.startedTime * 1000);
+                    startHtml = startTime.toLocaleString();
+                    if (task.completedTime > 0) {
+                        var completedTime = new Date(task.completedTime * 1000);
+                        completeHtml = completedTime.toLocaleString();
+                    } else {
+                        completeHtml = '<form action="/cns/task/' + task.id + '/complete" method="post"><button class="btn btn-primary btn-xs">Complete Task</button></form>';
+                    }
+                } else {
+                    startHtml = '<form action="/cns/task/' + task.id + '/start" method="post"><button class="btn btn-primary btn-xs">Start Task</button></form>';
+                    completeHtml = "N/A";
+                }
+                $('div#startedTime').html(startHtml);
+                $('div#completedTime').html(completeHtml);
+                $('#taskModal').modal('show');
+
+            });
+
+            function resetTaskModal() {
+
+                $('div#assignedTime').html('');
+                $('div#company').html('');
+                $('div#description').html('');
+                $('ul#notes').html('')
+                $('form#taskNoteForm').attr('action', '');
+                $('div#startedTime').html('')
+                $('div#completedTime').html('')
+            }
+        </script>
+
+    </body>
+</html>

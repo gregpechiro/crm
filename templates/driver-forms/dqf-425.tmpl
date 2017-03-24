@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ template "dqf-head.tmpl" . }}
+        <title>DQF-425</title>
+    </head>
+    <body>
+
+        <div class="container-fluid">
+
+            {{ template "dqf-warning.tmpl" . }}
+
+            <div class="row">
+        		<div class="col-xs-12">
+        			<legend>Drug and Alcohol Pre-Employment Statement<span class="pull-right">DQF 425</span></legend>
+        			<div>
+                        49 CFR 40.25 (j) – As the employer you must also ask the employee whether he or she has tested positive, or refused to test, on
+                        any pre-employment drug or alcohol test administered by an employer to which the employee applied for, but did not obtain,
+                        safety-sensitive transportation work covered by DOT agency drug and alcohol testing rules during the past two years. If the
+                        employee admits that he or she had a positive test or a refusal to test, you must not use the employee to perform safety-
+                        sensitive functions for you, until and unless the employee documents successful completion of the return-to-duty process. (See
+                        49 CFR 40.25 (b) (5) and (e))
+        			</div>
+        			<hr/>
+        		</div>
+
+                <div class="col-xs-12">
+                    <div class="form-horizontal">
+        		        <div class="form-group">
+        		            <label class="col-xs-2 control-label">Applicant Name</label>
+                            <div class="col-xs-6">
+                                <input type="text" name="applicant-name" class="form-control" value="{{ .driver.FirstName }} {{ .driver.LastName }}">
+                            </div>
+        		            <label class="col-xs-1 control-label">ID #</label>
+                            <div class="col-xs-3">
+                                <input type="text" name="applicant-id" class="form-control" value="{{ .driver.EmployeeId }}">
+                            </div>
+        		        </div>
+        		    </div>
+        		</div>
+        	</div>
+        	<div class="row">
+        		<div class="col-xs-12">
+                    <br>
+                    <p>
+        			    The applicant is required by 49 CFR 40.25 (j) to respond to the following questions:
+                    </p>
+                    <ol>
+                        <li>
+                            Have you tested positive, or refused to test, on any pre-employment drug or alcohol test
+                            administered by an employer to which you applied for, but did not obtain, safety-sensitive
+                            transportation work covered by DOT agency drug and alcohol testing rules during the past two
+                            years?
+                            <br>
+                            <label class="radio-inline">
+                                <input type="radio" name="tested-possitive" value="yes"> Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="tested-possitive" value="no"> No
+                            </label>
+                        </li>
+                        <li>
+                            If you answered yes, to the above question, can you provide proof that you have successfully
+                            completed the DOT return-to-duty requirements?
+                            <br>
+                            <label class="radio-inline">
+                                <input type="radio" name="return-to-duty" value="yes"> Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="return-to-duty" value="no"> No
+                            </label>
+                        </li>
+                    </ol>
+        		</div>
+        	</div>
+        	<div class="row">
+        		<div class="col-xs-12">
+                    <br>
+                    <p>
+                        I certify that all of the above information is true and correct.
+                    </p>
+        			<div class="form-horizontal">
+        				<div class="form-group">
+        					<label class="control-label left col-xs-2">Applicant's Signature:</label>
+        					<div class="col-xs-6">
+        						<input type="text" name="applicant-signature" class="form-control input-sm" required>
+        					</div>
+        					<label class="control-label left col-xs-1">Date:</label>
+        					<div class="col-xs-3">
+        						<input type="text" name="applicant-signature-date" class="form-control input-sm" required>
+        					</div>
+        				</div>
+        			</div>
+        		</div>
+        	</div>
+
+        </div>
+
+        {{ template "dqf-scripts.tmpl" . }}
+
+    </body>
+</html>

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!-- sweet alerts -->
+
+        <link href="/static/timepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
+        <style media="screen">
+            label.radio-label {
+                width:68px;
+            }
+            .form-horizontal .control-label.left {
+                text-align: left;
+            }
+        </style>
+        <title>Customer Services</title>
+    </head>
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Company: {{ if .company.Id}}{{ .company.Name }}{{ else }}NEW{{ end }}
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li><a href="/cns/company/{{ .company.Id }}">Customer Center</a></li>
+                                    <li class="active"><a>Service</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/vehicle" >Vehicles</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/driver">Drivers</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/form">Forms</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/file">Files</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/notification">Notifications</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/feature">Features</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/violation">Stats</a></li>
+                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                        <li><a href="/admin/company/{{ .company.Id }}/task/today">Tasks</a></li>
+                                    {{ end }}
+                                </ul>
+
+                                <div class="tabPane clearfix">
+                                    <div class="profile-desk">
+                                        <form action="/cns/company/{{ .company.Id }}/service" method="post">
+                                            <input type="hidden" name="companyId" value="{{ .company.Id }}">
+                                            {{ if .companyService.Id }}
+                                                <input type="hidden" name="id" value="{{ .companyService.Id }}">
+                                            {{ end }}
+                                            <div class="col-lg-3">
+
+                                                <div class="form-group">
+                                                    <label><u>Fuel Tax Program</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxTrue">
+                                                            <input type="radio" id="fuelTaxTrue" name="fuelTaxProgram" value="true" {{ if .companyService.FuelTaxProgram }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxFalse">
+                                                            <input type="radio" id="fuelTaxFalse" name="fuelTaxProgram" value="false" {{ if not .companyService.FuelTaxProgram }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxCompTrue">
+                                                            <input type="radio" id="fuelTaxCompTrue" name="fuelTaxProgramComplete" value="true" {{ if .companyService.FuelTaxProgramComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxCompFalse">
+                                                            <input type="radio" id="fuelTaxCompFalse" name="fuelTaxProgramComplete" value="false" {{ if not .companyService.FuelTaxProgramComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label><u>NY Fuel Tax Program</u></label>
+                                                    <br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxNYTrue">
+                                                            <input type="radio" id="fuelTaxNYTrue" name="fuelTaxNY" value="true" {{ if .companyService.FuelTaxNY }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxNYFalse">
+                                                            <input type="radio" id="fuelTaxNYFalse" name="fuelTaxNY" value="false" {{ if not .companyService.FuelTaxNY }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxNYCompTrue">
+                                                            <input type="radio" id="fuelTaxNYCompTrue" name="fuelTaxNYComplete" value="true" {{ if .companyService.FuelTaxNYComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxNYCompFalse">
+                                                            <input type="radio" id="fuelTaxNYCompFalse" name="fuelTaxNYComplete" value="false" {{ if not .companyService.FuelTaxNYComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label><u>KY Fuel Tax Program</u></label>
+                                                    <br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxKYTrue">
+                                                            <input type="radio" id="fuelTaxKYTrue" name="fuelTaxKY" value="true" {{ if .companyService.FuelTaxKY }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxKYFalse">
+                                                            <input type="radio" id="fuelTaxKYFalse" name="fuelTaxKY" value="false" {{ if not .companyService.FuelTaxKY }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxKYCompTrue">
+                                                            <input type="radio" id="fuelTaxKYCompTrue" name="fuelTaxKYComplete" value="true" {{ if .companyService.FuelTaxKYComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxKYCompFalse">
+                                                            <input type="radio" id="fuelTaxKYCompFalse" name="fuelTaxKYComplete" value="false" {{ if not .companyService.FuelTaxKYComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label><u>NM Fuel Tax Program</u></label>
+                                                    <br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxNMTrue">
+                                                            <input type="radio" id="fuelTaxNMTrue" name="fuelTaxNM" value="true" {{ if .companyService.FuelTaxNM }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxNMFalse">
+                                                            <input type="radio" id="fuelTaxNMFalse" name="fuelTaxNM" value="false" {{ if not .companyService.FuelTaxNM }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxNMCompTrue">
+                                                            <input type="radio" id="fuelTaxNMCompTrue" name="fuelTaxNMComplete" value="true" {{ if .companyService.FuelTaxNMComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="fuelTaxNMCompFalse">
+                                                            <input type="radio" id="fuelTaxNMCompFalse" name="fuelTaxNMComplete" value="false" {{ if not .companyService.FuelTaxNMComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label><u>2290</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="2290True">
+                                                            <input type="radio" id="2290True" name="twentyTwoNinety" value="true" {{ if .companyService.TwentyTwoNinety }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="2290False">
+                                                            <input type="radio" id="2290False" name="twentyTwoNinety" value="false" {{ if not .companyService.TwentyTwoNinety }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="2290CompTrue">
+                                                            <input type="radio" id="2290CompTrue" name="twentyTwoNinetyComplete" value="true" {{ if .companyService.TwentyTwoNinetyComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="2290CompFalse">
+                                                            <input type="radio" id="2290CompFalse" name="twentyTwoNinetyComplete" value="false" {{ if not .companyService.TwentyTwoNinetyComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label><u>Apportion</u></label>
+                                                    <br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="apportionTrue">
+                                                            <input type="radio" id="apportionTrue" name="apportion" value="true" {{ if .companyService.Apportion }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="apportionFalse">
+                                                            <input type="radio" id="apportionFalse" name="apportion" value="false" {{ if not .companyService.Apportion }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="apportionOneCompTrue">
+                                                            <input type="radio" id="apportionOneCompTrue" name="apportionOneComplete" value="true" {{ if .companyService.ApportionOneComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="apportionOneCompFalse">
+                                                            <input type="radio" id="apportionOneCompFalse" name="apportionOneComplete" value="false" {{ if not .companyService.ApportionOneComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker" name="apportionDateOne" value="{{ .companyService.ApportionDateOne }}" placeholder="Apportion Date 1">
+                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    </div>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="apportionTwoCompTrue">
+                                                            <input type="radio" id="apportionTwoCompTrue" name="apportionTwoComplete" value="true" {{ if .companyService.ApportionTwoComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="apportionTwoCompFalse">
+                                                            <input type="radio" id="apportionTwoCompFalse" name="apportionTwoComplete" value="false" {{ if not .companyService.ApportionTwoComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker" name="apportionDateTwo" value="{{ .companyService.ApportionDateTwo }}" placeholder="Apportion Date 2">
+                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label><u>Driver File Management</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="driverFileManagementTrue">
+                                                            <input type="radio" id="driverFileManagementTrue" name="driverFileManagement" value="true" {{ if .companyService.DriverFileManagement }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="driverFileManagementFalse">
+                                                            <input type="radio" id="driverFileManagementFalse" name="driverFileManagement" value="false" {{ if not .companyService.DriverFileManagement }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="driverFileManagementCompTrue">
+                                                            <input type="radio" id="driverFileManagementCompTrue" name="driverFileManagementComplete" value="true" {{ if .companyService.DriverFileManagementComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="driverFileManagementCompFalse">
+                                                            <input type="radio" id="driverFileManagementCompFalse" name="driverFileManagementComplete" value="false" {{ if not .companyService.DriverFileManagementComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker" name="driverFileManagementDate" value="{{ .companyService.DriverFileManagementDate }}" placeholder="Driver File Management Date">
+                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label><u>DOT Update</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="dotUpdateTrue">
+                                                            <input type="radio" id="dotUpdateTrue" name="dOTUpdate" value="true" {{ if .companyService.DOTUpdate }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="dotUpdateFalse">
+                                                            <input type="radio" id="dotUpdateFalse" name="dOTUpdate" value="false" {{ if not .companyService.DOTUpdate }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="dotUpdateCompTrue">
+                                                            <input type="radio" id="dotUpdateCompTrue" name="dOTUpdateComplete" value="true" {{ if .companyService.DOTUpdateComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="dotUpdateCompFalse">
+                                                            <input type="radio" id="dotUpdateCompFalse" name="dOTUpdateComplete" value="false" {{ if not .companyService.DOTUpdateComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker" name="dOTUpdateDate" value="{{ .companyService.DOTUpdateDate }}" placeholder="DOT Update Date">
+                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label><u>Drug Consortium</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="drugConsortiumTrue">
+                                                            <input type="radio" id="drugConsortiumTrue" name="drugConsortium" value="true" {{ if .companyService.DrugConsortium }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="drugConsortiumFalse">
+                                                            <input type="radio" id="drugConsortiumFalse" name="drugConsortium" value="false" {{ if not .companyService.DrugConsortium }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="drugConsortiumCompTrue">
+                                                            <input type="radio" id="drugConsortiumCompTrue" name="drugConsortiumComplete" value="true" {{ if .companyService.DrugConsortiumComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="drugConsortiumCompFalse">
+                                                            <input type="radio" id="drugConsortiumCompFalse" name="drugConsortiumComplete" value="false" {{ if not .companyService.DrugConsortiumComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker" name="drugConsortiumDate" value="{{ .companyService.DrugConsortiumDate }}" placeholder="Drug Consortium Date">
+                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group">
+                                                    <label><u>UCR</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="UCRTrue">
+                                                            <input type="radio" id="UCRTrue" name="uCR" value="true" {{ if .companyService.UCR }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="UCRFalse">
+                                                            <input type="radio" id="UCRFalse" name="uCR" value="false" {{ if not .companyService.UCR }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="UCRCompTrue">
+                                                            <input type="radio" id="UCRCompTrue" name="uCRComplete" value="true" {{ if .companyService.UCRComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="UCRCompFalse">
+                                                            <input type="radio" id="UCRCompFalse" name="uCRComplete" value="false" {{ if not .companyService.UCRComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label><u>Log Auditing</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="logAuditingTrue">
+                                                            <input type="radio" id="logAuditingTrue" name="logAuditing" value="true" {{ if .companyService.LogAuditing }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="logAuditingFalse">
+                                                            <input type="radio" id="logAuditingFalse" name="logAuditing" value="false" {{ if not .companyService.LogAuditing }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="logAuditingCompTrue">
+                                                            <input type="radio" id="logAuditingCompTrue" name="logAuditingComplete" value="true" {{ if .companyService.LogAuditingComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="logAuditingCompFalse">
+                                                            <input type="radio" id="logAuditingCompFalse" name="logAuditingComplete" value="false" {{ if not .companyService.LogAuditingComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label><u>CSA Service</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="cSAServiceTrue">
+                                                            <input type="radio" id="cSAServiceTrue" name="cSAService" value="true" {{ if .companyService.CSAService }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="cSAServiceFalse">
+                                                            <input type="radio" id="cSAServiceFalse" name="cSAService" value="false" {{ if not .companyService.CSAService }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="cSAServiceCompTrue">
+                                                            <input type="radio" id="cSAServiceCompTrue" name="cSAServiceComplete" value="true" {{ if .companyService.CSAServiceComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="cSAServiceCompFalse">
+                                                            <input type="radio" id="cSAServiceCompFalse" name="cSAServiceComplete" value="false" {{ if not .companyService.CSAServiceComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker" name="cSAServiceDate" value="{{ .companyService.CSAServiceDate }}" placeholder="CSA Service Date">
+                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label><u>IFTA Renewal</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="iftaRenewalTrue">
+                                                            <input type="radio" id="iftaRenewalTrue" name="iFTARenewal" value="true" {{ if .companyService.IFTARenewal }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="iftaRenewalFalse">
+                                                            <input type="radio" id="iftaRenewalFalse" name="iFTARenewal" value="false" {{ if not .companyService.IFTARenewal }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="iftaRenewalCompTrue">
+                                                            <input type="radio" id="iftaRenewalCompTrue" name="iFTARenewalComplete" value="true" {{ if .companyService.IFTARenewalComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="iftaRenewalCompFalse">
+                                                            <input type="radio" id="iftaRenewalCompFalse" name="iFTARenewalComplete" value="false" {{ if not .companyService.IFTARenewalComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label><u>NY</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="nyTrue">
+                                                            <input type="radio" id="nyTrue" name="nY" value="true" {{ if .companyService.NY }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="nyFalse">
+                                                            <input type="radio" id="nyFalse" name="nY" value="false" {{ if not .companyService.NY }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="nyCompTrue">
+                                                            <input type="radio" id="nyCompTrue" name="nYComplete" value="true" {{ if .companyService.NYComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="nyCompFalse">
+                                                            <input type="radio" id="nyCompFalse" name="nYComplete" value="false" {{ if not .companyService.NYComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker" name="nYDate" value="{{ .companyService.NYDate }}" placeholder="NY Date">
+                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label><u>GPS</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="gpsTrue">
+                                                            <input type="radio" id="gpsTrue" name="gPS" value="true" {{ if .companyService.GPS }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="gpsFalse">
+                                                            <input type="radio" id="gpsFalse" name="gPS" value="false" {{ if not .companyService.GPS }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="gpsCompTrue">
+                                                            <input type="radio" id="gpsCompTrue" name="gPSComplete" value="true" {{ if .companyService.GPSComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="gpsCompFalse">
+                                                            <input type="radio" id="gpsCompFalse" name="gPSComplete" value="false" {{ if not .companyService.GPSComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker" name="gPSDate" value="{{ .companyService.GPSDate }}" placeholder="GPS Date">
+                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label><u>Training</u></label><br>
+                                                    <label class="radio-label">Required</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="trainingTrue">
+                                                            <input type="radio" id="trainingTrue" name="training" value="true"{{ if .companyService.Training }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="trainingFalse">
+                                                            <input type="radio" id="trainingFalse" name="training" value="false"{{ if not .companyService.Training }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <br>
+                                                    <label class="radio-label">Completed</label>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="trainingCompTrue">
+                                                            <input type="radio" id="trainingCompTrue" name="trainingComplete" value="true"{{ if .companyService.TrainingComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label class="cr-styled" for="trainingCompFalse">
+                                                            <input type="radio" id="trainingCompFalse" name="trainingComplete" value="false"{{ if not .companyService.TrainingComplete }}checked{{ end }}>
+                                                            <i class="fa"></i>
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker" name="trainingDate" value="{{ .companyService.TrainingDate }}" placeholder="Training Date">
+                                                        <span class="input-group-addon calander"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    </div>
+                                                </div>
+
+                                                <button class="btn btn-success btn-block">Update</button>
+                                            </div>
+                                            <input type="hidden" name="id" value="{{ .company.Id }}">
+                                            <input type="hidden" name="from" value="service">
+                                        </form>
+                                    </div>
+                                    <!--<div class="col-lg-12">
+                                        <form action="/cns/company/{{ .company.Id }}/service" method="post">
+                                            <button class="btn btn-primary">Create Notifications</button>
+                                        </form>
+                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+        <!-- Main Content Ends -->
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        <script src="/static/js/confirm.js" charset="utf-8"></script>
+        <script src="/static/timepicker/bootstrap-datepicker.js"></script>
+        <script src="/static/bootstrap-inputmask/bootstrap-inputmask.min.js" type="text/javascript"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+            $('.datepicker').datepicker(
+                {
+                    startView: 'months',
+                    maxViewMode: 'months',
+                    format:'mm/dd',
+                    titleFormat: "MM"
+                }
+            ).on('changeDate', function(e) {
+                $(this).datepicker('hide');
+            });
+        </script>
+
+  </body>
+</html>

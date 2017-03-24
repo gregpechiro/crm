@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!--Morris Chart CSS -->
+        <link rel="stylesheet" href="/static/morris/morris.css">
+        <!-- DataTables -->
+        <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+        <title>All Comments</title>
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <p class="lead">
+                            Comments
+                        </p>
+
+                        <table id="comments" class="table-responsive table table-bordered table-hover" width="100%" style="width: 100%;background-color:white;" width="100%">
+                            <thead>
+                                <tr id="search">
+                                    <th></th>
+                                    <th>url</th>
+                                    <th>name</th>
+                                </tr>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>URL</th>
+                                    <th>Page</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ range $comment := .comments }}
+                                    <tr style="cursor: pointer;" class="comment" data-body="{{ $comment.Body }}" data-title="{{ $comment.Page }}">
+                                        <td>{{ $comment.Id }}</td>
+                                        <td>{{ $comment.Url }}</td>
+                                        <td>{{ $comment.Page }}</td>
+                                    </tr>
+                                {{ end }}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        <div class="modal fade" id="commentModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="commentModalTitle"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="commentModalBody"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/datatables/jquery.dataTables.min.js"></script>
+        <script src="/static/datatables/dataTables.bootstrap.js"></script>
+        <script src="/static/datatables/custom.js" charset="utf-8"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+
+            var table = $('#comments').DataTable({
+                "lengthMenu":[10,15,20],
+                //"dom": 'lrtip',
+                "columnDefs": [
+                    { "name": "url","targets": 1 },
+                    { "name": "page","targets": 2 },
+                ]
+            });
+
+            $('tr.comment').click(function() {
+                $('#commentModalTitle').text('Comment for ' + $(this).attr('data-title'));
+                $('#commentModalBody').text($(this).attr('data-body'));
+                $('#commentModal').modal('show');
+            });
+
+
+        </script>
+
+    </body>
+</html>

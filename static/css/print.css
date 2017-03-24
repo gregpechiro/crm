@@ -1,0 +1,29 @@
+@media print {
+
+    .no-print {
+        display: none !important;
+    }
+
+    .panel-primary>.panel-heading {
+        border-color: #2f2f2f;
+        background-color: #fff;
+    }
+
+    .show-print {
+        display: block !important;
+    }
+
+    @page {
+        size: auto;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .panel-collapse {
+            display: block;
+    }
+
+    .panel-heading {
+        display: none !important;
+    }
+}

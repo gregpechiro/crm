@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <title>Customer Import Drivers</title>
+    </head>
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Company: {{ if .company.Id}}{{ .company.Name }}{{ else }}NEW{{ end }}
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li><a href="/cns/company/{{ .company.Id }}">Customer Center</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/service">Service</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/vehicle">Vehicles</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/driver">Drivers</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/form">Forms</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/file">Files</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/notification">Notifications</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/feature">Features</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/violation">Stats</a></li>
+                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                        <li><a href="/admin/company/{{ .company.Id }}/task/today">Tasks</a></li>
+                                    {{ end }}
+                                </ul>
+                                <div class="tabPane clearfix">
+                                    <div class="profile-desk">
+                                        <form class="" action="/cns/company/{{ .company.Id }}/driver/convert" method="post">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label">First Name</label>
+                                                        <select class="form-control" name="FirstName">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Last Name</label>
+                                                        <select class="form-control" name="LastName">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label">Email</label>
+                                                        <select class="form-control" name="Auth.Email">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Employee Id</label>
+                                                        <select class="form-control" name="EmployeeId">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Phone</label>
+                                                        <select class="form-control" name="Phone">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Street</label>
+                                                        <select class="form-control" name="Address.Street">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">City</label>
+                                                        <select class="form-control" name="Address.City">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">County</label>
+                                                        <select class="form-control" name="Address.County">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">State</label>
+                                                        <select class="form-control" name="Address.State">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Zip</label>
+                                                        <select class="form-control" name="Address.Zip">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Date of Birth</label>
+                                                        <select class="form-control" name="DOB">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Emergency Contact Name</label>
+                                                        <select class="form-control" name="EmergencyContactName">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Emergency Contact Phone</label>
+                                                        <select class="form-control" name="EmergencyContactPhone">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">License Number</label>
+                                                        <select class="form-control" name="LicenseNum">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">License State</label>
+                                                        <select class="form-control" name="LicenseState">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">License Expire</label>
+                                                        <select class="form-control" name="LicenseExpire">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Medical Card Expire</label>
+                                                        <select class="form-control" name="MedCardExpiry">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">MVR Expire</label>
+                                                        <select class="form-control" name="MVRExpiry">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Review Expire</label>
+                                                        <select class="form-control" name="ReviewExpiry">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">180 Expire</label>
+                                                        <select class="form-control" name="OneEightyExpiry">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Hire Date</label>
+                                                        <select class="form-control" name="HireDate">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Termination Date</label>
+                                                        <select class="form-control" name="TermDate">
+                                                            <option value=""></option>
+                                                            {{ range $column := .head }}
+                                                                <option value="{{ $column }}">{{ $column }}</option>
+                                                            {{ end  }}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="file" value="{{ .file }}">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <button class="btn btn-block btn-primary">Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        <script src="/static/js/confirm.js" charset="utf-8"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+        </script>
+
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<div class="no-print">
+    <br>
+    <div style="text-align:right;">
+        {{ if eq .session.ROLE "DEVELOPER" "ADMIN" "EMPLOYEE" }}
+            <button class="btn btn-primary" type="button" name="button" id="save" >Save</button>
+            <!-- <button class="btn btn-success" type="button" name="button" id="complete" >Complete</button> -->
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="text" id="archive-name" name="archive-name" class="form-control" placeholder="Name">
+            <button class="btn btn-default btn-success" id="archive" type="button">Archive</button>
+
+        {{ else }}
+            <a class="btn btn-primary" href="/customer/form">Back</a>
+        {{ end }}
+    </div>
+    <br/><br/>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="/static/js/input-tools.js"></script>
+<script type="text/javascript">
+    {{ if eq .session.ROLE "COMPANY" }}
+        $('input, select, textarea').prop('disabled', true);
+    {{ end }}
+</script>
+<script>
+    var data = {{ if .document.Data }}{{ .document.Data }}{{ else }}{}{{ end }}
+    var redirect = '/cns/company/{{ .company.Id }}/form';
+    var url = '/document';
+    var id = '{{ .document.Id }}';
+    var companyId = '{{ .company.Id }}';
+    var docName = '{{ .document.Name }}'
+</script>
+
+<script src="/static/js/document.js"></script>
+<script src="//cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js" charset="utf-8"></script>
+<!-- <script src="/static/pdf/jsPdf.js" charset="utf-8"></script> -->
+<script src="//cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js" charset="utf-8"></script>
+<script src="/static/pdf/state-pdf.js" charset="utf-8"></script>
+<script src="/static/sweet-alert/sweet-alert.min.js"></script>
+<script src="/static/js/flash.js"></script>
+{{ template "alerts.tmpl" . }}
+{{ template "session.tmpl" . }}

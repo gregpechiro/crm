@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!-- sweet alerts -->
+        
+
+        <title>Comment</title>
+
+    </head>
+
+    <body>
+        <div class="wraper container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                	<div class="col-lg-offset-3 col-lg-6 text-center">
+                        <form action="/comment" method="post">
+                            <label>Comments, Notes, or Suggestions for the {{ .name }} page</label>
+                            <div class="form-group">
+                                <textarea name="body" rows="8" class="form-control" style="resize:none;"></textarea>
+                            </div>
+                            <input type="hidden" name="url" value="{{ .return }}">
+                			<input type="hidden" name="page" value="{{ .page }}">
+                            <button class="btn btn-primary btn-block">Submit</button>
+                        </form>
+                	</div>
+                </div>
+            </div>
+        </div>
+
+        {{ template "scripts.tmpl" . }}
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        {{ template "session.tmpl" . }}
+
+    </body>
+</html>

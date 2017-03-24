@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!--calendar css-->
+        <link href="/static/fullcalendar/fullcalendar.css" rel="stylesheet" />
+        <link href="/static/css/bootstrap-reset.css" rel="stylesheet">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.1/themes/smoothness/jquery-ui.css">
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+
+            <div class="wraper container-fluid">
+                <!--
+		        <div class="page-title">
+                    <h3 class="title">Calendar</h3>
+                </div>
+		        -->
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-lg-2 col-md-3">
+                        <h4>Add New Event</h4>
+                        <form method="post" id="add_event_form">
+            			    <div class="form-group">
+                                <input id="event_name" type="text" name="name" value="" class="form-control" placeholder="Event Name..."/>
+            			    </div>
+            			    <div class="form-group">
+            		            	<input id="event_date" type="text" name="date" value="" class="form-control" placeholder="Select Date..."/>
+            			    </div>
+            			    <button type="submit" class="btn btn-md btn-success btn-block">Add Event</button>
+            			</form>
+			            <!--
+                        <div id='external-events'>
+                            <h4 class="m-b-15">Draggable Events</h4>
+                            <div class='fc-event'>My Event 1</div>
+                            <div class='fc-event'>My Event 2</div>
+                            <div class='fc-event'>My Event 3</div>
+                            <div class='fc-event'>My Event 4</div>
+                            <div class='fc-event'>My Event 5</div>
+                        </div>
+                        <label class="cr-styled form-label m-t-20" for='drop-remove'>
+                            <input type="checkbox" id='drop-remove'>
+                            <i class="fa"></i>
+                            Drop&nbsp;&&nbsp;Remove
+                        </label>
+                        -->
+                    </div>
+                    <div id='calendar' class="col-md-9 col-lg-10"></div>
+                </div>
+                <!-- page end-->
+            </div> <!-- END Wraper -->
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery-ui-1.10.1.custom.min.js"></script>
+
+        <script src="/static/fullcalendar/moment.min.js"></script>
+        <script src="/static/fullcalendar/fullcalendar.min.js"></script>
+
+        <!--dragging calendar event-->
+        <script src="/static/fullcalendar/calendar-init.js"></script>
+
+        <!-- init datepicker -->
+        <script>
+            var format=$.datepicker.ATOM;
+            $(function(){
+                $("#event_date").datepicker({
+                    changeMonth:true,
+                    changeYear:true,
+                    dateFormat:format
+                });
+            });
+        </script>
+
+    </body>
+</html>

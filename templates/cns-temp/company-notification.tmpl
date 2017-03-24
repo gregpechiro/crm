@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+
+        <link href="/static/toggles/toggles.css" rel="stylesheet" />
+
+        <title>Customer Notifications</title>
+    </head>
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Company: {{ .company.Name }}
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li><a href="/cns/company/{{ .company.Id }}">Customer Center</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/service">Service</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/vehicle">Vehicles</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/driver">Drivers</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/form">Forms</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/file">Files</a></li>
+                                    <li class="active"><a>Notifications</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/feature">Features</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/violation">Stats</a></li>
+                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                        <li><a href="/admin/company/{{ .company.Id }}/task/today">Tasks</a></li>
+                                    {{ end }}
+                                </ul>
+
+                                <div class="tabPane clearfix">
+                                    <div class="profile-desk">
+
+                                        <div class="col-lg-offset-1 col-lg-10">
+                                            <span class="pull-right">
+                                                <a style="cursor:pointer;" data-toggle="modal" data-target="#notificationModal" >Add <i class="fa fa-plus"></i></a>
+                                            </span>
+                                            <table id="notificationTable" width="100%" style="width: 100%;" class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Created</th>
+                                                        <th>Title</th>
+                                                        <th>Body</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{ $company := .company }}
+                                                    {{ range $notification := .notifications }}
+                                                        <tr>
+                                                            <td>{{ idTime $notification.Id }}</td>
+                                                            <td>{{ $notification.Title }}</td>
+                                                            <td>{{ $notification.Body }}</td>
+                                                            <td>{{ if $notification.Manual }}Created Manually{{ else }}Created Automatically{{ end }}</td>
+                                                            <td class="text-center"><a data-message="Are you sure you would like to delete this notification?" data-color="red" data-url="/cns/company/{{ $company.Id }}/notification/{{ $notification.Id }}" class="confirm-action btn btn-danger btn-xs" data-type="warning">Delete</a></td>
+                                                        </tr>
+                                                    {{ end }}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="notificationModalTitle">Add Notification</h4>
+                    </div>
+                    <div id="notificationModalBody" class="modal-body">
+                        <form id="notificationModalForm" class="form-horizontal" action="/cns/company/{{ .company.Id }}/notification" method="post">
+                            <div class="form-group">
+                                <label class="control-label col-lg-2" style="text-align: left">Title</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" type="text" name="title">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-12">Body</label>
+                                <div class="col-lg-12">
+                                    <textarea class="form-control" name="body" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <button id="stateFormButton" class="btn btn-primary btn-block">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="delete-form" class="hide" action="" method="post"></form>
+
+        <!-- Main Content Ends -->
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        <script src="/static/datatables/jquery.dataTables.min.js"></script>
+        <script src="/static/datatables/dataTables.bootstrap.js"></script>
+        <script src="/static/js/confirm.js" charset="utf-8"></script>
+        <script src="/static/datatables/custom.js" charset="utf-8"></script>
+
+        <script src="/static/toggles/toggles.min.js"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+
+            var table = $('#notificationTable').DataTable({
+                "lengthMenu":[5,10,15,20],
+                "pageLength": 10,
+                //"dom": 'lrtip',
+                "columnDefs": [
+                    { "orderable": false, "targets": [2,3,4] }
+                ]
+            });
+
+            confirm.yes = function(btn) {
+                $('form#delete-form').attr('action', btn.attr('data-url'));
+                $('form#delete-form').submit();
+                // $('<form method="post" action="' + btn.attr('data-url') + '"></form>').submit();
+            }
+
+        </script>
+
+  </body>
+</html>

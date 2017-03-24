@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <style media="screen">
+            .panel {
+                border: 1px solid #ddd;
+            }
+            .violationTable {
+                margin-bottom: 0;
+            }
+            .violationHead th {
+                text-align: center;
+            }
+            .nav.nav-tabs+.tab-content, .tabs-vertical-env .tab-content {
+                margin: 0;
+                padding-bottom: 0;
+                padding-left: 0;
+                padding-right: 0;
+                padding-top: 10;
+            }
+            .violationTabs {
+                border-color: #ddd;
+                border-style: solid;
+                border-width: 0 1px 1px 1px;
+            }
+            .nav.nav-tabs>li>a.stat-tab {
+                padding: 15px 30px;
+                font-size: 16px;
+            }
+        </style>
+
+        <title>Customer Safer</title>
+    </head>
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Company: {{ .company.Name }}
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li><a href="/cns/company/{{ .company.Id }}">Customer Center</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/service">Service</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/vehicle">Vehicles</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/driver">Drivers</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/form">Forms</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/file">Files</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/notification">Notifications</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/feature">Features</a></li>
+                                    <li class="active"><a>Stats</a></li>
+                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                        <li><a href="/admin/company/{{ .company.Id }}/task/today">Tasks</a></li>
+                                    {{ end }}
+                                </ul>
+
+                                <div class="tabPane clearfix">
+                                    <ul class="nav nav-tabs">
+                                        <li><a class="tab stat-tab" href="/cns/company/{{ .company.Id }}/violation">Violations</a></li>
+                                        <li class="active"><a class="tab stat-tab">Safer Table</a></li>
+                                    </ul>
+                                    <div class="profile-desk">
+                                        <h1 class="clearfix">
+                                            <div class="pull-right">
+                                                <small>Information as of: {{ .safer.LastUpdate }}</small>
+                                            </div>
+                                        </h1>
+                                        <div class="text-center ">
+
+                                            <ul class="nav nav-tabs nav-justified">
+                                                <li class="active">
+                                                    <a href="#inspections" data-toggle="tab" aria-expanded="true">
+                                                        Inspections
+                                                    </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="#crashes" data-toggle="tab" aria-expanded="true">
+                                                        Crashes
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content">
+
+                                                <div class="tab-pane active" id="inspections">
+                                                    <table class="table violationTable">
+                                                        <thead id="inspectionsHead"></thead>
+                                                        <tbody id="inspectionsBody"></tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="tab-pane" id="crashes">
+                                                    <table class="table violationTable">
+                                                        <thead id="crashesHead"></thead>
+                                                        <tbody id="crashesBody"></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+
+        <!-- Main Content Ends -->
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+
+            var safer = {{ toJson .safer }};
+
+            $(document).ready(function() {
+                if (!safer.cache) {
+                    console.log("not cached");
+                    parseSafer(safer);
+                }
+                setSafer(safer);
+            });
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var desc = $($(e.target).attr('href')).find('td.violdesc');
+                if (desc.width() > 350) {
+                    desc.addClass('col-xs-5');
+                }
+            });
+
+            function parseSafer(safer) {
+                var data = '';
+                try {
+                    data = atob(safer['inspectionsBody']);
+                } catch(e) {
+                    console.log(e);
+                    safer['inspectionsBody'] = 'ERROR';
+                    safer['inspectionsHead'] = 'ERROR';
+                    safer['crashesBody'] = 'ERROR';
+                    safer['crashesHead'] = 'ERROR';
+                    return
+                }
+                var page = $(data);
+
+                var inspectionsTable = $(page.find('table[summary="Inspections"]')[0]);
+                if (inspectionsTable !== undefined && inspectionsTable !== '' && inspectionsTable.length > 0) {
+                    var rows = inspectionsTable.find('tr');
+                    var head = '<tr></tr>' + rows[0].outerHTML;
+                    var body = '';
+                    for (var i = 1; i < rows.length; i++) {
+                        body += rows[i].outerHTML;
+                    }
+                    if (head !== undefined && head !== '') {
+                        head = head.replace(/  /g, '');
+                        head = head.replace(/\n/g, '');
+                        head = head.replace(/\t/g, '');
+                    } else {
+                        head = '';
+                    }
+
+                    if (body !== undefined && body !== ''){
+                        body = body.replace(/  /g, '');
+                        body = body.replace(/\n/g, '');
+                        body = body.replace(/\t/g, '');
+                    } else {
+                        body = '';
+                    }
+                }
+                safer['inspectionsHead'] = head;
+                safer['inspectionsBody'] = body;
+
+                var crashesTable = $(page.find('table[summary="Crashes"]')[0]);
+                if (crashesTable !== undefined && crashesTable !== '' && crashesTable.length > 0) {
+
+                    var rows = crashesTable.find('tr');
+                    var head = '<tr></tr>' + rows[0].outerHTML;
+                    var body = '';
+                    for (var i = 1; i < rows.length; i++) {
+                        body += rows[i].outerHTML;
+                    }
+                    if (head !== undefined && head !== '') {
+                        head = head.replace(/  /g, '');
+                        head = head.replace(/\n/g, '');
+                        head = head.replace(/\t/g, '');
+                    } else {
+                        head = '';
+                    }
+
+                    if (body !== undefined && body !== ''){
+                        body = body.replace(/  /g, '');
+                        body = body.replace(/\n/g, '');
+                        body = body.replace(/\t/g, '');
+                    } else {
+                        body = '';
+                    }
+                }
+                safer['crashesHead'] = head;
+                safer['crashesBody'] = body;
+
+
+                if (JSON.stringify(safer).length > 8000) {
+                    console.log('too large to cache');
+                    console.log(JSON.stringify(safer).length);
+                    return
+                }
+                $.ajax({
+                    url: '/customer/{{ .company.Id }}/safer/rest',
+                    type: 'POST',
+                    data: safer,
+                    success: function() {
+                        console.log('success');
+                    },
+                    error: function(e) {
+                        console.log(e);
+                    }
+                });
+            }
+
+            function setSafer(safer) {
+                for (var key in safer) {
+                    if (safer.hasOwnProperty(key) && key !== 'lastUpdate') {
+                        if (safer[key] === 'ERROR') {
+                            if (key.indexOf('Body') !== -1) {
+                                $('#' + key).html('<tr><td>Error retrieving safer</td></tr>');
+                            }
+                        } else if (safer[key] !== '' && safer[key] !== undefined) {
+                            $('#' + key).html(safer[key]);
+                            if (key.indexOf('Head') !== -1) {
+                                $('#' + key).addClass('violationHead');
+                            }
+                        } else {
+                            if (key.indexOf('Body') !== -1) {
+                                $('#' +key).html('<tr><td>No safer information to display.</td></tr>');
+                            }
+                        }
+                    }
+                }
+            }
+
+        </script>
+
+  </body>
+</html>

@@ -1,0 +1,10 @@
+db
+db_backup.tar
+.tern-project
+crm
+upload
+crm.tar
+.floo
+.flooignore
+db_backup
+export/

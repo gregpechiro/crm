@@ -1,0 +1,46 @@
+<aside class="left-panel {{ if .session.collapse }}collapsed{{ end }}">
+    <div class="logo">
+        <a class="logo-expanded">
+            <span class="nav-label">{{ .company.Name }}</span>
+        </a>
+    </div>
+    <nav class="navigation" style="margin-top: 0;">
+        <ul class="list-unstyled">
+            <li>
+                <a id="collapse" class="navbar-toggle"><i class="fa fa-bars text-center"></i><span class="nav-label">Collapse</span></a>
+            </li>
+            <li>
+                <a href="/customer"><i class="fa fa-home text-center"></i><span class="nav-label">Home</span></a>
+            </li>
+            <li>
+                <a href="/customer/info"><i class="fa fa-building text-center"></i><span class="nav-label">Information</span></a>
+            </li>
+            <li>
+                <a href="/customer/violation"><i class="fa fa-building text-center"></i><span class="nav-label">Stats</span></a>
+            </li>
+            {{ if .companyFeatures.Vehicles }}
+            <li>
+                <a href="/customer/vehicle"><i class="fa fa-truck text-center"></i><span class="nav-label">Vehicles</span></a>
+            </li>
+            {{ end }}
+            {{ if .companyFeatures.Drivers }}
+            <li>
+                <a href="/customer/driver"><i class="fa fa-users text-center"></i><span class="nav-label">Drivers</span></a>
+            </li>
+            {{ end }}
+            {{ if .companyFeatures.Forms }}
+            <li>
+                <a href="/customer/form"><i class="fa fa-clipboard text-center"></i><span class="nav-label">Forms</span></a>
+            </li>
+            {{ end }}
+            {{ if .companyFeatures.Files }}
+            <li>
+                <a href="/customer/file"><i class="fa fa-file-text text-center"></i><span class="nav-label">Files</span></a>
+            </li>
+            {{ end }}
+            <li>
+                <a href="/customer/logout"><i class="fa fa-sign-out text-center"></i><span class="nav-label">Logout</span></a>
+            </li>
+        </ul>
+    </nav>
+</aside>

@@ -1,0 +1,50 @@
+<script src="/static/js/session-monitor.js" charset="utf-8"></script>
+<script src="/static/js/cookie.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+
+    var sessionLength = 60;
+    var preTimeoutWarning = 5;
+    var pingInterval = 1;
+
+    var logoutUrl = {{ if eq .session.ROLE "DEVELOPER" "ADMIN" "EMPLOYEE" }}'/logout'{{ else if eq .session.ROLE "COMPANY" }}'/customer/logout'{{ end }}
+    var timeoutUrl = {{ if eq .session.ROLE "DEVELOPER" "ADMIN" "EMPLOYEE" }}'/logout'{{ else if eq .session.ROLE "COMPANY" }}'/customer/logout'{{ end }}
+
+    // Configure and start the session timeout monitor
+    sessMon = sessionMonitor({
+        // Subtract 1 minute to ensure the backend doesn't expire the session first
+        sessionLifetime: (sessionLength - 1) * 60 * 1000,
+        timeBeforeWarning: preTimeoutWarning * 60 * 1000,
+        minPingInterval: pingInterval * 60 * 1000,
+        pingUrl: '/updateSession',
+        logoutUrl: logoutUrl,
+        timeoutUrl: timeoutUrl,
+        // The "mouseup" event was used instead of "click" because some of the
+        // inner elements on some pages have click event handlers that stop propagation.
+        activityEvents: 'keyup',
+        onbeforetimeout: function() {
+            sessionAlert();
+        },
+        onwarning: function() {
+            swal({
+                title: 'Your session is about to expire!',
+                text: 'Your session will expire in ' + Math.round(sessMon.timeBeforeWarning / 60 / 1000) + ' minutes.',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#33b86c',
+                confirmButtonText: 'Stay Logged In',
+                cancelButtonText: 'Log me out',
+                closeOnConfirm: true,
+                closeOnCancel: true
+            }, function(isConfirm){
+                if (isConfirm) {
+                    sessMon.extendsess();
+                } else {
+                    sessMon.logout();
+                }
+            });
+        }
+    });
+
+    window.sessMon = sessMon;
+</script>

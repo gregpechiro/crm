@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ template "dqf-head.tmpl" . }}
+        <title>DQF-500</title>
+    </head>
+    <body>
+
+        <div class="container-fluid">
+
+            {{ template "dqf-warning.tmpl" . }}
+
+            <div class="row">
+        		<div class="col-xs-12">
+        			<legend>Certification of Compliance with the Driver License Requirements<span class="pull-right">DQF 500</span></legend>
+        			<strong>
+        				§ 383.1
+        			</strong>
+        			<div class="col-xs-12">
+        				<div>
+        					The purpose of this part is to help reduce or prevent truck and bus accidents, fatalities, and injuries by requiring
+        					drivers to have a single commercial motor vehicle driver's license and by disqualifying drivers who operate commercial motor
+        					vehicles in an unsafe manner.
+        				</div>
+        				<div>
+        					(1) Prohibits a commercial motor vehicle driver from having more than one commercial motor vehicle driver's license
+        				</div>
+        				<div>
+        					(2) Requires a driver to notify the driver's current employer and the driver's State of domicile of certain convictions
+        				</div>
+        				<div>
+        					(3) Requires that a driver provide previous employment information when applying for employment as an operator
+        					of a commercial motor vehicle
+        				</div>
+        				<div>
+        					(4) Prohibits an employer from allowing a person with a suspended license to operate a commercial motor vehicle
+        				</div>
+        				<div>
+        					(5) Establishes periods of disqualification and penalties for those persons convicted of certain criminal and other
+        					offenses and serious traffic violations, or subject to any suspensions, revocations, or cancellations of certain driving privileges
+        				</div>
+        				<div>
+        					(6) Establishes testing and licensing requirements for commercial motor vehicle operators
+        				</div>
+        				<div>
+        					(7) Requires States to give knowledge and skills tests to all qualified applicants for commercial drivers' licenses
+        					which meet the Federal standard
+        				</div>
+        				<div>
+        					(8) Sets forth commercial motor vehicle groups and endorsements
+        				</div>
+        				<div>
+        					(9) Sets forth the knowledge and skills test requirements for the motor vehicle groups and endorsements
+        				</div>
+        				<div>
+        					(10) Sets forth the Federal standards for procedures, methods, and minimum passing scores for States and others to
+        					use in testing and licensing commercial motor vehicle operators
+        				</div>
+        				<div>
+        					(11) Establishes requirements for the State issued commercial license documentation.
+        				</div>
+        			</div>
+        		</div>
+        	</div>
+        	<div class="row">
+        		<div class="col-sm-12">
+        			<strong>
+        				§ 391.11
+        			</strong>
+        			<div class="col-xs-12">
+        				<div>
+        					(a) A person shall not drive a commercial motor vehicle unless he/she is qualified to drive a commercial motor
+        					vehicle. Except as provided in §391.63, a motor carrier shall not require or permit a person to drive a commercial motor
+        					vehicle unless that person is qualified to drive a commercial motor vehicle.
+        				</div>
+        				<div>
+        					(b) Except as provided in subpart G of this part, a person is qualified to drive a motor vehicle if he/she—
+        				</div>
+        				<div>
+        					(1) Is at least 21 years old
+        				</div>
+        				<div>
+        					(2) Can read and speak the English language sufficiently to converse with the general public, to understand
+        					highway traffic signs and signals in the English language, to respond to official inquiries, and to make entries on reports and
+        					records
+        				</div>
+        				<div>
+        					(3) Can, by reason of experience, training, or both, safely operate the type of commercial motor vehicle he/she drives
+        				</div>
+        				<div>
+        					(4) Is physically qualified to drive a commercial motor vehicle in accordance with subpart E—Physical Qualifications
+        					and Examinations of this part
+        				</div>
+        				<div>
+        					(5) Has a currently valid commercial motor vehicle operator's license issued only by one State or jurisdiction
+        				</div>
+        				<div>
+        					(6) Has prepared and furnished the motor carrier that employs him/her with the list of violations or the certificate as
+        					required by §391.27
+        				</div>
+        				<div>
+        					(7) Is not disqualified to drive a commercial motor vehicle under the rules in §391.15
+        				</div>
+        				<div>
+        					(8) Has successfully completed a driver's road test and has been issued a certificate of driver's road test in
+        					accordance with §391.31, or has presented an operator's license or a certificate of road test which the motor carrier that
+        					employs him/her has accepted as equivalent to a road test in accordance with §391.33.
+        				</div>
+        			</div>
+        			<br/>
+                    <div class="page-break"><br></div>
+        			<div>Notes</div>
+        			<textarea name="applicants-notes" class="form-control input-sm" rows="3"></textarea>
+        		</div>
+        	</div>
+        	<div class="row">
+        		<div class="col-xs-12">
+        			<hr/>
+        			<div>
+        				I have read and been trained on the regulations of the Federal Motor Carrier Safety Association. I will comply with all
+        				guidelines and regulations set forth by the FMCSA.
+        			</div>
+        			<br/>
+        			<div class="form-horizontal">
+        				<div class="form-group">
+        					<label class="control-label left col-xs-2">Driver Name</label>
+        					<div class="col-xs-6">
+        						<input type="text" name="applicant-name" class="form-control input-sm" value="{{ .driver.FirstName}} {{ .driver.LastName }}" required>
+        					</div>
+        				</div>
+        				<div class="form-group">
+        					<label class="control-label left col-xs-2">Signature:</label>
+        					<div class="col-xs-6">
+        						<input type="text" name="applicant-agreement-signature" class="form-control input-sm" required>
+        					</div>
+        					<label class="control-label left col-xs-1">Date:</label>
+        					<div class="col-xs-3">
+        						<input type="text" name="applicant-agreement-signature-date" class="form-control input-sm" required>
+        					</div>
+        				</div>
+        				<div class="form-group">
+        					<label class="control-label left col-xs-2">Training Administrator's Name</label>
+        					<div class="col-xs-6">
+        						<input type="text" name="training-administrator-name" class="form-control input-sm" required>
+        					</div>
+        				</div>
+        				<div class="form-group">
+        					<label class="control-label left col-xs-2">Signature:</label>
+        					<div class="col-xs-6">
+        						<input type="text" name="training-administrator-agreement-signature" class="form-control input-sm" required>
+        					</div>
+        					<label class="control-label left col-xs-1">Date:</label>
+        					<div class="col-xs-3">
+        						<input type="text" name="training-administrator-agreement-date" class="form-control input-sm" required>
+        					</div>
+        				</div>
+        			</div>
+        		</div>
+        	</div>
+
+        </div>
+
+        {{ template "dqf-scripts.tmpl" . }}
+
+    </body>
+</html>

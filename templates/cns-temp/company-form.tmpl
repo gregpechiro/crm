@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <!-- sweet alerts -->
+
+        <!-- DataTables -->
+        <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+
+        <link href="/static/toggles/toggles.css" rel="stylesheet" />
+
+        <title>Customer Forms</title>
+    </head>
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Company: {{ if .company.Id}}{{ .company.Name }}{{ else }}NEW{{ end }}
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li><a href="/cns/company/{{ .company.Id }}">Customer Center</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/service">Service</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/vehicle">Vehicles</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/driver">Drivers</a></li>
+                                    <li class="active"><a>Forms</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/file">Files</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/notification">Notifications</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/feature">Features</a></li>
+                                    <li><a href="/cns/company/{{ .company.Id }}/violation">Stats</a></li>
+                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                        <li><a href="/admin/company/{{ .company.Id }}/task/today">Tasks</a></li>
+                                    {{ end }}
+                                </ul>
+
+                                <div class="tabPane clearfix">
+                                    <div class="profile-desk">
+                                        <div class="col-lg-3">
+                            				<h1>Add State Form</h1>
+                            				<div id="docs" class="list-group">
+                            					{{ range $form := .forms }}
+                                                    <p>
+                                                        {{ index $form 0 }}
+                                                        <button class="btn btn-success btn-xs pull-right add" data-name="{{ index $form 0 }}" data-vehicles="{{ index $form 1 }}" data-none="{{ index $form 2 }}">
+                                                            Add
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                            						</p>
+                            					{{ end }}
+                            				</div>
+                                		</div>
+                                        <div class="col-lg-9">
+                                            <table id="formsTable" width="100%" style="width: 100%;" class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr id="search">
+                                                        <th>form</th>
+                                                        <th></th>
+                                                        <th>
+
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Form</th>
+                                                        <th>Complete</th>
+                                                        <th>
+
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{ $company := .company }}
+                                                    {{ range $doc := .docs }}
+                                                        <tr class="clickable" data-url="/document/{{ $doc.Id }}">
+                                                            <td>{{ $doc.Name }}</td>
+                                                            <td>{{ $doc.Complete }}</td>
+                                                            <td class="text-center"><a data-message="Are you sure you would like to delete this document?" data-color="red" data-url="/document/del/{{ $company.Id }}/{{ $doc.Id }}" class="confirm-action btn btn-danger btn-xs" data-type="warning">Delete</a></td>
+                                                        </tr>
+                                                    {{ end }}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        <div class="modal fade" id="stateFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="stateFormModalTitle">Add Form</h4>
+                    </div>
+                    <div id="stateFormModalBody" class="modal-body">
+                        <div id="stateFormModalForm" class="form-horizontal">
+                        </div>
+                        <form id="stateFormModalForm" class="form-horizontal" action="/cns/company/{{ .company.Id }}/form" method="post">
+                            <input id="stateFormCompanyId" type="hidden" name="companyId" value="{{ .company.Id }}">
+                            <input id="stateFormVehicleIds" type="hidden" name="vehicleIds">
+                            <input id="stateFormName" type="hidden" name="name">
+                            <button id="stateFormButton" class="btn btn-primary btn-block">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="delete-form" class="hide" action="" method="post">
+            <input name="redirect" value="/cns/company/{{ .company.Id}}/form">
+        </form>
+
+        <!-- Main Content Ends -->
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        <script src="/static/datatables/jquery.dataTables.min.js"></script>
+        <script src="/static/datatables/dataTables.bootstrap.js"></script>
+        <script src="/static/js/confirm.js" charset="utf-8"></script>
+        <script src="/static/datatables/custom.js" charset="utf-8"></script>
+
+        <script src="/static/toggles/toggles.min.js"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+
+            var vIds = [];
+            {{ range $vehicle := .vehicles }}
+                vIds.push('{{$vehicle.Id}}');
+            {{ end }}
+
+            var table = $('#formsTable').DataTable({
+                "lengthMenu":[5,10,15,20],
+                //"dom": 'lrtip',
+                "columnDefs": [
+                    { "orderable": false, "targets": [1,2] },
+                    { "name": "form",   "targets": 0 }
+                ]
+            });
+
+            $('button.add').click(function() {
+                $('#stateFormModalTitle').text('Add ' + $(this).attr('data-name'));
+                $('#stateFormName').val($(this).attr('data-name'));
+                if ($(this).attr('data-vehicles') === 'ALL') {
+                    $('#stateFormVehicleIds').val(vIds);
+                    $('form#stateFormModalForm').submit();
+                    return;
+                }
+                var vehicles =+ $(this).attr('data-vehicles');
+                if (vehicles < 1) {
+                    $('form#stateFormModalForm').submit();
+                    return
+                }
+                for (var i = 0; i < vehicles; i++) {
+                    var v = $('<label class="control-label col-lg-4">Vehicle ' + (i + 1) + '</label>'+
+                        '<div class="form-group col-lg-8">'+
+                            '<select class="form-control vehicleIds">'+
+                                (($(this).attr('data-none') !== '' ) ? '<option value="">None</option>' : '') +
+                                {{ range $vehicle := .vehicles }}
+                                    '<option value="{{ $vehicle.Id }}">{{ $vehicle.VIN }}</option>' +
+                                {{ end }}
+                            '</select>'+
+                        '</div>');
+                    $('#stateFormModalForm').append(v);
+                }
+                $('#stateFormModal').modal();
+            });
+
+            $('#stateFormModal').on('hidden.bs.modal', function () {
+                $('#stateFormName').val('');
+                $('div#stateFormModalForm').html('');
+            });
+
+            $('#stateFormButton').click(function(e) {
+                e.preventDefault();
+
+                var selects = $('.vehicleIds');
+                if (selects.length > 0) {
+                    var vehicleIds = [];
+                    for (var i = 0; i < selects.length; i++) {
+                        var vid = selects[i].value;
+                        if (vid !== '') {
+                            vehicleIds.push(vid);
+                        }
+                    }
+                    $('#stateFormVehicleIds').val(vehicleIds);
+                }
+                $('form#stateFormModalForm').submit();
+            });
+
+            confirm.yes = function(btn) {
+                $('form#delete-form').attr('action', btn.attr('data-url'));
+                $('form#delete-form').submit();
+                // $('<form method="post" action="' + btn.attr('data-url') + '"></form>').submit();
+            }
+
+        </script>
+
+  </body>
+</html>

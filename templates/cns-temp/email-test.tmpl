@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {{ template "head.tmpl" . }}
+
+        <title>Email Test</title>
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form id="email" action="/admin/email/test" method="post">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Template</label>
+                                    <select class="form-control" name="template">
+                                        {{ range $template := .emailTemplates }}
+                                            <option value="{{ $template.Id }}">{{ $template.Name }}</option>
+                                        {{ end }}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <input type="text" name="from" class="form-control" placeholder="From" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Subject</label>
+                                    <input type="text" name="subject" class="form-control" placeholder="subject" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>To (email addresses separated by comma)</label>
+                                    <input type="text" id="to" name="to" class="form-control" placeholder="To" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <button class="btn btn-success btn-block">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        {{ template "scripts.tmpl" . }}
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+            $('form#email').submit(function(e) {
+                to = $('input#to').val();
+                to = to.replace(new RegExp(' ', 'g'), '')
+                $('input#to').val(to);
+            });
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <title>Home</title>
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="lead">
+                            Home
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li class="active"><a>Dashboard</a></li>
+                                    <li><a href="/cns/task/today">Tasks</a></li>
+                                </ul>
+                                <div class="tabPane clearfix">
+                                    <div class="profile-desk">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <h1 class="clearfix">
+                                                    My Information
+                                                </h1>
+
+                                                <table class="table table-condensed">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><b>First Name</b></td>
+                                                            <td>{{ .employee.FirstName }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Last Name</b></td>
+                                                            <td>{{ .employee.LastName }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Email</b></td>
+                                                            <td>{{ .employee.Email }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Phone</b></td>
+                                                            <td>{{ .employee.Phone }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Address</b></td>
+                                                            <td>{{ .employee.AddrHTML }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <h1>
+                                                    Automated Notifications
+                                                </h1>
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <button id="setCompNotify" class="btn btn-primary btn-block">Set Customer Service Notifications</button>
+                                                            <button id="resetCompNotify" class="btn btn-primary btn-block">Reset Customer Service Notifications</button>
+                                                            <button id="setDriverNotify" class="btn btn-primary btn-block">Set Driver Form Notifications</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <h1>My Notifications</h1>
+                                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                                    {{ range $i, $notification := .notifications }}
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="headingOne">
+                                                            <h4 class="panel-title">
+                                                                <a role="button" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#notification-{{ $i }}" aria-expanded="false" aria-controls="collapse-{{ $i }}">
+                                                                    {{ $notification.Title }}
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="notification-{{ $i }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ $i }}">
+                                                            <div class="panel-body">
+                                                                {{ $notification.Body }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {{ end }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        {{ template "scripts.tmpl" . }}
+
+        {{ template "session.tmpl" . }}
+
+        <script src="/static/js/global-notify.js" charset="utf-8"></script>
+    </body>
+</html>
