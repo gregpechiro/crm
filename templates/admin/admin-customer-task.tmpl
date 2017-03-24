@@ -4,40 +4,48 @@
 
         {{ template "head.tmpl" . }}
 
+        <!-- sweet alerts -->
+
+        <link href="/static/timepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
         <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
-        <link href="/static/timepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
 
-        <title>All Tasks</title>
-
+        <title>Customer Task</title>
     </head>
-
     <body>
 
         {{ template "side-nav.tmpl" . }}
 
+        <!--Main Content Start -->
         <section class="content">
 
             {{ template "nav.tmpl" . }}
 
             <div class="wraper container-fluid">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-sm-12">
+
                         <p class="lead">
-                            Tasks
+                            Customer: {{ if .customer.Id}}{{ .customer.Name }}{{ end }}
                         </p>
 
                         <div class="panel panel-default p-0">
                             <div class="panel-body p-0">
                                 <ul class="nav nav-tabs profile-tabs">
-                                    <li {{ if eq .page "all" }}class="active"{{ end }}><a class="tab stat-tab" href="/admin/task/all">All Tasks</a></li>
-                                    <li {{ if eq .page "today" }}class="active"{{ end }}><a class="tab stat-tab" href="/admin/task/today">Today's Tasks</a></li>
-                                    <li {{ if eq .page "overdue" }}class="active"{{ end }}><a class="tab stat-tab" href="/admin/task/overdue">Overdue Tasks</a></li>
-                                    <li {{ if eq .page "incomplete" }}class="active"{{ end }}><a class="tab stat-tab" href="/admin/task/incomplete">Incomplete Tasks</a></li>
-                                    <li {{ if eq .page "complete" }}class="active"{{ end }}><a class="tab stat-tab" href="/admin/task/complete">Complete Tasks</a></li>
+                                    <li><a href="/customer/{{ .customer.Id }}">Customer Center</a></li>
+                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                        <li class="active"><a>Tasks</a></li>
+                                    {{ end }}
                                 </ul>
 
                                 <div class="tabPane clearfix">
+                                    <ul class="nav nav-tabs">
+                                        <li {{ if eq .page "today" }}class="active"{{ end }}><a class="tab stat-tab" href="/admin/customer/{{ .customer.Id }}/task/all">Today's Tasks</a></li>
+                                        <li {{ if eq .page "overdue" }}class="active"{{ end }}><a class="tab stat-tab" href="/admin/customer/{{ .customer.Id }}/task/overdue">Overdue Tasks</a></li>
+                                        <li {{ if eq .page "incomplete" }}class="active"{{ end }}><a class="tab stat-tab" href="/admin/customer/{{ .customer.Id }}/task/incomplete">Incomplete Tasks</a></li>
+                                        <li {{ if eq .page "complete" }}class="active"{{ end }}><a class="tab stat-tab" href="/admin/customer/{{ .customer.Id }}/task/complete">Complete Tasks</a></li>
+                                    </ul>
+                                    <br>
                                     <div class="profile-desk">
                                         <div class="row">
                                             <div class="col-lg-12 clearfix">
@@ -48,9 +56,8 @@
                                         <table id="tasksTable" class="table table-bordered table-hover" width="100%" style="width: 100%;background-color:white;">
                                             <thead>
                                                 <tr id="search">
-                                                    <th>createdTime</th>
+                                                    <th>createdDate</th>
                                                     <th>employee</th>
-                                                    <th>customer</th>
                                                     <th>assignedTime</th>
                                                     <th>startedTime</th>
                                                     <th>completedTime</th>
@@ -59,7 +66,6 @@
                                                 <tr>
                                                     <th>Created Date</th>
                                                     <th>Employee</th>
-                                                    <th>Customer</th>
                                                     <th>Assigned Date</th>
                                                     <th>Started Time</th>
                                                     <th>Completed Time</th>
@@ -70,8 +76,7 @@
                                                 {{ range $task := .tasks }}
                                                     <tr class="click" style="cursor:pointer;" data-task='{{ toBase64Json $task }}'>
                                                         <td>{{ prettyDate $task.CreatedTime }}</td>
-                                                        <td>{{ $task.EmployeeName }}</td>
-                                                        <td>{{ $task.CustomerName }}</td>
+                                                        <td><a style="color:#f58220;" href="/admin/employee/{{ $task.EmployeeId }}">{{ $task.EmployeeName }}</a></td>
                                                         <td>{{ prettyDate $task.AssignedTime }}</td>
                                                         <td>{{ prettyDateTime $task.StartedTime }}</td>
                                                         <td>{{ prettyDateTime $task.CompletedTime }}</td>
@@ -82,7 +87,6 @@
                                         </table>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -92,6 +96,7 @@
             {{ template "footer.tmpl" . }}
 
         </section>
+        <!-- Main Content Ends -->
 
         <div class="modal fade" id="taskModal" tabindex="-1">
             <div class="modal-dialog">
@@ -104,7 +109,7 @@
                         <form id="taskForm" action="/admin/task" method="post">
                             <div class="row">
 
-                                <div class="col-lg-4">
+                                <div class="col-lg-6">
                                     <label>Assign Date</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control datepicker" id="assignedTime" name="assignedDate" placeholder="Assign Date">
@@ -112,26 +117,13 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4">
+                                <div class="col-lg-6">
                                     <div class="form-group">
-                                        <div id="employeeId" >
+                                        <div id="emplyeeId">
                                             <label>Employee</label>
                                             <select id="employeeId" class="form-control" name="employeeId">
-                                                {{ range $employee := .employees}}
+                                                {{ range $employee := .employees }}
                                                     <option value="{{ $employee.Id }}">{{ $employee.FirstName }} {{ $employee.LastName }}</option>
-                                                {{ end }}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <div id="customerId" >
-                                            <label>Customer</label>
-                                            <select id="customerId" class="form-control" name="customerId">
-                                                {{ range $customer := .customers}}
-                                                    <option value="{{ $customer.Id }}">{{ $customer.Name }}</option>
                                                 {{ end }}
                                             </select>
                                         </div>
@@ -148,12 +140,13 @@
                                     <button id="saveTask" class="btn btn-primary">Save</button>
                                 </div>
                             </div>
+                            <input type="hidden" name="customerId" value="{{ .customer.Id }}">
                             <input id="id" type="hidden" name="id">
-                            <input type="hidden" name="redirect" value="/admin/task/{{ .page }}">
+                            <input type="hidden" name="redirect" value="/admin/customer/{{ .customer.Id }}/task/{{ .page }}">
                         </form>
-                        <br>
-                        <br>
                         <div id="afterStart" class="hide">
+                            <br>
+                            <br>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label>Notes</label>
@@ -179,13 +172,12 @@
 
         {{ template "scripts.tmpl" . }}
 
-        {{ template "session.tmpl" . }}
-
         <script src="/static/datatables/jquery.dataTables.min.js"></script>
         <script src="/static/datatables/dataTables.bootstrap.js"></script>
         <script src="/static/datatables/custom.js" charset="utf-8"></script>
-
         <script src="/static/timepicker/bootstrap-datepicker.js"></script>
+
+        {{ template "session.tmpl" . }}
 
         <script type="text/javascript">
 
@@ -196,24 +188,20 @@
             var table = $('#tasksTable').DataTable({
                 "lengthMenu":[5,10,15,20],
                 "columnDefs": [
-                    { "name": "createdTime",    "targets": 0 },
+                    { "name": "createdDate",    "targets": 0 },
                     { "name": "employeeName",   "targets": 1 },
-                    { "name": "customerName",    "targets": 2 },
-                    { "name": "assignedTime",   "targets": 3 },
-                    { "name": "startedTime",    "targets": 4 },
-                    { "name": "completedTime",  "targets": 5 },
-                    { "name": "complete",       "targets": 6 }
+                    { "name": "assignedTime",   "targets": 2 },
+                    { "name": "startedTime",    "targets": 3 },
+                    { "name": "completedTime",  "targets": 4 },
+                    { "name": "complete",       "targets": 5 }
                 ]
             });
 
             $('#addTask').click(function() {
-                $('form#taskForm')[0].reset();
-                $('form#taskForm input#id').val('');
+                resetTaskModal();
 
                 $('#taskModal').modal('show');
             });
-
-
 
             $(document).on('click', 'tr.click', function() {
                 resetTaskModal();
@@ -234,7 +222,6 @@
 
                 $('form#taskForm input#assignedTime').val(date.toLocaleDateString());
                 $('form#taskForm select#employeeId').val(task.employeeId);
-                $('form#taskForm select#customerId').val(task.customerId);
                 $('form#taskForm textarea#description').val(task.description);
 
                 $('form#taskForm input#id').val(task.id);
@@ -270,7 +257,6 @@
 
                 $('form#taskForm input#assignedTime').val('');
                 $('form#taskForm select#employeeId').val('');
-                $('form#taskForm select#customerId').val('');
                 $('form#taskForm textarea#description').val('');
                 $('form#taskForm input#id').val('');
 
@@ -280,9 +266,7 @@
 
                 $('div#afterStart').addClass('hide');
             }
-
-
         </script>
 
-    </body>
+  </body>
 </html>

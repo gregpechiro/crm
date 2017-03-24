@@ -14,11 +14,11 @@
                 <a id="collapse" class="navbar-toggle"><i class="fa fa-bars text-center"></i><span class="nav-label">Collapse</span></a>
             </li>
             <li>
-                <a href="/cns/company"><i class="fa fa-building-o text-center"></i><span class="nav-label">Customer</span></a>
+                <a href="/customer"><i class="fa fa-building-o text-center"></i><span class="nav-label">Customers</span></a>
             </li>
             {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
                 <li>
-                    <a href="/admin/employee"><i class="fa fa-users text-center"></i><span class="nav-label">Employee</span></a>
+                    <a href="/admin/employee"><i class="fa fa-users text-center"></i><span class="nav-label">Employees</span></a>
                 </li>
                 <li>
                     <a href="/admin/task/all"><i class="fa fa-tasks text-center"></i><span class="nav-label">Tasks</span></a>

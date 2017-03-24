@@ -54,7 +54,7 @@
                                             <thead>
                                                 <tr id="search">
                                                     <th>createdDate</th>
-                                                    <th>company</th>
+                                                    <th>customer</th>
                                                     <th>assignedTime</th>
                                                     <th>startedTime</th>
                                                     <th>completedTime</th>
@@ -62,7 +62,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th>Created Date</th>
-                                                    <th>Company</th>
+                                                    <th>Customer</th>
                                                     <th>Assigned Date</th>
                                                     <th>Started Time</th>
                                                     <th>Completed Time</th>
@@ -73,7 +73,7 @@
                                                 {{ range $task := .tasks }}
                                                     <tr class="click" style="cursor:pointer;" data-task='{{ toBase64Json $task }}'>
                                                         <td>{{ prettyDate $task.CreatedTime }}</td>
-                                                        <td><a style="color:#f58220;" href="/cns/company/{{ $task.CompanyId }}">{{ $task.CompanyName }}</a></td>
+                                                        <td><a style="color:#f58220;" href="/customer/{{ $task.CustomerId }}">{{ $task.CustomerName }}</a></td>
                                                         <td>{{ prettyDate $task.AssignedTime }}</td>
                                                         <td>{{ prettyDateTime $task.StartedTime }}</td>
                                                         <td>{{ prettyDateTime $task.CompletedTime }}</td>
@@ -116,11 +116,11 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <div id="companyId" >
-                                            <label>Company</label>
-                                            <select id="companyId" class="form-control" name="companyId">
-                                                {{ range $company := .companies}}
-                                                    <option value="{{ $company.Id }}">{{ $company.Name }}</option>
+                                        <div id="customerId" >
+                                            <label>Customer</label>
+                                            <select id="customerId" class="form-control" name="customerId">
+                                                {{ range $customer := .customers}}
+                                                    <option value="{{ $customer.Id }}">{{ $customer.Name }}</option>
                                                 {{ end }}
                                             </select>
                                         </div>
@@ -186,7 +186,7 @@
                 "lengthMenu":[5,10,15,20],
                 "columnDefs": [
                     { "name": "createdDate",    "targets": 0 },
-                    { "name": "companyName",    "targets": 1 },
+                    { "name": "customerName",    "targets": 1 },
                     { "name": "assignedTime",   "targets": 2 },
                     { "name": "startedTime",    "targets": 3 },
                     { "name": "completedTime",  "targets": 4 },
@@ -218,7 +218,7 @@
                 var date = new Date(task.assignedTime * 1000);
 
                 $('form#taskForm input#assignedTime').val(date.toLocaleDateString());
-                $('form#taskForm select#companyId').val(task.companyId);
+                $('form#taskForm select#customerId').val(task.customerId);
                 $('form#taskForm textarea#description').val(task.description);
 
                 $('form#taskForm input#id').val(task.id);
@@ -253,7 +253,7 @@
                 $('button#saveTask').removeClass('hide');
 
                 $('form#taskForm input#assignedTime').val('');
-                $('form#taskForm select#companyId').val('');
+                $('form#taskForm select#customerId').val('');
                 $('form#taskForm textarea#description').val('');
                 $('form#taskForm input#id').val('');
 

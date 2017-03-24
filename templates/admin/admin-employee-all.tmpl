@@ -38,13 +38,11 @@
                         <table id="employees" class="table table-bordered table-hover" width="100%" style="width: 100%;background-color:white;">
                             <thead>
                                 <tr id="search">
-                                    <!-- <th></th> -->
                                     <th>name</th>
                                     <th>email</th>
                                     <th>phone</th>
                                 </tr>
                                 <tr>
-                                    <!-- <th>Id</th> -->
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
@@ -53,7 +51,6 @@
                             <tbody>
                                 {{ range $employee := .employees }}
                                     <tr id="{{ $employee.Id }}" class="clickable" data-url="/admin/employee/{{ $employee.Id }}">
-                                        <!-- <td>{{ $employee.Id }}</td> -->
                                         <td>{{ $employee.FirstName }} {{ $employee.LastName }}</td>
                                         <td>{{ $employee.Email }}</td>
                                         <td>{{ $employee.Phone }}</td>
@@ -81,7 +78,6 @@
         <script type="text/javascript">
             var table = $('#employees').DataTable({
                 "lengthMenu":[10,15,20],
-                //"dom": 'lrtip',
                 "columnDefs": [
                     { "orderable": false, "targets": [2] },
                     { "name": "name",     "targets": 0 },

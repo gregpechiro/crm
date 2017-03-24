@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+
+        <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+
+        <link href="/static/date-time-picker/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+        <title>Customer</title>
+    </head>
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="lead">
+                            Customer: {{ if .customer.Id}}{{ .customer.Name }}{{ else }}NEW{{ end }}
+                        </p>
+
+                        <div class="panel panel-default p-0">
+                            <div class="panel-body p-0">
+                                <ul class="nav nav-tabs profile-tabs">
+                                    <li class="active"><a>Customer Center</a></li>
+                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                        <li><a class="tab" href="/admin/customer/{{ .customer.Id }}/task/today">Tasks</a></li>
+                                    {{ end }}
+                                </ul>
+                                <div class="tabPane clearfix">
+                                    <div id="view"  class="profile-desk">
+                                        <div class="row">
+                                            <div id="infoPane" class="col-lg-6">
+                                                <h1 class="clearfix">
+                                                    {{ if .customer.Id }}{{ .customer.Name }}{{ else }}New{{ end }}
+                                                    {{ if eq .session.ROLE "ADMIN" "DEVELOPER" }}
+                                                        <button data-message="Are you sure you would like to delete this customer? This will also delete all forms and files associated with this customer. As well as any drivers and vehicles added to this customer and the drivers' and vehicles' forms and files. This CANNOT be undone!" data-color="red" data-url="/customer/{{ .customer.Id }}/del" class="confirm-action btn btn-danger btn-xs pull-right" data-type="warning">Delete</button>
+                                                    {{ end }}
+                                                    <button class="btn btn-primary btn-xs pull-right" id="editButton" style="margin-right:10px;">Edit</button>
+                                                </h1>
+                                                <table class="table table-condensed" style="margin-bottom:0;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><b>Name</b></td>
+                                                            <td>{{ .customer.Name }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Primary Contact</b></td>
+                                                            <td>
+                                                                {{ .customer.ContactName }}<br>
+                                                                {{ .customer.ContactTitle }}<br>
+                                                                {{ .customer.ContactEmail }}<br>
+                                                                {{ .customer.ContactPhone }}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Physical Address</b></td>
+                                                            <td>{{ .customer.PhysicalAddress.AddrHTML }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Mailing Address</b></td>
+                                                            <td>{{ .customer.MailingAddress.AddrHTML }}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><b>Phone</b></td>
+                                                            <td>{{ .customer.Phone }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><b>Email</b></td>
+                                                            <td>{{ .customer.Email }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="col-lg-6 clearfix">
+                                                <div class="profile-desk">
+                                                    <div style="height:315px;">
+                                                        <h1 class="clearfix">
+                                                            Notes
+                                                            <button class="btn btn-primary btn-xs pull-right" id="addNote">Add</button>
+                                                        </h1>
+                                                        <div style="height:285px; overflow:auto;">
+                                                            <table class="table table-condensed table-hover table-bordered" style="margin-bottom:0;">
+                                                                <tbody>
+                                                                    {{ range $note := .notes }}
+                                                                        <tr class="clickable" data-note='{{ toBase64Json $note }}'>
+                                                                            <td>
+                                                                                {{ $note.Body }}
+                                                                            </td>
+                                                                            <td>
+                                                                                Recored Time:<br>
+                                                                                {{ $note.StartTimePretty }}
+                                                                            </td>
+                                                                            <td>
+                                                                                Saved Time:<br>
+                                                                                {{ idTime $note.Id }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {{ end }}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="edit"  class="profile-desk hide">
+                                        <div class="row">
+                                            <form id="edit" action="/customer" method="post">
+                                                <div class="col-lg-6">
+                                                    <h1 class="clearfix">
+                                                        {{ if .customer.Id }}{{ .customer.Name }}{{ else }}New{{ end }}
+                                                        <button type="button" class="btn btn-danger btn-xs pull-right" id="cancelButton">Cancel</button>
+                                                    </h1>
+                                                    <table  class="table table-condensed" style="margin-bottom:0;">
+                                                        <tbody>
+
+                                                            <tr>
+                                                                <td><b>Name</b></td>
+                                                                <td>
+                                                                    <span class="text-danger">{{ .formErrors.name }}</span>
+                                                                    <input type="text" class="form-control" name="name" value="{{ .customer.Name }}" placeholder="Name">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Primary Contact</b></td>
+                                                                <td>
+                                                                    <input type="text" class="form-control" name="contactName" value="{{ .customer.ContactName }}" placeholder="Name"><br>
+                                                                    <input type="text" class="form-control" name="contactTitle" value="{{ .customer.ContactTitle }}" placeholder="Title"><br>
+                                                                    <input type="text" class="form-control" name="contactEmail" value="{{ .customer.ContactEmail }}" placeholder="Email"><br>
+                                                                    <input type="text" class="form-control" name="contactPhone" value="{{ .customer.ContactPhone }}" placeholder="Phone">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Physical Address</b></td>
+                                                                <td>
+                                                                    <input type="text" class="form-control" name="physicalAddress.street" value="{{ .customer.PhysicalAddress.Street }}" placeholder="Street"><br>
+                                                                    <input type="text" class="form-control" name="physicalAddress.city" value="{{ .customer.PhysicalAddress.City }}" placeholder="City"><br>
+                                                                    <div class="row">
+                                                                        <div class="col-lg-6">
+                                                                            <input type="text" class="form-control" name="physicalAddress.state" value="{{ .customer.PhysicalAddress.State }}" placeholder="State">
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <input type="text" class="form-control" name="physicalAddress.zip" value="{{ .customer.PhysicalAddress.Zip }}" placeholder="Zip">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Mailing Address</b></td>
+                                                                <td>
+                                                                    <div class="row">
+                                                                        <div class="col-lg-6">
+                                                                            Same as Physical
+                                                                        </div>
+                                                                        <div class="radio-inline">
+                                                                            <label class="cr-styled" for="sameYes">
+                                                                                <input type="radio" name="sameAddress" value="true" id="sameYes" {{ if .customer.SameAddress}}checked{{ end }}>
+                                                                                <i class="fa"></i>
+                                                                                Yes
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="radio-inline">
+                                                                            <label class="cr-styled" for="sameNo">
+                                                                                <input type="radio" name="sameAddress" value="false" id="sameNo" {{ if not .customer.SameAddress}}checked{{ end }}>
+                                                                                <i class="fa"></i>
+                                                                                No
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span id="mailingAddress" {{ if .customer.SameAddress }}class="hide"{{ end }}>
+                                                                        <br>
+                                                                        <input type="text" class="form-control" name="mailingAddress.street" value="{{ .customer.MailingAddress.Street }}" placeholder="Street"><br>
+                                                                        <input type="text" class="form-control" name="mailingAddress.city" value="{{ .customer.MailingAddress.City }}" placeholder="City"><br>
+                                                                        <div class="row">
+                                                                            <div class="col-lg-6">
+                                                                                <input type="text" class="form-control" name="mailingAddress.state" value="{{ .customer.MailingAddress.State }}" placeholder="State">
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <input type="text" class="form-control" name="mailingAddress.zip" value="{{ .customer.MailingAddress.Zip }}" placeholder="Zip">
+                                                                            </div>
+                                                                        </div>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Phone</b></td>
+                                                                <td><input type="text" class="form-control" name="phone" value="{{ .customer.Phone }}" placeholder="Phone"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Email</b></td>
+                                                                <td><input type="email" class="form-control" name="email" value="{{ .customer.Email }}" placeholder="Email"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    {{ if .customer.Id }}
+                                                        <input type="hidden" name="id" value="{{ .customer.Id }}">
+                                                    {{ end }}
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="profile-desk">
+                                                        <div style="height:315px;">
+                                                            <h1 class="clearfix">
+                                                                Notes
+                                                            </h1>
+                                                            <div style="height:285px; overflow:auto;">
+                                                                <table class="table table-condensed table-bordered" style="margin-bottom:0;">
+                                                                    <tbody>
+                                                                        {{ range $note := .notes }}
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {{ $note.Body }}
+                                                                                </td>
+                                                                                <td>
+                                                                                    Recored Time:<br>
+                                                                                    {{ $note.StartTimePretty }}
+                                                                                </td>
+                                                                                <td>
+                                                                                    Saved Time:<br>
+                                                                                    {{ idTime $note.Id }}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {{ end }}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        <div class="modal fade" id="noteModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="noteModalTitle">New Note</h4>
+                    </div>
+                    <div class="modal-body clearfix" id="noteModalBody">
+                        <form id="noteForm" action="/customer/{{ .customer.Id }}/note" method="post">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Communication</label>
+                                        <select id="communication" class="form-control input-sm">
+                                            <option value="called">Called</option>
+                                            <option value="emailed">Emailed</option>
+                                            <option value="walkIn">Walked In</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <input id="communication" type="hidden" name="communication" value="called">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Representative</label>
+                                        <input id="representative" class="form-control input-sm" type="text" name="representative" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Date and Time</label>
+                                        <div class="input-group date" id="datetimepicker">
+                                            <input type="text" class="form-control input-sm" name="dateTime" id="dateTime"/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="">Pupose</label>
+                                        <select id="purpose" class="form-control input-sm">
+                                            <option value="question">Question</option>
+                                            <option value="service">Service</option>
+                                            <option value="sales">Sales</option>
+                                            <option value="consult">Consult</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <input id="purpose" type="hidden" name="purpose" value="question">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Call Back Phone Number</label>
+                                        <input id="callBack" class="form-control input-sm" type="text" name="callBack" value="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Email Another Employee</label><br>
+                                        <div style="height:34px;">
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="emailEmployeeTrue">
+                                                    <input type="radio" id="emailEmployeeTrue" name="emailEmployee" value="true">
+                                                    <i class="fa"></i>
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="emailEmployeeFalse">
+                                                    <input type="radio" id="emailEmployeeFalse" name="emailEmployee" value="false" checked>
+                                                    <i class="fa"></i>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Billable</label><br>
+                                        <div style="height:34px;">
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="billableTrue">
+                                                    <input type="radio" id="billableTrue" name="billable" value="true">
+                                                    <i class="fa"></i>
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="billableFalse">
+                                                    <input type="radio" id="billableFalse" name="billable" value="false" checked>
+                                                    <i class="fa"></i>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div id="employeeId" {{ if eq .session.ROLE "ADMIN" "DEVELOPER" | not }}class="hide"{{ end }}>
+                                            <label>Employee</label>
+                                            <select id="employeeId" class="form-control input-sm" name="employeeId">
+                                                {{ $userId := .employeeId }}
+                                                {{ range $employee := .employees}}
+                                                    <option value="{{ $employee.Id }}" {{ if eq $userId $employee.Id }}selected{{ end }}>{{ $employee.FirstName }} {{ $employee.LastName }}</option>
+                                                {{ end }}
+                                            </select>
+                                        </div>
+                                        <input id="employeeId" type="hidden" name="employeeId" value="{{ .employeeId }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div id="pre-body"></div>
+                                        <textarea id="body" name="body" rows="5" class="form-control"></textarea>
+                                    </div>
+                                    <button class="btn btn-primary btn-xs">Save</button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="customerId" value="{{ .customer.Id }}">
+                            <input id="id" type="hidden" name="id">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        {{ range $quickNote := .quickNotes }}
+                            <button class="btn btn-default btn-xs quickNote" data-note="{{ $quickNote.Body }}">{{ $quickNote.Name }}</button>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="delete-form" class="hide" action="" method="post"></form>
+
+        <!-- Main Content Ends -->
+
+        {{ template "scripts.tmpl" . }}
+
+        <script src="/static/js/jquery.scrollTo.min.js"></script>
+        <script src="/static/date-time-picker/js/moment-with-locales.js" charset="utf-8"></script>
+        <script src="/static/date-time-picker/js/bootstrap-datetimepicker.js"></script>
+        <script src="/static/js/confirm.js" charset="utf-8"></script>
+
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+
+            var formErrors = {{ if .formErrors }}true{{ else }}false{{ end }}
+
+            $(function () {
+                $('#datetimepicker').datetimepicker();
+            });
+
+            var newComp = {{ if .customer.Id }}false{{ else }}true{{ end }};
+
+            $('input#sameYes').click(function() {
+                $('span#mailingAddress').addClass('hide');
+                var inputs = $('span#mailingAddress').find('input');
+                for (var i = 0; i < inputs.length; i++) {
+                    inputs[i].value = inputs[i].defaultValue;
+                }
+            });
+
+            $('input#sameNo').click(function() {
+                $('span#mailingAddress').removeClass('hide');
+            });
+
+            $('button#editButton').click(function() {
+                $('div#view').addClass('hide');
+                $('div#edit').removeClass('hide');
+            });
+
+            $('#cancelButton').click(function() {
+                if (newComp) {
+                    window.location.href = '/customer';
+                    return;
+                }
+                $('div#edit').addClass('hide');
+                $('div#view').removeClass('hide');
+                $('form#edit')[0].reset();
+                if ($('input#sameYes')[0].checked) {
+                    $('span#mailingAddress').addClass('hide');
+                }
+            });
+
+            if (newComp || formErrors) {
+                $('div#view').addClass('hide');
+                $('div#edit').removeClass('hide');
+            }
+
+            $('a.tab').click(function(e) {
+                if (newComp) {
+                    e.preventDefault()
+                    $.Notification.autoHideNotify('error', 'top right', 'Please save customer first');
+                }
+            });
+
+            $('button#addNote').click(function() {
+                $('form#noteForm')[0].reset();
+                $('form#noteForm input').removeAttr('readonly');
+                $('form#noteForm select').removeAttr('disabled');
+                $('form#noteForm div#pre-body').html('');
+
+                $('form#noteForm input#communication').val('called');
+                $('form#noteForm input#purpose').val('question');
+                $('form#noteForm input#employeeId').val('{{ .employeeId }}');
+                if ('{{ .session.ROLE }}' !== 'ADMIN' && '{{ .session.ROLE }}' !== 'DEVELOPER') {
+                    $('form#noteForm div#employeeId').addClass('hide');
+                }
+                $('form#noteForm input#id').val('');
+            });
+
+            $(document).on('click', 'tr.clickable', function() {
+
+                var note = {};
+                try {
+                    note = JSON.parse(atob($(this).attr('data-note')));
+                } catch(err) {
+                    swal({
+                        title: 'Error',
+                        text: 'Error displaying note. PLease refresh the page and try again',
+                        type: 'warning',
+                        showConfirmButton: false
+                    });
+                    return
+                }
+                $('form#noteForm input#dateTime').val(note.startTimePretty);
+
+                $('form#noteForm input#communication').val(note.communication);
+                $('form#noteForm select#communication').val(note.communication);
+
+                $('form#noteForm input#purpose').val(note.purpose);
+                $('form#noteForm select#purpose').val(note.purpose);
+
+                $('form#noteForm input#employeeId').val(note.employeeId);
+                $('form#noteForm select#employeeId').val(note.employeeId);
+
+                $('form#noteForm input#representative').val(note.representative);
+                $('form#noteForm input#callBack').val(note.callBack);
+                $('form#noteForm div#pre-body').html('Previous Note:<br><span id="pre-body">' + note.body + '</span><br><br>');
+                //$('form#noteForm textarea#body').val(note.body);
+                $('form#noteForm input#id').val(note.id);
+                if (note.emailEmployee) {
+                    $('form#noteForm input#emailEmployeeTrue')[0].checked = true;
+                }
+                if (note.billable) {
+                    $('form#noteForm input#billableTrue')[0].checked = true;
+                }
+                $('form#noteForm input').attr('readonly', 'readonly');
+                $('form#noteForm select').attr('disabled', 'disabled');
+                $('form#noteForm div#employeeId').removeClass('hide');
+                $('#noteModal').modal('show');
+            });
+
+            $('button.quickNote').click(function() {
+                var note = $(this).attr('data-note');
+                if ($('form#noteForm textarea#body').val() !== '') {
+                    note = $('form#noteForm textarea#body').val() + ' ' + note
+                }
+                $('form#noteForm textarea#body').val(note);
+            });
+
+            $('#addNote').click(function() {
+                $('form#noteForm input#dateTime').val(moment().format('MM/DD/YYYY hh:mm A'));
+                $('#noteModal').modal('show');
+            });
+
+            $('form#noteForm select').change(function() {
+                var s = $(this);
+                $('form#noteForm input#' + s.attr('id')).val(s.val());
+            });
+
+            $('form#noteForm').submit(function(e) {
+                $('#noteModal').modal('hide');
+                if ($('span#pre-body').text() !== '') {
+                    $('form#noteForm textarea#body').val($('span#pre-body').text() + ' ' + $('form#noteForm textarea#body').val());
+                }
+            });
+
+            confirm.yes = function(btn) {
+                $('form#delete-form').attr('action', btn.attr('data-url'));
+                $('form#delete-form').submit();
+            }
+
+        </script>
+
+  </body>
+</html>

@@ -25,9 +25,3 @@ var ALL = web.Auth{
 	Redirect: "/login",
 	Msg:      "ERROR",
 }
-
-var COMPANY = web.Auth{
-	Roles:    []string{"DEVELOPER", "COMPANY"},
-	Redirect: "/customer/login",
-	Msg:      "Please Login",
-}

@@ -67,11 +67,11 @@
                                                             </tr>
                                                             <tr>
                                                                 <td><b>Role</b></td>
-                                                                <td>{{ .employee.Auth.Role }}</td>
+                                                                <td>{{ .employee.Role }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td><b>Active</b></td>
-                                                                <td>{{ .employee.Auth.Active }}</td>
+                                                                <td>{{ .employee.Active }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -94,13 +94,13 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td><b>Email</b></td>
-                                                                    <td><input name="auth.email" class="form-control" placeholder="Email" value="{{ .employee.Email }}"></td>
+                                                                    <td><input name="email" class="form-control" placeholder="Email" value="{{ .employee.Email }}"></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><b>Password</b></td>
                                                                     <td>
                                                                         <div class="input-group">
-                    														<input type="password" id="password" name="auth.password" class="form-control" placeholder="Password" {{ if not .employee.Id}}required{{ end }}/>
+                    														<input type="password" id="password" name="password" class="form-control" placeholder="Password" {{ if not .employee.Id}}required{{ end }}/>
                     														<span class="input-group-btn">
                     															<button id="toggle-pass" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right"
                     																	title="Click to show/hide your password">
@@ -133,9 +133,9 @@
                                                                 <tr>
                                                                     <td><b>Role</b></td>
                                                                     <td>
-                                                                        <select class="form-control" name="auth.role">
-                                                                            <option {{if eq .employee.Auth.Role "EMPLOYEE" }}selected{{ end }} value="EMPLOYEE">Employee</option>
-                                                                            <option {{if eq .employee.Auth.Role "ADMIN" }}selected{{ end }} value="ADMIN">Admin</option>
+                                                                        <select class="form-control" name="role">
+                                                                            <option {{if eq .employee.Role "EMPLOYEE" }}selected{{ end }} value="EMPLOYEE">Employee</option>
+                                                                            <option {{if eq .employee.Role "ADMIN" }}selected{{ end }} value="ADMIN">Admin</option>
                                                                         </select>
                                                                     </td>
                                                                 </tr>
@@ -144,14 +144,14 @@
                                                                     <td>
                                                                         <div class="radio-inline">
                                                                             <label class="cr-styled" for="activeYes">
-                                                                                <input type="radio" name="auth.active" value="true" id="activeYes" {{ if .employee.Auth.Active }}checked{{ end }}>
+                                                                                <input type="radio" name="active" value="true" id="activeYes" {{ if .employee.Active }}checked{{ end }}>
                                                                                 <i class="fa"></i>
                                                                                 Yes
                                                                             </label>
                                                                         </div>
                                                                         <div class="radio-inline">
                                                                             <label class="cr-styled" for="activeNo">
-                                                                                <input type="radio" name="auth.active" value="false" id="activeNo" {{ if not .employee.Auth.Active  }}checked{{ end }}>
+                                                                                <input type="radio" name="active" value="false" id="activeNo" {{ if not .employee.Active  }}checked{{ end }}>
                                                                                 <i class="fa"></i>
                                                                                 No
                                                                             </label>
