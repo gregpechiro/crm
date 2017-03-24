@@ -60,20 +60,6 @@ type Note struct {
 	Body            string `json:"body,omitempty"`
 }
 
-type NoteSort []Note
-
-func (n NoteSort) Len() int {
-	return len(n)
-}
-
-func (n NoteSort) Less(i, j int) bool {
-	return n[i].StartTime < n[j].StartTime
-}
-
-func (n NoteSort) Swap(i, j int) {
-	n[i], n[j] = n[j], n[i]
-}
-
 type QuickNote struct {
 	Name string
 	Body string

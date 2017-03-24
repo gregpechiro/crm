@@ -87,6 +87,7 @@ func MakeEmployees() {
 		employee.City = fmt.Sprintf("%dville", i)
 		employee.State = fmt.Sprintf("%d state", i)
 		employee.Zip = fmt.Sprintf("1234%d", i)
+		employee.Phone = fmt.Sprintf("717-777-777%d", i)
 
 		db.Add("employee", id, employee)
 	}

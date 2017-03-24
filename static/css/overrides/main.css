@@ -1,4 +1,4 @@
-
+/*
 aside.left-panel {
     background-color: #015978
 }
@@ -37,7 +37,7 @@ fieldset[disabled] .btn-primary:focus,
 fieldset[disabled] .btn-primary:hover {
     background-color: #f8ae6e;
     border: 1px solid #f8ae6e;
-}
+}*/
 
 .cr-styled input:checked + i {
     border-color: #f58220;
@@ -75,8 +75,3 @@ a.return {
 a.return:focus, a.return:hover {
     text-decoration: underline;
 }
-
-/*
-Blue : 015978
-orange : f58220
-*/

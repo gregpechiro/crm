@@ -190,10 +190,14 @@ var customerView = web.Route{"GET", "/customer/:id", func(w http.ResponseWriter,
 		web.SetErrorRedirect(w, r, "/customer", "Error finding customer")
 		return
 	}
-	var notes NoteSort
+	var notes []Note
 	var employees []Employee
 	db.TestQuery("note", &notes, adb.Eq("customerId", `"`+customer.Id+`"`))
-	sort.Stable(sort.Reverse(notes))
+
+	sort.Slice(notes, func(i int, j int) bool {
+		return notes[i].StartTime > notes[j].StartTime
+	})
+
 	db.All("employee", &employees)
 	tc.Render(w, r, "customer.tmpl", web.Model{
 		"customer":   customer,
