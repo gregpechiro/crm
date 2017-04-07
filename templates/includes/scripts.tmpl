@@ -38,7 +38,7 @@
 
 	$('#saveHome').click(function() {
 		$.ajax({
-			url: "/cns/employee/{{ .session.id }}/homepage",
+			url: "/employee/{{ .session.id }}/homepage",
 			type: "POST",
 			data:"url=" + window.location.pathname,
 			success:function(resp) {

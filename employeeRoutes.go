@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"sort"
 	"strconv"
 	"time"
@@ -148,38 +147,6 @@ var customerAll = web.Route{"GET", "/customer", func(w http.ResponseWriter, r *h
 	tc.Render(w, r, "customer-all.tmpl", web.Model{
 		"customers": customers,
 	})
-	return
-}}
-
-var customerAllExport = web.Route{"POST", "/customer/all/export", func(w http.ResponseWriter, r *http.Request) {
-	var customers []Customer
-	db.All("customer", &customers)
-	exporter, err := NewCSVExporter(customers)
-	if err != nil {
-		log.Printf("emplyeeRoutes.go customerAllExport >> NewCSVExporter() >> %v\n", err)
-		ajaxResponse(w, `{"error":true,"msg":"Error exporting customers"}`)
-		return
-	}
-	path := "export/"
-	if err := os.MkdirAll(path, 0755); err != nil {
-		log.Printf("emplyeeRoutes.go customerAllExport >> os.MkdirAll() >> %v\n", err)
-		ajaxResponse(w, `{"error":true,"msg":"Error exporting customers"}`)
-		return
-	}
-
-	path = path + time.Now().Format("2006-01-02") + "_customers.csv"
-	if err := exporter.Export(path); err != nil {
-		log.Printf("emplyeeRoutes.go customerAllExport >> exporter.Export() >> %v\n", err)
-		ajaxResponse(w, `{"error":true,"msg":"Error exporting customers"}`)
-		return
-	}
-	ajaxResponse(w, `{"error":false,"path":"/`+path+`"}`)
-	return
-}}
-
-var customerAllExportDownload = web.Route{"GET", "/export/:name", func(w http.ResponseWriter, r *http.Request) {
-	server := http.StripPrefix("/export", http.FileServer(http.Dir("export/")))
-	server.ServeHTTP(w, r)
 	return
 }}
 

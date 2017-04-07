@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+        <title>Export Customers</title>
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+
+                <div class="col-lg-12">
+                    <p class="lead clearfix">
+                        Customers
+                    </p>
+                </div>
+            </div>
+                <div class="row">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Enter CSV Header Names
+                        </div>
+                        <div class="panel-body">
+                            <form id="exportForm" action="/admin/customer/export" method="post">
+                                {{ range $field := .fields }}
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>{{ $field }}</label>
+                                        <input class="form-control" type="text" name="{{ $field }}" value="{{ $field }}">
+                                    </div>
+                                </div>
+                                {{ end }}
+                                <div class="col-lg-12">
+                                    <button id="export" type="button" class="btn btn-success">Export</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        {{ template "scripts.tmpl" . }}
+        {{ template "session.tmpl" . }}
+
+        <script type="text/javascript">
+            $('button#export').click(function() {
+
+                $.ajax({
+                    method:'POST',
+                    url: '/admin/customer/export',
+                    data: $('#exportForm').serialize(),
+                    success: function(resp) {
+                        if (resp.error) {
+                            setFlashMsg('alertError', resp.msg);
+                            window.location.href = '/admin/customer/export';
+                            return
+                        }
+                        window.location.href = resp.path;
+                    },
+                    error: function(e, d) {
+                        console.log(e);
+                        console.log(d);
+                        setFlashMsg('alertError', 'Error exporting customers');
+                        window.location.href = '/customer';
+                    }
+                });
+            });
+
+        </script>
+
+    </body>
+</html>

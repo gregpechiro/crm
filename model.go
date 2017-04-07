@@ -1,10 +1,10 @@
 package main
 
 type Address struct {
-	Street string `json:"street,omitempty"`
-	City   string `json:"city,omitempty"`
-	State  string `json:"state,omitempty"`
-	Zip    string `json:"zip,omitempty"`
+	Street string `json:"street,omitempty" csvform:""`
+	City   string `json:"city,omitempty" csvform:""`
+	State  string `json:"state,omitempty" csvform:""`
+	Zip    string `json:"zip,omitempty" csvform:""`
 }
 
 func (a Address) AddrHTML() string {
@@ -31,15 +31,15 @@ type Employee struct {
 
 type Customer struct {
 	Id              string  `json:"id" csv:"-"`
-	Email           string  `json:"email,omitempty" auth:"username" csv:"Email"`
-	Name            string  `json:"name,omitempty" csv:"Name"`
-	Phone           string  `json:"phone,omitempty"`
-	ContactName     string  `json:"contactName,omitempty" csv:"-"`
-	ContactTitle    string  `json:"contactTitle,omitempty" csv:"-"`
-	ContactPhone    string  `json:"contactPhone,omitempty" csv:"-"`
-	ContactEmail    string  `json:"contactEmail,omitempty" csv:"-"`
-	PhysicalAddress Address `json:"pysicalAddress,omitempty" csv:"Address"`
-	MailingAddress  Address `json:"mailingAddress,omitempty" csv:"-"`
+	Email           string  `json:"email,omitempty" auth:"username" csv:"email" csvform:""`
+	Name            string  `json:"name,omitempty" csv:"name" csvform:"Name"`
+	Phone           string  `json:"phone,omitempty" csv:"phone" csvform:""`
+	ContactName     string  `json:"contactName,omitempty" csv:"contactName" csvform:"Contact Name"`
+	ContactTitle    string  `json:"contactTitle,omitempty" csv:"contactTitle" csvform:"Contact Title"`
+	ContactPhone    string  `json:"contactPhone,omitempty" csv:"contactPhone" csvform:"Contact Phone"`
+	ContactEmail    string  `json:"contactEmail,omitempty" csv:"contactEmail" csvform:"Contact Email"`
+	PhysicalAddress Address `json:"pysicalAddress,omitempty" csv:"physicalAddress" csvform:"Physical Address"`
+	MailingAddress  Address `json:"mailingAddress,omitempty" csv:"mailingAddress" csvform:"Mailing Address"`
 	SameAddress     bool    `json:"sameAddress"`
 }
 

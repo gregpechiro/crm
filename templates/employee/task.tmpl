@@ -30,16 +30,16 @@
                         <div class="panel panel-default p-0">
                             <div class="panel-body p-0">
                                 <ul class="nav nav-tabs profile-tabs">
-                                    <li><a href="/cns">Dashboard</a></li>
+                                    <li><a href="/account">Dashboard</a></li>
                                     <li class="active"><a>Tasks</a></li>
                                 </ul>
 
                                 <div class="tabPane clearfix">
                                     <ul class="nav nav-tabs">
-                                        <li {{ if eq .page "today" }}class="active"{{ end }}><a class="tab stat-tab" href="/cns/task/today">Today's Tasks</a></li>
-                                        <li {{ if eq .page "overdue" }}class="active"{{ end }}><a class="tab stat-tab" href="/cns/task/overdue">Overdue Tasks</a></li>
-                                        <li {{ if eq .page "incomplete" }}class="active"{{ end }}><a class="tab stat-tab" href="/cns/task/incomplete">Incomplete Tasks</a></li>
-                                        <li {{ if eq .page "complete" }}class="active"{{ end }}><a class="tab stat-tab" href="/cns/task/complete">Complete Tasks</a></li>
+                                        <li {{ if eq .page "today" }}class="active"{{ end }}><a class="tab stat-tab" href="/task/today">Today's Tasks</a></li>
+                                        <li {{ if eq .page "overdue" }}class="active"{{ end }}><a class="tab stat-tab" href="/task/overdue">Overdue Tasks</a></li>
+                                        <li {{ if eq .page "incomplete" }}class="active"{{ end }}><a class="tab stat-tab" href="/task/incomplete">Incomplete Tasks</a></li>
+                                        <li {{ if eq .page "complete" }}class="active"{{ end }}><a class="tab stat-tab" href="/task/complete">Complete Tasks</a></li>
                                     </ul>
                                     <br>
                                     <div class="profile-desk">
@@ -63,7 +63,7 @@
                                             <tbody>
                                                 {{ range $task := .tasks }}
                                                     <tr class="click" style="cursor:pointer;" data-task='{{ toBase64Json $task }}'>
-                                                        <td><a style="color:#f58220;" href="/cns/company/{{ $task.CompanyId }}">{{ $task.CompanyName }}</a></td>
+                                                        <td><a style="color:#f58220;" href="/customer/{{ $task.CompanyId }}">{{ $task.CompanyName }}</a></td>
                                                         <td>{{ prettyDate $task.AssignedTime }}</td>
                                                         <td>{{ prettyDateTime $task.StartedTime }}</td>
                                                         <td>{{ prettyDateTime $task.CompletedTime }}</td>
@@ -178,7 +178,7 @@
 
                 var date = new Date(task.assignedTime * 1000);
                 $('div#assignedTime').html(date.toLocaleDateString());
-                $('div#company').html('<a style="color:#f58220;" href="/cns/company/' + task.companyId + '">' + task.companyName + '</a>');
+                $('div#company').html('<a style="color:#f58220;" href="/customer/' + task.companyId + '">' + task.companyName + '</a>');
                 $('div#description').html(task.description);
 
                 var startHtml;
@@ -186,7 +186,7 @@
                 if (task.startedTime > 0) {
                     console.log("in if");
                     $('ul#notes').html(task.notes);
-                    $('form#taskNoteForm').attr('action', '/cns/task/' + task.id + '/note');
+                    $('form#taskNoteForm').attr('action', '/task/' + task.id + '/note');
                     $('div#notes').removeClass('hide');
 
                     var startTime = new Date(task.startedTime * 1000);
@@ -195,10 +195,10 @@
                         var completedTime = new Date(task.completedTime * 1000);
                         completeHtml = completedTime.toLocaleString();
                     } else {
-                        completeHtml = '<form action="/cns/task/' + task.id + '/complete" method="post"><button class="btn btn-primary btn-xs">Complete Task</button></form>';
+                        completeHtml = '<form action="/task/' + task.id + '/complete" method="post"><button class="btn btn-primary btn-xs">Complete Task</button></form>';
                     }
                 } else {
-                    startHtml = '<form action="/cns/task/' + task.id + '/start" method="post"><button class="btn btn-primary btn-xs">Start Task</button></form>';
+                    startHtml = '<form action="/task/' + task.id + '/start" method="post"><button class="btn btn-primary btn-xs">Start Task</button></form>';
                     completeHtml = "N/A";
                 }
                 $('div#startedTime').html(startHtml);

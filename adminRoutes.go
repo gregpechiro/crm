@@ -1,13 +1,17 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"sort"
 	"strconv"
 	"time"
 
 	"github.com/cagnosolutions/adb"
 	"github.com/cagnosolutions/web"
+	"github.com/gregpechiro/csv/form"
 )
 
 /* --- Employee Management --- */
@@ -189,7 +193,7 @@ var adminCustomerTaskAll = web.Route{"GET", "/admin/customer/:id/task/:page", fu
 	customerId := r.FormValue(":id")
 	var customer Customer
 	if !db.Get("customer", customerId, &customer) {
-		web.SetErrorRedirect(w, r, "/cns/copany", "Error finding customer")
+		web.SetErrorRedirect(w, r, "/admin/customer", "Error finding customer")
 		return
 	}
 	var tasks []Task
@@ -218,4 +222,54 @@ var adminCustomerTaskAll = web.Route{"GET", "/admin/customer/:id/task/:page", fu
 		"tasks":     tasks,
 		"page":      page,
 	})
+}}
+
+var adminCustomerexport = web.Route{"GET", "/admin/customer/export", func(w http.ResponseWriter, r *http.Request) {
+	var customer Customer
+	fields, err := form.GetOptions(customer)
+	if err != nil {
+		web.SetErrorRedirect(w, r, "/customer", "Error exporting customers")
+		return
+	}
+	sort.Strings(fields)
+	tc.Render(w, r, "admin-customer-export.tmpl", web.Model{
+		"fields": fields,
+	})
+}}
+
+var customerAllExport = web.Route{"POST", "/admin/customer/export", func(w http.ResponseWriter, r *http.Request) {
+	var customers []Customer
+	db.All("customer", &customers)
+
+	r.ParseForm()
+	b, err := form.Marshal(customers, r.Form)
+	if err != nil {
+		log.Printf("adminRoutes.go customerAllExport >> form.Marshal() >> %v\n", err)
+		ajaxResponse(w, `{"error":true,"msg":"Error exporting customers"}`)
+		return
+	}
+
+	path := "export/"
+	if err := os.MkdirAll(path, 0755); err != nil {
+		log.Printf("adminRoutes.go customerAllExport >> os.MkdirAll() >> %v\n", err)
+		ajaxResponse(w, `{"error":true,"msg":"Error exporting customers"}`)
+		return
+	}
+
+	path = path + time.Now().Format("2006-01-02") + "_customers.csv"
+
+	if err := ioutil.WriteFile(path, b, 0666); err != nil {
+		log.Printf("adminRoutes.go customerAllExport >> ioutil.WriteFile() >> %v\n", err)
+		ajaxResponse(w, `{"error":true,"msg":"Error exporting customers"}`)
+		return
+	}
+
+	ajaxResponse(w, `{"error":false,"path":"/`+path+`"}`)
+	return
+}}
+
+var customerAllExportDownload = web.Route{"GET", "/export/:name", func(w http.ResponseWriter, r *http.Request) {
+	server := http.StripPrefix("/export", http.FileServer(http.Dir("export/")))
+	server.ServeHTTP(w, r)
+	return
 }}
