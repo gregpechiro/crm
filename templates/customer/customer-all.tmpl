@@ -9,6 +9,8 @@
         <!-- DataTables -->
         <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
+
+        <style>input.uploader{position:absolute;left:-9999px;}label.uploader{cursor:pointer;}</style>
         <title>All Customers</title>
 
     </head>
@@ -29,7 +31,6 @@
 
                         <p class="lead clearfix">
                             Customers
-
                         </p>
                     </div>
                     <div class="col-lg-6">
@@ -41,6 +42,15 @@
                                 <a href="/admin/customer/export" class="btn btn-xs btn-primary">Export</a>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                             </span>
+
+                            <form id="uploader" class="pull-right" action="/admin/customer/import" method="post" enctype="multipart/form-data">
+                                <div class="btn-group btn-group-xs">
+                                   <label class="btn btn-default uploader" for="csv">Import Customers</label>
+                                   <input class="uploader" id="csv" type="file" name="file" required>
+                                   <button id="upload" class="btn btn-primary" disabled>Upload</button>
+                               </div>
+                               &nbsp;&nbsp;&nbsp;&nbsp;
+                           </form>
                         {{ end }}
 
                     </div>
@@ -84,6 +94,7 @@
         <script src="/static/datatables/jquery.dataTables.min.js"></script>
         <script src="/static/datatables/dataTables.bootstrap.js"></script>
         <script src="/static/datatables/custom.js" charset="utf-8"></script>
+        <script src="/static/js/upload.js" charset="utf-8"></script>
 
         {{ template "session.tmpl" . }}
 
@@ -122,6 +133,16 @@
                         }
                     });
                 });
+
+                uploader.displayError = function(msg) {
+                    $.Notification.autoHideNotify('error', 'top right', msg);
+                }
+                uploader.fileTypes = ['text/csv'];
+                uploader.fileTypeErrorMsg = 'Incorrect File type. Only CVS files';
+                uploader.defaultText = 'Import Customers';
+                uploader.maxSize = 4 * uploader.MB;
+                uploader.maxSizeMsg = 'File too large. Max size 4MB'
+
 
         </script>
 

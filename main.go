@@ -45,7 +45,7 @@ func init() {
 
 	// customer management routes
 	mx.AddSecureRoutes(EMPLOYEE, customerAll, customerView, customerSave, customerNoteSave)
-	mx.AddSecureRoutes(ADMIN, customerDel, customerAllExport, customerAllExportDownload, adminCustomerexport)
+	mx.AddSecureRoutes(ADMIN, customerDel, customerAllExport, customerAllExportDownload, adminCustomerexport, customerImport, customerImportUpload, customerImportConvert)
 
 	// update session
 	mx.AddSecureRoutes(ALL, updateSession, collapse)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/cagnosolutions/adb"
 	"github.com/cagnosolutions/web"
+	"github.com/gregpechiro/csv"
 	"github.com/gregpechiro/csv/form"
 )
 
@@ -272,4 +274,96 @@ var customerAllExportDownload = web.Route{"GET", "/export/:name", func(w http.Re
 	server := http.StripPrefix("/export", http.FileServer(http.Dir("export/")))
 	server.ServeHTTP(w, r)
 	return
+}}
+
+var customerImportUpload = web.Route{"POST", "/admin/customer/import", func(w http.ResponseWriter, r *http.Request) {
+
+	path := "upload/import/customer/"
+	if err := os.MkdirAll(path, 0755); err != nil {
+		log.Printf("main.go -> customerImportUpload -> os.MkdirAll() -> %v\n", err)
+		web.SetErrorRedirect(w, r, "/customer", "Error uploading csv file")
+		return
+	}
+	file, handler, err := r.FormFile("file")
+	if err != nil {
+		log.Printf("main.go -> customerImporUpload -> r.FormFile() -> %v\n", err)
+		web.SetErrorRedirect(w, r, "/customer", "Error uploading csv file")
+		return
+	}
+	defer file.Close()
+	f, err := os.OpenFile(path+handler.Filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
+	if err != nil {
+		log.Printf("main.go -> customerImportUpload -> os.OpenFile() -> %v\n", err)
+		web.SetErrorRedirect(w, r, "/customer", "Error uploading csv file")
+		return
+	}
+	defer f.Close()
+	io.Copy(f, file)
+
+	web.SetSuccessRedirect(w, r, "/admin/customer/import/"+handler.Filename, "Successfully uploaded csv file")
+	return
+}}
+
+var customerImport = web.Route{"GET", "/admin/customer/import/:file", func(w http.ResponseWriter, r *http.Request) {
+	path := "upload/import/customer/" + r.FormValue(":file")
+
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		log.Printf("main.go -> customerImport -> ioutil.ReadFile -> %v\n", err)
+		web.SetErrorRedirect(w, r, "/customer", "Error finding file "+r.FormValue(":file"))
+		return
+	}
+
+	dec, err := csv.NewCSVDecoder(b)
+	if err != nil {
+		log.Printf("main.go -> customerImport -> csv.NewCSVDecoder -> %v\n", err)
+		web.SetErrorRedirect(w, r, "/customer", "Error reading file "+r.FormValue(":file"))
+		return
+	}
+	var customer Customer
+
+	fields, err := form.GetOptions(customer)
+	if err != nil {
+		log.Printf("main.go -> customerImport -> form.GetOptions -> %v\n", err)
+		web.SetErrorRedirect(w, r, "/customer", "Error Creating importer")
+		return
+	}
+
+	header := dec.GetHeader()
+	sort.Strings(header)
+
+	tc.Render(w, r, "admin-customer-import.tmpl", web.Model{
+		"file":   r.FormValue(":file"),
+		"header": header,
+		"fields": fields,
+	})
+	return
+}}
+
+var customerImportConvert = web.Route{"POST", "/admin/customer/convert", func(w http.ResponseWriter, r *http.Request) {
+	path := "upload/import/customer/" + r.FormValue("file")
+
+	r.ParseForm()
+	var customers []Customer
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		log.Printf("main.go -> customerImportConvert -> ioutil.ReadFile -> %v\n", err)
+		web.SetErrorRedirect(w, r, "/customer", "Error finding file "+r.FormValue(":file"))
+		return
+	}
+
+	if err := form.Unmarshal(b, &customers, r.Form); err != nil {
+		log.Printf("main.go -> customerImportConvert -> form.Unmarshal -> %v\n", err)
+		web.SetErrorRedirect(w, r, "/customer", "Error creating custoemrs")
+		return
+	}
+
+	for _, customer := range customers {
+		customer.Id = strconv.Itoa(int(time.Now().UnixNano()))
+		db.Set("customer", customer.Id, customer)
+	}
+
+	web.SetSuccessRedirect(w, r, "/customer", "Successfully imported customers")
+	return
+
 }}

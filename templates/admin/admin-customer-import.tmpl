@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {{ template "head.tmpl" . }}
+        <title>Import Customers</title>
+
+    </head>
+
+    <body>
+
+        {{ template "side-nav.tmpl" . }}
+
+        <!--Main Content Start -->
+        <section class="content">
+
+            {{ template "nav.tmpl" . }}
+
+            <div class="wraper container-fluid">
+                <div class="row">
+
+                <div class="col-lg-12">
+                    <p class="lead clearfix">
+                        Customers
+                    </p>
+                </div>
+            </div>
+                <div class="row">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Select CSV Header Names
+                        </div>
+                        <div class="panel-body">
+                            <form id="exportForm" action="/admin/customer/convert" method="post">
+                                {{ $header := .header }}
+                                {{ range $field := .fields }}
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>{{ $field }}</label>
+                                        <select class="form-control" name="{{ $field }}">
+                                            <option value="">None</option>
+                                            {{ range $head := $header }}
+                                                <option value="{{ $head }}">{{ $head }}</option>
+                                            {{ end }}
+                                        </select>
+                                    </div>
+                                </div>
+                                {{ end }}
+                                <div class="col-lg-12">
+                                    <button class="btn btn-success">Import</button>
+                                </div>
+                                <input type="hidden" name="file" value="{{ .file }}">
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {{ template "footer.tmpl" . }}
+
+        </section>
+
+        {{ template "scripts.tmpl" . }}
+        {{ template "session.tmpl" . }}
+
+    </body>
+</html>
