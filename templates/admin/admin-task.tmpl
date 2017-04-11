@@ -52,8 +52,8 @@
                                                     <th>employee</th>
                                                     <th>customer</th>
                                                     <th>assignedTime</th>
-                                                    <th>startedTime</th>
-                                                    <th>completedTime</th>
+                                                    <th>startTime</th>
+                                                    <th>stopTime</th>
                                                     <th>complete</th>
                                                 </tr>
                                                 <tr>
@@ -61,8 +61,8 @@
                                                     <th>Employee</th>
                                                     <th>Customer</th>
                                                     <th>Assigned Date</th>
-                                                    <th>Started Time</th>
-                                                    <th>Completed Time</th>
+                                                    <th>Last Started</th>
+                                                    <th>Last Stopped</th>
                                                     <th>Complete</th>
                                                 </tr>
                                             </thead>
@@ -73,8 +73,8 @@
                                                         <td>{{ $task.EmployeeName }}</td>
                                                         <td>{{ $task.CustomerName }}</td>
                                                         <td>{{ prettyDate $task.AssignedTime }}</td>
-                                                        <td>{{ prettyDateTime $task.StartedTime }}</td>
-                                                        <td>{{ prettyDateTime $task.CompletedTime }}</td>
+                                                        <td>{{ prettyDateTime $task.StartTime }}</td>
+                                                        <td>{{ prettyDateTime $task.StopTime }}</td>
                                                         <td>{{ if $task.Complete }}Yes{{ else }}No{{ end }}</td>
                                                     </tr>
                                                 {{ end }}
@@ -151,9 +151,9 @@
                             <input id="id" type="hidden" name="id">
                             <input type="hidden" name="redirect" value="/admin/task/{{ .page }}">
                         </form>
-                        <br>
-                        <br>
                         <div id="afterStart" class="hide">
+                            <br>
+                            <br>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label>Notes</label>
@@ -162,13 +162,17 @@
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <label>Started</label>
-                                    <div id="startedTime"></div>
+                                <div class="col-lg-4">
+                                    <label>Last Started</label>
+                                    <div id="startTime"></div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <label>Completed</label>
-                                    <div id="completedTime"></div>
+                                <div class="col-lg-4">
+                                    <label>Last Ended</label>
+                                    <div id="stopTime"></div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label>Total Time</label>
+                                    <div id="totalTime"></div>
                                 </div>
                             </div>
                         </div>
@@ -200,8 +204,8 @@
                     { "name": "employeeName",   "targets": 1 },
                     { "name": "customerName",    "targets": 2 },
                     { "name": "assignedTime",   "targets": 3 },
-                    { "name": "startedTime",    "targets": 4 },
-                    { "name": "completedTime",  "targets": 5 },
+                    { "name": "startTime",    "targets": 4 },
+                    { "name": "stopTime",  "targets": 5 },
                     { "name": "complete",       "targets": 6 }
                 ]
             });
@@ -239,16 +243,21 @@
 
                 $('form#taskForm input#id').val(task.id);
 
-                if (task.startedTime > 0) {
-                    var start = new Date(task.startedTime * 1000);
-                    $('div#startedTime').html(start.toLocaleString());
+                if (task.startTime > 0) {
+                    var start = new Date(task.startTime * 1000);
+                    $('div#startTime').html(start.toLocaleString());
 
-                    if (task.completedTime > 0) {
-                        var completed = new Date(task.completedTime * 1000);
-                        $('div#completedTime').html(completed.toLocaleString());
+                    if (task.stopTime > 0) {
+                        var completed = new Date(task.stopTime * 1000);
+                        $('div#stopTime').html(completed.toLocaleString());
                     }
                     $('ul#notes').html(task.notes);
 
+                    if (task.totalTime > 60) {
+                        var h = Math.floor(task.totalTime / 3600);
+                        var m = Math.floor(task.totalTime % 3600 / 60);
+                        $('div#totalTime').html(h +' hour(s), ' + m + ' minute(s)');
+                    }
                     $('div#afterStart').removeClass('hide');
                 }
 
@@ -274,8 +283,8 @@
                 $('form#taskForm textarea#description').val('');
                 $('form#taskForm input#id').val('');
 
-                $('div#startedTime').html('');
-                $('div#completedTime').html('');
+                $('div#startTime').html('');
+                $('div#stopTime').html('');
                 $('ul#notes').html('');
 
                 $('div#afterStart').addClass('hide');

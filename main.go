@@ -41,7 +41,7 @@ func init() {
 	mx.AddSecureRoutes(ADMIN, employeeAll, employeeView, employeeSave, employeeDel, adminEmployeeTask, adminEmployeeTaskAll, adminCustomerTask, adminCustomerTaskAll)
 	mx.AddSecureRoutes(ADMIN, adminTask, adminTasksave, adminTaskAll)
 
-	mx.AddSecureRoutes(EMPLOYEE, saveHomePage, account, task, taskAll, taskMarkStart, taskMarkComplete, taskMarkNote)
+	mx.AddSecureRoutes(EMPLOYEE, saveHomePage, account, task, taskAll, taskMarkStart, taskMarkStop, taskMarkNote, taskMarkComplete)
 
 	// customer management routes
 	mx.AddSecureRoutes(EMPLOYEE, customerAll, customerView, customerSave, customerNoteSave)
@@ -61,6 +61,7 @@ func init() {
 	web.Funcs["prettyDate"] = PrettyDate
 	web.Funcs["prettyDateTime"] = PrettyDateTime
 	web.Funcs["queryEscape"] = url.QueryEscape
+	web.Funcs["printTime"] = PrintTime
 	tc = web.NewTmplCache()
 
 	defaultUsers()

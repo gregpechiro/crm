@@ -74,6 +74,16 @@ func PrettySize(size int64) string {
 	return fmt.Sprintf("%.1f %s", sizef, ind)
 }
 
+func PrintTime(tt int64) string {
+	h := tt / 3600
+	m := (tt % 3600) / 60
+
+	if h > 0 || m > 0 {
+		return fmt.Sprintf("%d hour(s), %d minute(s)", h, m)
+	}
+	return ""
+}
+
 func ajaxResponse(w http.ResponseWriter, msg string) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)

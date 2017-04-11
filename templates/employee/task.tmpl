@@ -46,27 +46,30 @@
                                         <table id="tasksTable" class="table table-bordered table-hover" width="100%" style="width: 100%;background-color:white;">
                                             <thead>
                                                 <tr id="search">
-                                                    <th>company</th>
+                                                    <th>customer</th>
                                                     <th>assignedTime</th>
-                                                    <th>startedTime</th>
-                                                    <th>completedTime</th>
+                                                    <th>startTime</th>
+                                                    <th>stopTime</th>
+                                                    <th>totalTime</th>
                                                     <th>complete</th>
                                                 </tr>
                                                 <tr>
-                                                    <th>Company</th>
+                                                    <th>Customer</th>
                                                     <th>Assigned Date</th>
-                                                    <th>Started Time</th>
-                                                    <th>Completed Time</th>
+                                                    <th>Last Started</th>
+                                                    <th>Last Stopped</th>
+                                                    <th>Total Time</th>
                                                     <th>Complete</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {{ range $task := .tasks }}
                                                     <tr class="click" style="cursor:pointer;" data-task='{{ toBase64Json $task }}'>
-                                                        <td><a style="color:#f58220;" href="/customer/{{ $task.CompanyId }}">{{ $task.CompanyName }}</a></td>
+                                                        <td><a style="color:#f58220;" href="/customer/{{ $task.CustomerId }}">{{ $task.CustomerName }}</a></td>
                                                         <td>{{ prettyDate $task.AssignedTime }}</td>
-                                                        <td>{{ prettyDateTime $task.StartedTime }}</td>
-                                                        <td>{{ prettyDateTime $task.CompletedTime }}</td>
+                                                        <td>{{ prettyDateTime $task.StartTime }}</td>
+                                                        <td>{{ prettyDateTime $task.StopTime }}</td>
+                                                        <td>{{ printTime $task.GetTotalTime }}</td>
                                                         <td>{{ if $task.Complete }}Yes{{ else }}No{{ end }}</td>
                                                     </tr>
                                                 {{ end }}
@@ -99,8 +102,8 @@
                                 <div id="assignedTime"></div>
                             </div>
                             <div class="col-lg-6">
-                                <label>Company</label>
-                                <div id="company"></div>
+                                <label>Customer</label>
+                                <div id="customer"></div>
                             </div>
                         </div>
                         <br>
@@ -112,7 +115,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="notes" class="row hide">
+                        <div id="notes" class="row">
                             <div class="col-lg-12">
                                 <label>Notes</label>
                                 <ul id="notes"></ul>
@@ -126,13 +129,25 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label>Started</label>
-                                <div id="startedTime"></div>
+                                <div id="startTime"></div>
                             </div>
-                            <div class="col-lg-6">
-                                <label>Completed</label>
-                                <div id="completedTime"></div>
+                            <div class="col-lg-4">
+                                <label>Stopped</label>
+                                <div id="stopTime"></div>
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Total</label>
+                                <div id="totalTime"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <br>
+                                <form id="complete" class="hide" method="post">
+                                    <button class="btn btn-primary">Complete</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -154,8 +169,8 @@
                 "lengthMenu":[5,10,15,20],
                 "columnDefs": [
                     { "name": "assignedTime",   "targets": 0 },
-                    { "name": "startedTime",    "targets": 1 },
-                    { "name": "completedTime",  "targets": 2 },
+                    { "name": "startTime",      "targets": 1 },
+                    { "name": "stopTime",       "targets": 2 },
                     { "name": "complete",       "targets": 3 }
                 ]
             });
@@ -178,31 +193,49 @@
 
                 var date = new Date(task.assignedTime * 1000);
                 $('div#assignedTime').html(date.toLocaleDateString());
-                $('div#company').html('<a style="color:#f58220;" href="/customer/' + task.companyId + '">' + task.companyName + '</a>');
+                $('div#customer').html('<a style="color:#f58220;" href="/customer/' + task.customerId + '">' + task.customerName + '</a>');
                 $('div#description').html(task.description);
-
+                $('ul#notes').html(task.notes);
+                if (task.complete) {
+                    $('form#taskNoteForm').addClass('hide');
+                }
                 var startHtml;
-                var completeHtml;
-                if (task.startedTime > 0) {
-                    console.log("in if");
-                    $('ul#notes').html(task.notes);
-                    $('form#taskNoteForm').attr('action', '/task/' + task.id + '/note');
-                    $('div#notes').removeClass('hide');
+                var stopTime;
+                var tt = 0;
 
-                    var startTime = new Date(task.startedTime * 1000);
+                if (task.startTime > 0) {
+                    var startTime = new Date(task.startTime * 1000);
                     startHtml = startTime.toLocaleString();
-                    if (task.completedTime > 0) {
-                        var completedTime = new Date(task.completedTime * 1000);
-                        completeHtml = completedTime.toLocaleString();
+                    if (task.stopTime > 0) {
+                        var stopTime = new Date(task.stopTime * 1000);
+                        stopTime = stopTime.toLocaleString();
+                        if (!task.complete) {
+                            startHtml += '<br><form action="/task/' + task.id + '/start" method="post"><button class="btn btn-primary btn-xs">Resume Task</button></form>';
+                            $('form#complete').attr('action', '/task/' + task.id + '/complete');
+                            $('form#complete').removeClass('hide');
+                        }
                     } else {
-                        completeHtml = '<form action="/task/' + task.id + '/complete" method="post"><button class="btn btn-primary btn-xs">Complete Task</button></form>';
+                        stopTime = '<form action="/task/' + task.id + '/stop" method="post"><button class="btn btn-primary btn-xs">Stop Task</button></form>';
                     }
+
+                    if (task.stopTime > 0) {
+                        tt = task.totalTime
+                    } else {
+                        tt = Math.round((new Date()).getTime() / 1000) - task.startTime
+                    }
+
                 } else {
                     startHtml = '<form action="/task/' + task.id + '/start" method="post"><button class="btn btn-primary btn-xs">Start Task</button></form>';
-                    completeHtml = "N/A";
+                    stopTime = "N/A";
                 }
-                $('div#startedTime').html(startHtml);
-                $('div#completedTime').html(completeHtml);
+                if (tt > 60) {
+                    var h = Math.floor(tt / 3600);
+                    var m = Math.floor(tt % 3600 / 60);
+                    $('div#totalTime').html(h +' hour(s), ' + m + ' minute(s)');
+                }
+
+                $('div#startTime').html(startHtml);
+                $('div#stopTime').html(stopTime);
                 $('#taskModal').modal('show');
 
             });
@@ -210,12 +243,12 @@
             function resetTaskModal() {
 
                 $('div#assignedTime').html('');
-                $('div#company').html('');
+                $('div#customer').html('');
                 $('div#description').html('');
                 $('ul#notes').html('')
                 $('form#taskNoteForm').attr('action', '');
-                $('div#startedTime').html('')
-                $('div#completedTime').html('')
+                $('div#startTime').html('')
+                $('div#stopTime').html('')
             }
         </script>
 

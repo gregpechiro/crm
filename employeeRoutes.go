@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"sort"
@@ -100,7 +99,18 @@ var taskAll = web.Route{"GET", "/task/:page", func(w http.ResponseWriter, r *htt
 var taskMarkStart = web.Route{"POST", "/task/:id/start", func(w http.ResponseWriter, r *http.Request) {
 	var task Task
 	db.Get("task", r.FormValue(":id"), &task)
-	task.StartedTime = time.Now().Unix()
+	task.StartTime = time.Now().Unix()
+	task.StopTime = 0
+	db.Set("task", task.Id, task)
+	web.SetSuccessRedirect(w, r, "/task/today", "Successfully Started Task")
+	return
+}}
+
+var taskMarkStop = web.Route{"POST", "/task/:id/stop", func(w http.ResponseWriter, r *http.Request) {
+	var task Task
+	db.Get("task", r.FormValue(":id"), &task)
+	task.StopTime = time.Now().Unix()
+	task.TotalTime += task.StopTime - task.StartTime
 	db.Set("task", task.Id, task)
 	web.SetSuccessRedirect(w, r, "/task/today", "Successfully Started Task")
 	return
@@ -109,15 +119,17 @@ var taskMarkStart = web.Route{"POST", "/task/:id/start", func(w http.ResponseWri
 var taskMarkComplete = web.Route{"POST", "/task/:id/complete", func(w http.ResponseWriter, r *http.Request) {
 	var task Task
 	db.Get("task", r.FormValue(":id"), &task)
-	task.CompletedTime = time.Now().Unix()
+	if task.StopTime < 1 {
+		task.StopTime = time.Now().Unix()
+		task.TotalTime += task.StopTime - task.StartTime
+	}
 	task.Complete = true
 	db.Set("task", task.Id, task)
-	web.SetSuccessRedirect(w, r, "/task/today", "Successfully Started Task")
+	web.SetSuccessRedirect(w, r, "/task/today", "Successfully completed task")
 	return
 }}
 
 var taskMarkNote = web.Route{"POST", "/task/:id/note", func(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("in controller")
 	var task Task
 	db.Get("task", r.FormValue(":id"), &task)
 	if r.FormValue("notes") == "" {

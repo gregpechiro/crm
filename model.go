@@ -1,5 +1,7 @@
 package main
 
+import "time"
+
 type Address struct {
 	Street string `json:"street,omitempty" csvform:""`
 	City   string `json:"city,omitempty" csvform:""`
@@ -66,18 +68,35 @@ type QuickNote struct {
 }
 
 type Task struct {
-	Id            string `json:"id"`
-	EmployeeId    string `json:"employeeId,omitempty"`
-	CustomerId    string `json:"customerId,omitempty"`
-	CreatedTime   int64  `json:"createdTime,omitempty"`   // time.Time.Unix()
-	AssignedTime  int64  `json:"assignedTime,omitempty"`  // time.Time.Unix()
-	StartedTime   int64  `json:"startedTime,omitempty"`   // time.Time.Unix()
-	CompletedTime int64  `json:"completedTime,omitempty"` // time.Time.Unix()
-	Complete      bool   `json:"complete"`
-	Description   string `json:"description,omitempty"`
-	Notes         string `json:"notes,omitempty"`
-	EmployeeName  string `json:"employeeName, omitempty"`
-	CustomerName  string `json:"customerName, omitempty"`
+	Id           string `json:"id"`
+	EmployeeId   string `json:"employeeId,omitempty"`
+	CustomerId   string `json:"customerId,omitempty"`
+	CreatedTime  int64  `json:"createdTime,omitempty"`  // time.Time.Unix()
+	AssignedTime int64  `json:"assignedTime,omitempty"` // time.Time.Unix()
+	StartTime    int64  `json:"startTime,omitempty"`    // time.Time.Unix()
+	StopTime     int64  `json:"stopTime,omitempty"`     // time.Time.Unix()
+	TotalTime    int64  `json:"totalTime,ommitempty"`   // time.Time.Unix()
+	Complete     bool   `json:"complete"`
+	Description  string `json:"description,omitempty"`
+	Notes        string `json:"notes,omitempty"`
+	EmployeeName string `json:"employeeName, omitempty"`
+	CustomerName string `json:"customerName, omitempty"`
+}
+
+func (t Task) GetTotalTime() int64 {
+	var tt int64
+	if t.StartTime > 0 {
+		if t.StopTime > 0 {
+			tt = t.TotalTime
+		} else {
+			tt = time.Now().Unix() - t.StartTime
+		}
+	}
+	if tt < 60 {
+		return 0
+	}
+
+	return tt
 }
 
 func GetTaskEmployeeView(tasks []Task) {
