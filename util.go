@@ -7,20 +7,29 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"reflect"
 	"strconv"
 	"strings"
 	"time"
 )
 
+var CSVSINGLE = map[string]interface{}{
+	"customer": Customer{},
+	"employee": Employee{},
+}
+
+var CSVMULTI = map[string]interface{}{
+	"customer": []Customer{},
+	"employee": []Employee{},
+}
+
 // setup quick notes
 var quickNotes = []QuickNote{
-	QuickNote{"Complete", "Completed task."},
-	QuickNote{"Updated", "Information updated."},
-	// QuickNote{"Okay", "I had okay contact with the customer."},
-	// QuickNote{"Happy", "The customer was happy when I was finished with them."},
-	// QuickNote{"Sad", "The customer was sad when I was finished with them."},
-	// QuickNote{"Mad", "The customer was mad when I was finished with them."},
+	// QuickNote{"Complete", "Completed task."},
+	// QuickNote{"Updated", "Information updated."},
+	QuickNote{"Okay", "I had okay contact with the customer."},
+	QuickNote{"Happy", "The customer was happy when I was finished with them."},
+	QuickNote{"Sad", "The customer was sad when I was finished with them."},
+	QuickNote{"Mad", "The customer was mad when I was finished with them."},
 }
 
 func IsEmptyDir(name string) bool {
@@ -219,7 +228,7 @@ func CopyFile(source string, dest string) error {
 	return nil
 }
 
-func FormToStruct(ptr interface{}, vals map[string][]string, form string) (map[string]string, bool) {
+/*func FormToStruct(ptr interface{}, vals map[string][]string, form string) (map[string]string, bool) {
 	errors := make(map[string]string)
 	formToStruct(ptr, vals, "", errors, form)
 	return errors, len(errors) == 0
@@ -275,11 +284,7 @@ func formToStruct(ptr interface{}, vals map[string][]string, start string, error
 				formToStruct(st, vals, start+name+".", errors, form)
 				fld.Set(st)
 			}
-		} /*else if strct.Type().Field(i).Tag.Get("required") == form && form != "" {
-			errors[start+name] = ToUpperFirst(name) + " is required"
-		} else if strct.Type().Field(i).Tag.Get("required") == "must" {
-			errors[start+name] = ToUpperFirst(name) + " is required"
-		}*/
+		}
 	}
 }
 
@@ -402,4 +407,4 @@ func ToLowerFirst(s string) string {
 
 func ToUpperFirst(s string) string {
 	return strings.ToUpper(string(s[0])) + s[1:len(s)]
-}
+}*/

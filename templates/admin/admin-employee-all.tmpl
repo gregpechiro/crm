@@ -11,6 +11,8 @@
         <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/static/datatables/custom.css" charset="utf-8">
 
+        <style>input.uploader{position:absolute;left:-9999px;}label.uploader{cursor:pointer;}</style>
+
         <title>All Employees</title>
 
     </head>
@@ -26,15 +28,30 @@
 
             <div class="wraper container-fluid">
                 <div class="row">
-                    <div class="col-lg-12">
-
+                    <div class="col-lg-6">
                         <p class="lead">
                             Employees
-                            <span class="pull-right">
-                                <a href="/admin/employee/new">Add <i class="fa fa-plus"></i></a>
-                            </span>
                         </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <span class="pull-right">
+                            <a href="/admin/employee/new">Add <i class="fa fa-plus"></i></a>
+                        </span>
+                        <span class="pull-right">
+                            <a href="/admin/export/employee" class="btn btn-xs btn-primary">Export</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                        <form id="uploader" class="pull-right" action="/admin/import/upload/employee" method="post" enctype="multipart/form-data">
+                            <div class="btn-group btn-group-xs">
+                                <label class="btn btn-default uploader" for="csv">Import Employees</label>
+                                <input class="uploader" id="csv" type="file" name="file" required>
+                                <button id="upload" class="btn btn-primary" disabled>Upload</button>
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                       </form>
+                   </div>
 
+                    <div class="col-lg-12">
                         <table id="employees" class="table table-bordered table-hover" width="100%" style="width: 100%;background-color:white;">
                             <thead>
                                 <tr id="search">
@@ -72,6 +89,7 @@
         <script src="/static/datatables/jquery.dataTables.min.js"></script>
         <script src="/static/datatables/dataTables.bootstrap.js"></script>
         <script src="/static/datatables/custom.js" charset="utf-8"></script>
+        <script src="/static/js/upload.js" charset="utf-8"></script>
 
         {{ template "session.tmpl" . }}
 
@@ -85,6 +103,15 @@
                     { "name": "phone",    "targets": 2 }
                 ]
             });
+
+            uploader.displayError = function(msg) {
+                $.Notification.autoHideNotify('error', 'top right', msg);
+            }
+            uploader.fileTypes = ['text/csv'];
+            uploader.fileTypeErrorMsg = 'Incorrect File type. Only CVS files';
+            uploader.defaultText = 'Import Customers';
+            uploader.maxSize = 4 * uploader.MB;
+            uploader.maxSizeMsg = 'File too large. Max size 4MB'
         </script>
 
     </body>

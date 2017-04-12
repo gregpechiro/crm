@@ -191,7 +191,7 @@ var customerView = web.Route{"GET", "/customer/:id", func(w http.ResponseWriter,
 var customerSave = web.Route{"POST", "/customer", func(w http.ResponseWriter, r *http.Request) {
 	var customer Customer
 	db.Get("customer", r.FormValue("id"), &customer)
-	FormToStruct(&customer, r.Form, "")
+	web.FormToStruct(&customer, r.Form, "")
 	var customers []Customer
 	db.TestQuery("customer", &customers, adb.Eq("email", customer.Email), adb.Ne("id", `"`+customer.Id+`"`))
 	if len(customers) > 0 {
@@ -217,7 +217,7 @@ var customerSave = web.Route{"POST", "/customer", func(w http.ResponseWriter, r 
 var customerNoteSave = web.Route{"POST", "/customer/:id/note", func(w http.ResponseWriter, r *http.Request) {
 	var note Note
 	r.ParseForm()
-	FormToStruct(&note, r.Form, "")
+	web.FormToStruct(&note, r.Form, "")
 	if note.Id == "" {
 		note.Id = strconv.Itoa(int(time.Now().UnixNano()))
 	}

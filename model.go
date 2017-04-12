@@ -20,15 +20,23 @@ func (a Address) AddrHTML() string {
 
 type Employee struct {
 	Id        string `json:"id"`
-	Email     string `json:"email,omitempty" auth:"username" csv:"Email"`
+	Email     string `json:"email,omitempty" auth:"username" csv:"Email" csvform:"Email"`
 	Password  string `json:"password,omitempty" auth:"password" csv:"-"`
 	Active    bool   `json:"active,omitempty" auth:"active" csv:"-"`
 	Role      string `json:"role,omitempty" csv:"-"`
-	FirstName string `json:"firstName,omitempty"`
-	LastName  string `json:"lastName,omitempty"`
+	FirstName string `json:"firstName,omitempty" csvform:"First Name"`
+	LastName  string `json:"lastName,omitempty" csvform:"Last Name"`
 	Phone     string `json:"phone,omitempty"`
 	Home      string `json:"home,omitempty"`
-	Address
+	Address   `csvform:"-"`
+}
+
+func (e *Employee) SetId(id string) {
+	e.Id = id
+}
+
+func (e *Employee) GetId() string {
+	return e.Id
 }
 
 type Customer struct {
@@ -43,6 +51,14 @@ type Customer struct {
 	PhysicalAddress Address `json:"pysicalAddress,omitempty" csv:"physicalAddress" csvform:"Physical Address"`
 	MailingAddress  Address `json:"mailingAddress,omitempty" csv:"mailingAddress" csvform:"Mailing Address"`
 	SameAddress     bool    `json:"sameAddress"`
+}
+
+func (c *Customer) SetId(id string) {
+	c.Id = id
+}
+
+func (c *Customer) GetId() string {
+	return c.Id
 }
 
 type Note struct {

@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"reflect"
 	"sort"
 	"strconv"
 	"time"
@@ -45,7 +46,7 @@ var employeeSave = web.Route{"POST", "/admin/employee", func(w http.ResponseWrit
 	empId := r.FormValue("id")
 	var employee Employee
 	db.Get("employee", empId, &employee)
-	FormToStruct(&employee, r.Form, "")
+	web.FormToStruct(&employee, r.Form, "")
 	if employee.Id == "" && empId == "" {
 		employee.Id = strconv.Itoa(int(time.Now().UnixNano()))
 	}
@@ -226,54 +227,232 @@ var adminCustomerTaskAll = web.Route{"GET", "/admin/customer/:id/task/:page", fu
 	})
 }}
 
-var adminCustomerexport = web.Route{"GET", "/admin/customer/export", func(w http.ResponseWriter, r *http.Request) {
-	var customer Customer
-	fields, err := form.GetOptions(customer)
-	if err != nil {
-		web.SetErrorRedirect(w, r, "/customer", "Error exporting customers")
+var adminExport = web.Route{"GET", "/admin/export/:model", func(w http.ResponseWriter, r *http.Request) {
+	redirect := r.Referer()
+	if redirect == "" {
+		redirect = "/account"
+	}
+
+	m := r.FormValue(":model")
+
+	model, ok := CSVSINGLE[m]
+	if !ok {
+		web.SetErrorRedirect(w, r, redirect, "Error finding "+m+" to export")
 		return
 	}
-	sort.Strings(fields)
-	tc.Render(w, r, "admin-customer-export.tmpl", web.Model{
+
+	fields, err := form.GetOptions(model)
+	if err != nil {
+		web.SetErrorRedirect(w, r, redirect, "Error exporting "+m+"s")
+		return
+	}
+	tc.Render(w, r, "admin-export.tmpl", web.Model{
 		"fields": fields,
+		"model":  m,
 	})
 }}
 
-var customerAllExport = web.Route{"POST", "/admin/customer/export", func(w http.ResponseWriter, r *http.Request) {
-	var customers []Customer
-	db.All("customer", &customers)
+var adminExportSave = web.Route{"POST", "/admin/export/:model", func(w http.ResponseWriter, r *http.Request) {
+	redirect := r.Referer()
+	if redirect == "" {
+		redirect = "/admin"
+	}
+
+	m := r.FormValue(":model")
+
+	model, ok := CSVMULTI[m]
+	if !ok {
+		ajaxResponse(w, `{"error":true,"msg":"Error exporting `+m+`s"}`)
+		return
+	}
+
+	// create pointer of model for database Unmarshel
+	modelPtr := reflect.New(reflect.TypeOf(model)).Interface()
+
+	db.All(m, modelPtr)
+
+	// get indirect of the model pointer so the data can be read
+	model = reflect.Indirect(reflect.ValueOf(modelPtr)).Interface()
 
 	r.ParseForm()
-	b, err := form.Marshal(customers, r.Form)
+	b, err := form.Marshal(model, r.Form)
 	if err != nil {
-		log.Printf("adminRoutes.go customerAllExport >> form.Marshal() >> %v\n", err)
-		ajaxResponse(w, `{"error":true,"msg":"Error exporting customers"}`)
+		log.Printf("adminRoutes.go adminExportSave >> form.Marshal() >> %v\n", err)
+		ajaxResponse(w, `{"error":true,"msg":"Error exporting `+m+`s"}`)
 		return
 	}
 
 	path := "export/"
 	if err := os.MkdirAll(path, 0755); err != nil {
-		log.Printf("adminRoutes.go customerAllExport >> os.MkdirAll() >> %v\n", err)
-		ajaxResponse(w, `{"error":true,"msg":"Error exporting customers"}`)
+		log.Printf("adminRoutes.go adminExportSave >> os.MkdirAll() >> %v\n", err)
+		ajaxResponse(w, `{"error":true,"msg":"Error exporting `+m+`s"}`)
 		return
 	}
 
-	path = path + time.Now().Format("2006-01-02") + "_customers.csv"
+	path += time.Now().Format("2006-01-02") + "_" + m + "s.csv"
 
 	if err := ioutil.WriteFile(path, b, 0666); err != nil {
-		log.Printf("adminRoutes.go customerAllExport >> ioutil.WriteFile() >> %v\n", err)
-		ajaxResponse(w, `{"error":true,"msg":"Error exporting customers"}`)
+		log.Printf("adminRoutes.go adminExportSave >> ioutil.WriteFile() >> %v\n", err)
+		ajaxResponse(w, `{"error":true,"msg":"Error exporting `+m+`s"}`)
 		return
 	}
 
-	ajaxResponse(w, `{"error":false,"path":"/`+path+`"}`)
+	ajaxResponse(w, `{"error":false,"path":"/admin/`+path+`"}`)
 	return
 }}
 
-var customerAllExportDownload = web.Route{"GET", "/export/:name", func(w http.ResponseWriter, r *http.Request) {
+var adminExportDownload = web.Route{"GET", "/admin/export/:name", func(w http.ResponseWriter, r *http.Request) {
 	server := http.StripPrefix("/export", http.FileServer(http.Dir("export/")))
 	server.ServeHTTP(w, r)
 	return
+}}
+
+var adminImportUpload = web.Route{"POST", "/admin/import/upload/:model", func(w http.ResponseWriter, r *http.Request) {
+	redirect := r.Referer()
+	if redirect == "" {
+		redirect = "/account"
+	}
+
+	m := r.FormValue(":model")
+
+	_, ok := CSVSINGLE[m]
+	if !ok {
+		web.SetErrorRedirect(w, r, redirect, "Error finding "+m+" to export")
+		return
+	}
+
+	path := "import/" + m + "/"
+	if err := os.MkdirAll(path, 0755); err != nil {
+		log.Printf("main.go -> adminImportUpload -> os.MkdirAll() -> %v\n", err)
+		web.SetErrorRedirect(w, r, redirect, "Error uploading csv file")
+		return
+	}
+	file, handler, err := r.FormFile("file")
+	if err != nil {
+		log.Printf("main.go -> adminImporUpload -> r.FormFile() -> %v\n", err)
+		web.SetErrorRedirect(w, r, redirect, "Error uploading csv file")
+		return
+	}
+	defer file.Close()
+	f, err := os.OpenFile(path+handler.Filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
+	if err != nil {
+		log.Printf("main.go -> adminImportUpload -> os.OpenFile() -> %v\n", err)
+		web.SetErrorRedirect(w, r, redirect, "Error uploading csv file")
+		return
+	}
+	defer f.Close()
+	io.Copy(f, file)
+
+	web.SetSuccessRedirect(w, r, "/admin/import/"+m+"/"+handler.Filename, "Successfully uploaded csv file")
+	return
+}}
+
+var adminImport = web.Route{"GET", "/admin/import/:model/:file", func(w http.ResponseWriter, r *http.Request) {
+
+	redirect := r.Referer()
+	if redirect == "" {
+		redirect = "/account"
+	}
+
+	m := r.FormValue(":model")
+
+	model, ok := CSVSINGLE[m]
+	if !ok {
+		web.SetErrorRedirect(w, r, redirect, "Error finding "+m+" to import")
+		return
+	}
+
+	path := "import/" + m + "/" + r.FormValue(":file")
+
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		log.Printf("main.go -> adminImport -> ioutil.ReadFile -> %v\n", err)
+		web.SetErrorRedirect(w, r, redirect, "Error finding file "+r.FormValue(":file"))
+		return
+	}
+
+	dec, err := csv.NewCSVDecoder(b)
+	if err != nil {
+		log.Printf("main.go -> adminImport -> csv.NewCSVDecoder -> %v\n", err)
+		web.SetErrorRedirect(w, r, redirect, "Error reading file "+r.FormValue(":file"))
+		return
+	}
+
+	fields, err := form.GetOptions(model)
+	if err != nil {
+		log.Printf("main.go -> adminImport -> form.GetOptions -> %v\n", err)
+		web.SetErrorRedirect(w, r, redirect, "Error Creating importer")
+		return
+	}
+
+	header := dec.GetHeader()
+
+	tc.Render(w, r, "admin-import.tmpl", web.Model{
+		"file":   r.FormValue(":file"),
+		"header": header,
+		"fields": fields,
+		"model":  m,
+	})
+	return
+}}
+
+var adminImportSave = web.Route{"POST", "/admin/import/:model/save", func(w http.ResponseWriter, r *http.Request) {
+
+	redirect := r.Referer()
+	if redirect == "" {
+		redirect = "/admin"
+	}
+
+	m := r.FormValue(":model")
+
+	model, ok := CSVMULTI[m]
+	if !ok {
+		web.SetErrorRedirect(w, r, redirect, "Error finding "+m+" to import")
+		return
+	}
+	path := "import/" + m + "/" + r.FormValue("file")
+
+	r.ParseForm()
+
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		log.Printf("main.go -> customerImportConvert -> ioutil.ReadFile -> %v\n", err)
+		web.SetErrorRedirect(w, r, redirect, "Error finding file "+r.FormValue(":file"))
+		return
+	}
+
+	// create pointer of model for database Unmarshel
+	modelPtr := reflect.New(reflect.TypeOf(model)).Interface()
+
+	if err := form.Unmarshal(b, modelPtr, r.Form); err != nil {
+		log.Printf("main.go -> customerImportConvert -> form.Unmarshal -> %v\n", err)
+		web.SetErrorRedirect(w, r, redirect, "Error creating "+m+"s")
+		return
+	}
+
+	// get indirect of the model pointer so the data can be read
+	model = reflect.Indirect(reflect.ValueOf(modelPtr)).Interface()
+
+	/*sf, err := form.ImportableSlice(modelPtr)
+	if err != nil {
+		log.Printf("main.go -> customerImportConvert -> form.Importable -> %v\n", err)
+		web.SetErrorRedirect(w, r, redirect, "Error creating "+m+"s")
+		return
+	}*/
+	/*sf, k := modelPtr.([]form.Importable)
+	fmt.Println(sf, k)
+	if mm, ok := model.([]form.Importable); ok {
+		for _, mdl := range mm {
+			mdl.SetId(strconv.Itoa(int(time.Now().UnixNano())))
+			db.Set(m, mdl.GetId(), mdl)
+		}
+		return
+		web.SetErrorRedirect(w, r, redirect, "Error creating "+m+"s")
+	}*/
+
+	web.SetSuccessRedirect(w, r, redirect, "Successfully imported "+m+"s")
+	return
+
 }}
 
 var customerImportUpload = web.Route{"POST", "/admin/customer/import", func(w http.ResponseWriter, r *http.Request) {

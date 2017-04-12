@@ -57,7 +57,7 @@ func defaultUsers() {
 	db.Set("employee", "0", developer)
 	db.Set("employee", "1", admin)
 	db.Add("customer", "0", customer)
-
+	fmt.Printf("\nTemporary admin credentials:\n\n\tEmail:\t\t%s\n\tPassword:\t%s\n\n", admin.Email, admin.Password)
 }
 
 var makeUsers = web.Route{"GET", "/makeUsers", func(w http.ResponseWriter, r *http.Request) {
