@@ -31,14 +31,6 @@ type Employee struct {
 	Address   `csvform:"-"`
 }
 
-func (e *Employee) SetId(id string) {
-	e.Id = id
-}
-
-func (e *Employee) GetId() string {
-	return e.Id
-}
-
 type Customer struct {
 	Id              string  `json:"id" csv:"-"`
 	Email           string  `json:"email,omitempty" auth:"username" csv:"email" csvform:""`
@@ -51,14 +43,6 @@ type Customer struct {
 	PhysicalAddress Address `json:"pysicalAddress,omitempty" csv:"physicalAddress" csvform:"Physical Address"`
 	MailingAddress  Address `json:"mailingAddress,omitempty" csv:"mailingAddress" csvform:"Mailing Address"`
 	SameAddress     bool    `json:"sameAddress"`
-}
-
-func (c *Customer) SetId(id string) {
-	c.Id = id
-}
-
-func (c *Customer) GetId() string {
-	return c.Id
 }
 
 type Note struct {

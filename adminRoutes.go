@@ -289,20 +289,19 @@ var adminExportSave = web.Route{"POST", "/admin/export/:model", func(w http.Resp
 		return
 	}
 
-	path += time.Now().Format("2006-01-02") + "_" + m + "s.csv"
-
-	if err := ioutil.WriteFile(path, b, 0666); err != nil {
+	name := time.Now().Format("2006-01-02") + "_" + m + "s.csv"
+	if err := ioutil.WriteFile(path+name, b, 0666); err != nil {
 		log.Printf("adminRoutes.go adminExportSave >> ioutil.WriteFile() >> %v\n", err)
 		ajaxResponse(w, `{"error":true,"msg":"Error exporting `+m+`s"}`)
 		return
 	}
 
-	ajaxResponse(w, `{"error":false,"path":"/admin/`+path+`"}`)
+	ajaxResponse(w, `{"error":false,"path":"/admin/export/download/`+name+`"}`)
 	return
 }}
 
-var adminExportDownload = web.Route{"GET", "/admin/export/:name", func(w http.ResponseWriter, r *http.Request) {
-	server := http.StripPrefix("/export", http.FileServer(http.Dir("export/")))
+var adminExportDownload = web.Route{"GET", "/admin/export/download/:name", func(w http.ResponseWriter, r *http.Request) {
+	server := http.StripPrefix("/admin/export/download", http.FileServer(http.Dir("export/")))
 	server.ServeHTTP(w, r)
 	return
 }}
@@ -317,7 +316,7 @@ var adminImportUpload = web.Route{"POST", "/admin/import/upload/:model", func(w 
 
 	_, ok := CSVSINGLE[m]
 	if !ok {
-		web.SetErrorRedirect(w, r, redirect, "Error finding "+m+" to export")
+		web.SetErrorRedirect(w, r, redirect, "Error finding "+m+" to import")
 		return
 	}
 
@@ -405,7 +404,7 @@ var adminImportSave = web.Route{"POST", "/admin/import/:model/save", func(w http
 
 	m := r.FormValue(":model")
 
-	model, ok := CSVMULTI[m]
+	model, ok := CSVSINGLE[m]
 	if !ok {
 		web.SetErrorRedirect(w, r, redirect, "Error finding "+m+" to import")
 		return
@@ -421,8 +420,8 @@ var adminImportSave = web.Route{"POST", "/admin/import/:model/save", func(w http
 		return
 	}
 
-	// create pointer of model for database Unmarshel
-	modelPtr := reflect.New(reflect.TypeOf(model)).Interface()
+	// create pointer of model for database Unmarshal
+	modelPtr := reflect.New(reflect.SliceOf(reflect.TypeOf(model))).Interface()
 
 	if err := form.Unmarshal(b, modelPtr, r.Form); err != nil {
 		log.Printf("main.go -> customerImportConvert -> form.Unmarshal -> %v\n", err)
@@ -433,22 +432,7 @@ var adminImportSave = web.Route{"POST", "/admin/import/:model/save", func(w http
 	// get indirect of the model pointer so the data can be read
 	model = reflect.Indirect(reflect.ValueOf(modelPtr)).Interface()
 
-	/*sf, err := form.ImportableSlice(modelPtr)
-	if err != nil {
-		log.Printf("main.go -> customerImportConvert -> form.Importable -> %v\n", err)
-		web.SetErrorRedirect(w, r, redirect, "Error creating "+m+"s")
-		return
-	}*/
-	/*sf, k := modelPtr.([]form.Importable)
-	fmt.Println(sf, k)
-	if mm, ok := model.([]form.Importable); ok {
-		for _, mdl := range mm {
-			mdl.SetId(strconv.Itoa(int(time.Now().UnixNano())))
-			db.Set(m, mdl.GetId(), mdl)
-		}
-		return
-		web.SetErrorRedirect(w, r, redirect, "Error creating "+m+"s")
-	}*/
+	ImportSave(model)
 
 	web.SetSuccessRedirect(w, r, redirect, "Successfully imported "+m+"s")
 	return

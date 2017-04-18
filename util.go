@@ -12,14 +12,27 @@ import (
 	"time"
 )
 
+func ImportSave(v interface{}) {
+	switch v.(type) {
+	case []Employee:
+		employees := v.([]Employee)
+		for _, employee := range employees {
+			employee.Id = strconv.Itoa(int(time.Now().UnixNano()))
+			db.Set("employee", employee.Id, employee)
+		}
+
+	case []Customer:
+		customer := v.([]Customer)
+		for _, customer := range customer {
+			customer.Id = strconv.Itoa(int(time.Now().UnixNano()))
+			db.Set("customer", customer.Id, customer)
+		}
+	}
+}
+
 var CSVSINGLE = map[string]interface{}{
 	"customer": Customer{},
 	"employee": Employee{},
-}
-
-var CSVMULTI = map[string]interface{}{
-	"customer": []Customer{},
-	"employee": []Employee{},
 }
 
 // setup quick notes
